@@ -1,5 +1,5 @@
 // 사용자·관리자 화면이 함께 쓰는 표시 도우미
-import { HOUSES, QUESTIONS } from './data.js?v=202611112201';
+import { HOUSES, QUESTIONS } from './data.js?v=202611112237';
 
 export const $ = (sel, root = document) => root.querySelector(sel);
 export const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];

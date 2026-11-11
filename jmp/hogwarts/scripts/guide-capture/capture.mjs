@@ -44,7 +44,7 @@ async function answer(page, letter, tier) {
 async function submit(page) {
   await page.click('#submitAnswer');
   await page.waitForSelector('[data-action="next"]', { timeout: 20000 });
-  await page.waitForFunction(() => document.querySelector('[data-rankings] table'), null, { timeout: 15000 });
+  await page.waitForFunction(() => document.querySelector('[data-rank-board] .rank-hero'), null, { timeout: 15000 });
   await wait(600);
 }
 
@@ -62,12 +62,15 @@ if (!EN) await shot(page, '01-admin-login');
 
 // 상단 '퀴즈 화면' 링크로 사용자 화면 이동
 await page.click('#playLink');
-await page.waitForSelector('.hero');
-await wait(500);
-await shot(page, '02-home');
-await shot(page, '02-home-full', { full: true });
+await page.waitForSelector('.intro-card');
+await wait(700);
+await shot(page, '02-home-full', { full: true });          // 안내 카드 1: 입학 허가서
+await page.click('[data-card="intro"][data-step="1"]');
+await page.waitForSelector('.house-row');
+await wait(600);
+await shot(page, '02b-intro-houses');                        // 안내 카드 2: 네 기숙사
 
-await page.click('[data-action="begin"]');
+await page.click('[data-card="intro"][data-step="1"]');      // 기숙사 배정식 시작
 await page.waitForSelector('#playerName');
 await page.fill('#playerName', EN ? 'Harry' : '해리');
 await shot(page, '03-name');
@@ -77,10 +80,21 @@ await page.waitForSelector('[data-pick-house]');
 await shot(page, '04-house', { full: true });
 
 await page.click('[data-pick-house="Gryffindor"]');
+await page.waitForSelector('.two-step');
+await wait(600);
+await shot(page, '04b-rules-two-step', { full: true });     // 규칙 카드 1: 두 번 선택
+await page.click('[data-card="rules"][data-step="1"]');
+await page.waitForSelector('.ledger');
+await page.click('[data-sim-tier="95"]');
+await page.click('[data-sim="-1"]');                          // 95% 걸고 틀린 체험
+await wait(700);
+await shot(page, '04c-rules-ledger', { full: true });       // 규칙 카드 2: 판돈 체험
+
+await page.click('[data-card="rules"][data-step="1"]');      // 문제 풀기 시작
 await page.waitForSelector('.question-card');
 await page.waitForFunction(() => /\+/.test(document.querySelector('[data-score-strip]')?.textContent || ''));
 await shot(page, '05-question-start');
-await answer(page, 'A', 75);
+await answer(page, 'C', 75);                                  // Q1 정답 C
 await shot(page, '06-question-selected', { full: true });
 
 await submit(page);
@@ -88,11 +102,11 @@ await shot(page, '07-feedback-correct', { full: true });
 
 await page.click('[data-action="next"]');
 await page.waitForSelector('.question-card');
-await answer(page, 'A', 60); // Q2 정답은 B → 오답 예시
+await answer(page, 'B', 95);                                  // Q2 정답은 A → 95% 오답 예시
 await submit(page);
 await shot(page, '08-feedback-wrong', { full: true });
 
-const rest = { Q3: ['C', 60], Q4: ['A', 45], Q5: ['A', 75], Q6: ['B', 30], Q7: ['D', 60], Q8: ['B', 45], Q9: ['A', 60], Q10: ['A', 75] };
+const rest = { Q3: ['D', 60], Q4: ['B', 45], Q5: ['C', 75], Q6: ['B', 30], Q7: ['B', 60], Q8: ['D', 45], Q9: ['A', 60], Q10: ['C', 75] };
 for (const [, [letter, tier]] of Object.entries(rest)) {
   await page.click('[data-action="next"]');
   await page.waitForSelector('.question-card');
@@ -126,15 +140,18 @@ if (EN) await mctx.addInitScript(() => localStorage.setItem('hogwarts-lang', 'en
 const m = await mctx.newPage();
 m.on('pageerror', e => console.log('PAGE ERROR (mobile)', e.message));
 await m.goto(BASE);
-await m.waitForSelector('[data-action="begin"]');
-await m.click('[data-action="begin"]');
+await m.waitForSelector('.intro-card');
+await m.click('[data-card="intro"][data-step="1"]');
+await m.click('[data-card="intro"][data-step="1"]');
 await m.fill('#playerName', EN ? 'Ron' : '론');
 await m.click('[data-form="name"] button[type=submit]');
 await m.click('[data-pick-house="Gryffindor"]');
+await m.click('[data-card="rules"][data-step="1"]');
+await m.click('[data-card="rules"][data-step="1"]');
 await m.waitForSelector('.question-card');
 await m.waitForFunction(() => /\+/.test(document.querySelector('[data-score-strip]')?.textContent || ''));
 await shot(m, '12-mobile-question');
-await answer(m, 'A', 95);
+await answer(m, 'C', 95);
 await submit(m);
 await m.evaluate(() => window.scrollTo(0, 0));
 await shot(m, '13-mobile-feedback');

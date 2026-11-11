@@ -1,6 +1,7 @@
-// 호그와트 기숙사 컵 콘텐츠: 기숙사, 문항, 확신도 단계, 첫 화면 안내문.
-// 지민이가 만든 원본(Hogwarts.html)에서 옮겨 왔습니다. 문항을 고칠 때는 이 파일만 수정합니다.
+// 호그와트 기숙사 컵 콘텐츠: 기숙사, 문항, 확신도 단계, 첫 화면·규칙 안내 카드.
+// 지민이가 만든 원본(Hogwarts.html, 2026-11-11 개정판)에서 옮겨 왔습니다. 문항을 고칠 때는 이 파일만 수정합니다.
 // 문항 수를 바꾸면 firestore.rules의 maxQuestions()와 firebase-config.js의 TOTAL_QUESTIONS도 맞춥니다.
+// 정답 위치: Q1 C · Q2 A · Q3 D · Q4 B · Q5 C · Q6 A · Q7 B · Q8 D · Q9 A · Q10 C
 
 export const HOUSES = [
   {
@@ -55,18 +56,18 @@ export const QUESTIONS = [
     "ko": "기숙사 배정식에서 마법의 모자가 해리에게 슬리데린 기숙사를 제안하자, 해리는 깊은 고민에 빠졌습니다. 해리는 **“용감한 마법사는 무조건 그리핀도르로 가야 하며, 슬리데린에 가면 무조건 사악한 마왕의 하수인이 된다”**며 오직 두 가지 선택지만 존재한다고 생각했습니다.\n\n해리의 사고방식에 포함된 논리적 오류는 무엇일까요?",
     "en": "During the Sorting Ceremony, the Sorting Hat suggests that Harry might belong in Slytherin. Harry becomes deeply troubled. He thinks, “A brave wizard must go to Gryffindor, and anyone who goes to Slytherin will inevitably become a servant of the Dark Lord.” He assumes there are only two possible choices.\n\nWhat logical fallacy appears in Harry’s reasoning?",
     "choices": [
-      "False Dilemma (거짓 딜레마 / 흑백논리)",
       "Fallacy of Accident (우연의 오류)",
       "Equivocation (애매어의 오류)",
+      "False Dilemma (거짓 딜레마 / 흑백논리)",
       "Straw Man Fallacy (짚단 논증의 오류)"
     ],
     "enChoices": [
-      "False Dilemma",
       "Fallacy of Accident",
       "Equivocation",
+      "False Dilemma",
       "Straw Man Fallacy"
     ],
-    "answer": "A"
+    "answer": "C"
   },
   {
     "id": "Q2",
@@ -75,18 +76,18 @@ export const QUESTIONS = [
     "ko": "해리, 론, 헤르미온느, 네빌은 밤에 기숙사를 몰래 나왔다가 필치에게 들킬 위기에 처했습니다.\n\n헤르미온느가 말했습니다.\n“학생은 밤에 기숙사를 떠나면 안 된다는 규칙이 있으니, 우리가 규칙을 어긴 것은 맞아. 하지만 누군가 위험에 처해서 도움을 요청해야 하는 상황이라면 다를 수도 있어.”\n\n그러자 다른 학생이 말했습니다.\n“규칙은 모든 학생에게 적용되는 거야. 어떤 상황에서도 예외는 없어.”\n\n이 주장의 문제를 가장 잘 설명하는 것은?",
     "en": "Harry, Ron, Hermione, and Neville secretly leave their dormitory at night and are in danger of being caught by Filch.\n\nHermione says: “There is a rule that students must not leave their dormitories at night, so we did break the rule. But the situation might be different if someone is in danger and we need to leave to get help.”\n\nAnother student responds: “The rule applies to every student. There are no exceptions, no matter what the situation is.”\n\nWhich best describes the problem with this reasoning?",
     "choices": [
-      "False Dilemma (거짓 딜레마)",
       "Fallacy of Accident (우연의 오류)",
+      "False Dilemma (거짓 딜레마)",
       "Appeal to Tradition (전통에 호소)",
       "Begging the Question (선결문제 요구)"
     ],
     "enChoices": [
-      "False Dilemma",
       "Fallacy of Accident",
+      "False Dilemma",
       "Appeal to Tradition",
       "Begging the Question"
     ],
-    "answer": "B"
+    "answer": "A"
   },
   {
     "id": "Q3",
@@ -97,16 +98,16 @@ export const QUESTIONS = [
     "choices": [
       "Ambiguity (모호성)",
       "Vagueness (애매성)",
-      "Equivocation (애매어의 오류)",
-      "Amphiboly (애매구문의 오류)"
+      "Amphiboly (애매구문의 오류)",
+      "Equivocation (애매어의 오류)"
     ],
     "enChoices": [
       "Ambiguity",
       "Vagueness",
-      "Equivocation",
-      "Amphiboly"
+      "Amphiboly",
+      "Equivocation"
     ],
-    "answer": "C"
+    "answer": "D"
   },
   {
     "id": "Q4",
@@ -115,18 +116,18 @@ export const QUESTIONS = [
     "ko": "수업 중 말포이가 헤르미온느의 머글 출신 배경을 비꼬며 그녀를 놀렸습니다.\n헤르미온느가 불쾌해하자 론이 말했습니다.\n“사람의 출신 때문에 그 사람의 능력을 판단해서는 안 돼.”\n\n그러자 말포이가 대답했습니다.\n“그러니까 론은 순수혈통 마법사들이 가진 모든 전통과 가치가 잘못됐다고 생각하는 거네.”\n\n말포이의 논리적 오류는 무엇일까요?",
     "en": "During class, Malfoy mocks Hermione because of her Muggle-born background. When Hermione becomes upset, Ron says: “We shouldn’t judge someone’s abilities based on where they come from.”\n\nMalfoy responds: “So Ron thinks that all the traditions and values of pure-blood wizards are wrong.”\n\nWhat logical fallacy is Malfoy committing?",
     "choices": [
-      "Straw Man (허수아비 오류)",
       "Red Herring (논점 일탈)",
+      "Straw Man (허수아비 오류)",
       "Loaded Question (복합질문 / 함정 질문)",
       "Fallacy of Accident (우연의 오류)"
     ],
     "enChoices": [
-      "Straw Man",
       "Red Herring",
+      "Straw Man",
       "Loaded Question",
       "Fallacy of Accident"
     ],
-    "answer": "A"
+    "answer": "B"
   },
   {
     "id": "Q5",
@@ -135,18 +136,18 @@ export const QUESTIONS = [
     "ko": "해리의 첫 퀴디치 경기에서 해리의 빗자루가 갑자기 심하게 흔들리기 시작했습니다.\n헤르미온느는 관중석에서 스네이프가 해리를 노려보고 있는 단 한 번의 단편적인 모습을 발견했습니다.\n\n헤르미온느가 말했습니다.\n\n“스네이프가 해리를 바라보고 있었어. 그러니까 스네이프가 해리의 빗자루를 저주한 게 틀림없어.”\n\n이 관찰을 바탕으로 헤르미온느가 내린 결론의 논리적 문제는 무엇일까요?",
     "en": "During Harry's first Quidditch match, his broomstick suddenly begins to shake violently.\n\nFrom the stands, Hermione catches a single isolated glimpse of Snape staring at Harry.\n\nHermione says:\n\n“Snape was staring right at Harry. So Snape must have cursed Harry's broom.”\n\nWhat is the logical flaw in the conclusion Hermione draws from this observation?",
     "choices": [
-      "Hasty Generalization (성급한 일반화)",
       "Missing the Point / Non-sequitur (논점 일탈 / 추론 비약의 오류)",
       "Red Herring (붉은 훈제어의 오류)",
+      "Hasty Generalization (성급한 일반화)",
       "Fallacy of Accident (우연의 오류)"
     ],
     "enChoices": [
-      "Hasty Generalization",
       "Missing the Point / Non-sequitur",
       "Red Herring",
+      "Hasty Generalization",
       "Fallacy of Accident"
     ],
-    "answer": "A"
+    "answer": "C"
   },
   {
     "id": "Q6",
@@ -176,17 +177,17 @@ export const QUESTIONS = [
     "en": "Neville discovers that the broom he bought for 50 Galleons is defective. Buying a new broom would clearly be the better choice, but he says: “The broom may be broken, but I learned how to repair a broom because of it, so perhaps it was actually a good thing.”\n\nWhat concept best describes this reasoning?",
     "choices": [
       "Confirmation Bias",
+      "Sweet Lemon",
       "Sunk Cost Fallacy",
-      "Sour Grapes",
-      "Sweet Lemon"
+      "Sour Grapes"
     ],
     "enChoices": [
       "Confirmation Bias",
+      "Sweet Lemon",
       "Sunk Cost Fallacy",
-      "Sour Grapes",
-      "Sweet Lemon"
+      "Sour Grapes"
     ],
-    "answer": "D"
+    "answer": "B"
   },
   {
     "id": "Q8",
@@ -196,17 +197,17 @@ export const QUESTIONS = [
     "en": "An unexpected event appears on a Hogwarts History exam. After the exam, Ron says: “I knew that event would be on the test. It was obvious once I saw the question.”\n\nHowever, Ron had never mentioned the event before the exam. What phenomenon does this illustrate?",
     "choices": [
       "Confirmation Bias",
-      "Hindsight Bias",
       "Overconfidence",
-      "Availability Heuristic"
+      "Availability Heuristic",
+      "Hindsight Bias"
     ],
     "enChoices": [
       "Confirmation Bias",
-      "Hindsight Bias",
       "Overconfidence",
-      "Availability Heuristic"
+      "Availability Heuristic",
+      "Hindsight Bias"
     ],
-    "answer": "B"
+    "answer": "D"
   },
   {
     "id": "Q9",
@@ -235,22 +236,72 @@ export const QUESTIONS = [
     "ko": "해리가 마법사의 돌을 찾으러 가기 전, 론이 말했습니다.\n“우리가 돌을 찾으면 덤블도어가 반드시 우리를 칭찬해 주실 거야. 분명 좋은 생각이야.”\n\n헤르미온느가 물었습니다.\n“그리핀도르의 기숙사 점수가 100점 깎이더라도 그렇게 말할 수 있어?”\n\n론은 갑자기 대답을 망설였습니다. 사실 그는 덤블도어가 어떻게 반응할지에 대한 확실한 근거가 거의 없었습니다.\n\n다음 중 론의 반응을 가장 잘 설명하는 것은 무엇일까요?",
     "en": "Before Harry goes after the Philosopher’s Stone, Ron says: “If we find the Stone, Dumbledore will definitely praise us. It’s obviously a good idea.”\n\nHermione asks: “Would you still say that if Gryffindor lost 100 House Points because of it?”\n\nRon suddenly hesitates. In reality, he has very little evidence about how Dumbledore would actually respond.\n\nWhich best explains Ron’s reaction?",
     "choices": [
-      "실제 이해관계가 생기자 자신의 실제 확신 수준을 더 정확하게 평가하기 시작했다.",
       "내기를 제안받으면 사람은 항상 자신의 첫 번째 판단을 바꾸게 된다.",
       "론은 덤블도어를 신뢰하지 않았기 때문에 대답을 망설였다.",
+      "실제 이해관계가 생기자 자신의 실제 확신 수준을 더 정확하게 평가하기 시작했다.",
       "다른 사람에게 자신의 의견을 말하는 것은 합리적인 판단을 방해한다."
     ],
     "enChoices": [
-      "Once real stakes were involved, he began to assess his actual level of confidence more accurately.",
       "People always change their initial judgment when they are asked to make a bet.",
       "Ron hesitated because he did not trust Dumbledore.",
+      "Once real stakes were involved, he began to assess his actual level of confidence more accurately.",
       "Expressing an opinion to someone else prevents rational judgment."
     ],
-    "answer": "A"
+    "answer": "C"
   }
 ];
 
-export const INTRO = {
-  ko: "<h2>✨ 호그와트 마법학교 입학을 진심으로 환영합니다! ✨</h2><p>호그와트에 도착한 신입생, 환영합니다! 🦉💌</p><h3>🏆 [특별 안내] 영예의 ‘기숙사 컵(House Cup)’이란?</h3><p>호그와트에서는 매 학년이 진행되는 한 해 동안, 네 기숙사(그리핀도르, 래번클로, 후플푸프, 슬리데린)는 학교생활을 통해 기숙사 점수(House Points)를 쌓으며 선의의 경쟁을 펼칩니다! 🌟</p><p>학기 말에 가장 많은 점수를 적립한 기숙사가 호그와트의 최고 영예인 <strong>‘기숙사 컵(House Cup)’ 트로피</strong>를 차지하고, 연회장을 자신의 기숙사 상징 색으로 물들이는 영광을 누리게 됩니다. 🏆✨</p><p>지금부터 여러분의 선택은 <strong>올해 기숙사 컵의 승패를 가르는 결정적인 대항전</strong>으로 이어집니다! 💯🔥</p><h3>⚡ 대회 룰: 리스크 &amp; 리턴 (Risk &amp; Return)</h3><p>여러분이 제출하는 선택에 따라 기숙사 점수가 실시간으로 변동됩니다!</p><ul><li><strong>95% 확신</strong>으로 문제를 맞히면 기숙사에 거대한 점수를 안겨줍니다! 🌟</li><li>하지만 섣불리 95%를 확신했다가 틀리면 <strong>기숙사 점수가 대폭 감점</strong>됩니다! 😱💥</li><li>무작정 찌르는 자만심(대변인 모드)은 버리고, 자신의 진짜 정답 확률을 정밀하게 추정하는 정찰병 마음가짐(Scout Mindset)으로 여러분의 기숙사를 우승으로 이끄세요! ⚔️🛡️</li></ul>",
-  en: "<h2>✨ A warm welcome to Hogwarts School of Witchcraft and Wizardry! ✨</h2><p>Welcome, new students, to Hogwarts! 🦉💌</p><h3>🏆 A special note about the House Cup</h3><p>Throughout the school year, the four Houses—Gryffindor, Ravenclaw, Hufflepuff, and Slytherin—compete in good spirits as they earn House Points through school life. 🌟</p><p>At the end of term, the House with the most points wins the <strong>House Cup</strong>, Hogwarts' highest honor, and has the Great Hall bathed in its colors. 🏆✨</p><p>Your choices will help decide this year's House Cup! 💯🔥</p><h3>⚡ Risk &amp; Return</h3><p>House Points change with every answer you submit.</p><ul><li>Get it right at <strong>95% confidence</strong> and earn a huge number of points! 🌟</li><li>Get it wrong after choosing 95% and your House loses a lot of points! 😱💥</li><li>Set aside overconfidence and use a Scout Mindset to estimate your real chance of being right. ⚔️🛡️</li></ul>"
-};
+// 첫 화면 카드(입학 허가서 → 네 기숙사). extra는 app.js가 그리는 그림 요소입니다.
+export const INTRO_PAGES = [
+  {
+    "seal": "✉",
+    "ko": {
+      "t": "호그와트 입학 허가서",
+      "b": "<p>귀하는 호그와트 마법학교의 신입생으로 선발되었습니다.</p><p>오늘 밤 연회장에서 올해의 <b>기숙사 컵</b>을 건 대항전이 열립니다. 문제는 열 개, 당신의 모든 답은 곧 기숙사의 점수가 됩니다.</p>"
+    },
+    "en": {
+      "t": "Your Hogwarts Acceptance Letter",
+      "b": "<p>You have been selected as a new student of Hogwarts.</p><p>Tonight in the Great Hall, the <b>House Cup</b> is on the line. Ten questions — and every answer becomes points for your House.</p>"
+    }
+  },
+  {
+    "seal": "🏆",
+    "extra": "houses",
+    "ko": {
+      "t": "네 기숙사, 하나의 컵",
+      "b": "<p>내 점수는 곧 <b>기숙사 점수</b>입니다. 문제를 제출할 때마다 <b>개인 순위</b>와 <b>기숙사 순위</b>가 공개됩니다.</p><p>이름을 적고, 마법의 모자 앞에서 기숙사를 고르세요.</p>"
+    },
+    "en": {
+      "t": "Four Houses, One Cup",
+      "b": "<p>Your points are your <b>House points</b>. After every answer, your <b>personal rank</b> and <b>House rank</b> are revealed.</p><p>Enter your name, then choose your House before the Sorting Hat.</p>"
+    }
+  }
+];
+
+// 기숙사를 고른 뒤 문제 전에 보여 주는 규칙 카드(두 번 선택 → 판돈 체험)
+export const RULE_PAGES = [
+  {
+    "seal": "⚖",
+    "extra": "twoStep",
+    "ko": {
+      "t": "문제마다 두 번 선택합니다",
+      "b": "<p>먼저 답을 고르고, 그 답이 맞을 확률에 얼마나 걸지 정하세요. 확신도는 곧 <b>판돈</b>입니다.</p><p>전혀 모르겠다면 30%, 거의 확실하다면 95%.</p>"
+    },
+    "en": {
+      "t": "Two Choices Per Question",
+      "b": "<p>Pick an answer, then decide how much to wager on being right. Your confidence is your <b>stake</b>.</p><p>No idea? 30%. Almost certain? 95%.</p>"
+    }
+  },
+  {
+    "seal": "⚡",
+    "extra": "ledger",
+    "ko": {
+      "t": "맞히면 +판돈, 틀리면 −판돈",
+      "b": "<p>예외는 없습니다. 판돈을 눌러 직접 걸어 보세요.</p>"
+    },
+    "en": {
+      "t": "Right: +Stake. Wrong: −Stake.",
+      "b": "<p>No exceptions. Tap a stake and try it yourself.</p>"
+    }
+  }
+];
