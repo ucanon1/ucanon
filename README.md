@@ -50,6 +50,7 @@
 | `sitemap.xml`, `robots.txt` | 검색엔진용 (자동 생성) |
 | `og-image.png` | 이미지 없는 문서의 링크 미리보기 이미지 |
 | `serve.js` | 로컬 미리보기 서버 |
+| `google32880678e3710664.html` | Google Search Console 소유권 확인 파일 (삭제 금지, 아래 "검색엔진 등록" 참고) |
 
 `menu.json`, `doc-ids.json`, `p/`, `sitemap.xml`, `robots.txt`는 직접 고치지 말고 `node createCategory.js`로 다시 만드세요.
 
@@ -65,4 +66,30 @@ node serve.js
 
 ## 검색엔진 등록
 
-[Google Search Console](https://search.google.com/search-console)에 `https://ucanon.com`을 등록하고 사이트맵 `https://ucanon.com/sitemap.xml`을 제출하면 문서별 공유 페이지가 검색에 잡힙니다.
+### Google Search Console (2026-11-12 등록)
+
+| 항목 | 내용 |
+|---|---|
+| 콘솔 | [Google Search Console](https://search.google.com/search-console?resource_id=https%3A%2F%2Fucanon.com%2F) |
+| 속성 | `https://ucanon.com/` (URL 접두어) |
+| 소유권 확인 방법 | HTML 파일 — 저장소 루트의 `google32880678e3710664.html` |
+| 사이트맵 | `https://ucanon.com/sitemap.xml` (2026-11-12 제출, 상태 성공, 발견된 페이지 54개) |
+
+- **`google32880678e3710664.html`은 지우지 마세요.** 지우면 소유권 확인이 풀립니다. 파일 내용은 `google-site-verification: google32880678e3710664.html` 한 줄입니다.
+- 사이트맵은 `node createCategory.js`를 실행할 때마다 새로 만들어집니다. Google이 주기적으로 다시 읽으므로 다시 제출할 필요는 없습니다.
+- 색인 상태는 콘솔의 **페이지** 메뉴에서, 문서 하나의 색인 여부는 **URL 검사**에 `https://ucanon.com/p/{key}/`를 넣어 확인합니다. 새 문서를 빨리 색인시키고 싶으면 URL 검사에서 **색인 생성 요청**을 누릅니다.
+- 검색에 잡히는 주소는 문서별 공유 페이지(`/p/{key}/`)입니다. 각 페이지는 자기 주소를 canonical로 지정하고, 홈은 `https://ucanon.com/`을 지정합니다.
+
+### 검색·공유 관련 파일
+
+| 파일 | 역할 |
+|---|---|
+| `sitemap.xml` | 홈 + 모든 `/p/{key}/` 주소와 수정일 (자동 생성) |
+| `robots.txt` | 모든 크롤러 허용, 사이트맵 위치 안내 (자동 생성) |
+| `p/{key}/index.html` | 제목·요약·OG 태그·본문 HTML. 봇은 그대로 읽고 사람은 사이트 화면으로 이동 (자동 생성) |
+| `og-image.png` | 이미지 없는 문서의 링크 미리보기 이미지 |
+| `google32880678e3710664.html` | Search Console 소유권 확인 파일 (삭제 금지) |
+
+### 링크 미리보기 캐시
+
+카카오톡 등은 처음 본 주소의 미리보기를 한동안 저장해 둡니다. 문서 제목·요약을 바꾼 뒤 예전 미리보기가 계속 나오면 [카카오 공유 디버거](https://developers.kakao.com/tool/debugger/sharing)에서 해당 주소의 캐시를 지웁니다.
