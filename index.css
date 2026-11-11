@@ -332,7 +332,6 @@ body[data-layout="reader"] .workspace {
   min-width: 0;
   min-height: 0;
   overflow: hidden;
-  transition: grid-template-columns var(--duration-normal) var(--ease-standard);
 }
 
 .workspace-body.has-outline {
