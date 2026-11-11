@@ -48,6 +48,7 @@
 | `firestore.rules` | 보안 규칙 |
 | `firebase.json`, `.firebaserc` | Firebase CLI로 규칙을 배포할 때 사용 |
 | `test/` | 보안 규칙 자동 테스트(에뮬레이터) |
+| `scripts/bump-version.mjs` | 배포 전 css·js 참조에 버전을 붙여 브라우저 캐시를 무효화 |
 | `Hogwarts.html` | 지민이 원본 초안(서버 API 버전). 보관용이며 저장 기능은 동작하지 않음 |
 
 ## 화면 기능
@@ -106,6 +107,15 @@ Firestore > 데이터에서 컬렉션 `admins` 를 만들고, 문서 ID를 `pskw
 2. 한 번 끝까지 풀어 보고 `admin.html` 에서 결과와 CSV를 확인합니다.
 3. 관리자 화면의 **이 게임 데이터 삭제**로 시험 데이터를 지웁니다.
 4. GitHub에 푸시하면 https://ucanon.com/jmp/hogwarts/ 에 반영됩니다.
+
+## 배포할 때
+
+css·js를 고친 뒤에는 커밋 전에 버전을 올립니다. GitHub Pages가 파일을 10분간 캐시하므로,
+버전을 올리지 않으면 새 파일과 옛 파일이 섞여 "is not a function" 같은 오류가 날 수 있습니다.
+
+```bash
+cd C:/Github_Personal/ucanon/jmp/hogwarts && node scripts/bump-version.mjs
+```
 
 ## 운영
 

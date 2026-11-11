@@ -135,6 +135,22 @@ footer span { color: #e8b260; padding: 0 12px; }
 .btn-danger:hover:not(:disabled) { background: var(--danger-bg); filter: none; }
 .btn-sm { min-height: 32px; padding: 4px 12px; font-size: 12px; }
 .link-btn { background: none; border: 0; padding: 0; color: var(--ink); cursor: pointer; font: inherit; }
+
+/* 언어 선택: 선택된 언어를 금색 바탕으로 표시 */
+.lang-switch { display: inline-flex; padding: 2px; border: 1px solid var(--line); border-radius: 999px; background: #0c0b0f99; }
+.lang-switch button {
+  min-height: 30px;
+  padding: 3px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.lang-switch button:hover { color: var(--ink); }
+.lang-switch button[aria-pressed="true"] { background: linear-gradient(180deg, #f5c477, #bb7739); color: #21150f; font-weight: 700; }
 .link-btn:hover { color: var(--gold-bright); }
 
 .field { display: flex; flex-direction: column; gap: 6px; font-size: 14px; text-align: left; }

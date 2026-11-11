@@ -1,8 +1,8 @@
 // 사용자 화면: 이름 → 기숙사 선택 → 10문항(정답 + 확신도) → 결과
 // 답안은 제출할 때마다 Firestore에 저장되고, 기숙사 점수와 순위는 실시간으로 갱신됩니다.
-import * as db from './hogwarts-db.js';
-import { HOUSES, QUESTIONS, TIERS, INTRO } from './data.js';
-import { $, $$, esc, richText, signed, signClass, houseOf, choiceText, LETTERS, scoreStrip, rankingTable } from './ui.js';
+import * as db from './hogwarts-db.js?v=202611111928';
+import { HOUSES, QUESTIONS, TIERS, INTRO } from './data.js?v=202611111928';
+import { $, $$, esc, richText, signed, signClass, houseOf, choiceText, LETTERS, scoreStrip, rankingTable } from './ui.js?v=202611111928';
 
 const T = {
   ko: {
@@ -316,12 +316,23 @@ stage.addEventListener('click', e => {
   if (el.id === 'submitAnswer') submit();
 });
 
-$('#langButton').addEventListener('click', () => {
-  lang = lang === 'ko' ? 'en' : 'ko';
+// 언어 선택: 고른 언어 버튼을 눌린 상태로 표시하고, 다음 방문에도 기억합니다.
+function applyLang(next) {
+  lang = next;
+  try { localStorage.setItem('hogwarts-lang', lang); } catch { /* 저장소를 못 쓰는 브라우저 */ }
+  $$('.lang-switch [data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
   $('#adminLink').textContent = lang === 'ko' ? '관리자' : 'Admin';
+}
+
+$('.lang-switch').addEventListener('click', e => {
+  const btn = e.target.closest('[data-lang]');
+  if (!btn || btn.dataset.lang === lang) return;
+  applyLang(btn.dataset.lang);
   if (view === 'feedback' && !lastResult) view = viewForState();
   render();
 });
+
+try { if (localStorage.getItem('hogwarts-lang') === 'en') applyLang('en'); } catch { /* 기본은 한국어 */ }
 
 // 회차(?game=)를 관리자 링크와 로고 링크에 이어 붙입니다.
 if (new URLSearchParams(location.search).has('game')) {

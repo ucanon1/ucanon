@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#100e13">
   <meta name="description" content="호그와트 기숙사 컵 비판적 사고 퀴즈. 확신도를 걸고 문제를 풀어 기숙사 점수를 모읍니다.">
   <title>Hogwarts House Cup · Critical Thinking Trivia</title>
-  <link rel="stylesheet" href="css/hogwarts.css">
+  <link rel="stylesheet" href="css/hogwarts.css?v=202611111928">
   <script>
     // 예전 관리자 주소(?admin=1)는 관리자 화면으로 보냅니다.
     (function () {
@@ -14,14 +14,17 @@
       if (p.has('admin')) { p.delete('admin'); var q = p.toString(); location.replace('admin.html' + (q ? '?' + q : '')); }
     })();
   </script>
-  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/app.js?v=202611111928"></script>
 </head>
 <body>
   <div class="parchment-bg" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" id="brandLink" href="./">✦ HOGWARTS ✦</a>
     <nav>
-      <button id="langButton" class="link-btn" type="button">한국어 · English</button>
+      <div class="lang-switch" role="group" aria-label="언어 선택 / Language">
+        <button type="button" data-lang="ko" aria-pressed="true">한국어</button>
+        <button type="button" data-lang="en" aria-pressed="false">English</button>
+      </div>
       <a class="nav-link" id="adminLink" href="admin.html">관리자</a>
     </nav>
   </header>
