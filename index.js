@@ -865,6 +865,91 @@
   /* -- 홈 ---------------------------------------------------------------------- */
 
   const CATEGORY_TONES = ["", "tone-violet", "tone-mint", "tone-amber"];
+  const DRAWER_TONES = ["sage", "coral", "lavender", "sky", "butter"];
+  const CATEGORY_META = {
+    Book: { label: "마음에 오래 남은 책들", tone: "coral", icon: "book" },
+    IT: { label: "개발과 기술을 공부한 노트", tone: "sky", icon: "layers" },
+    MyProject: { label: "직접 만들어 본 것들", tone: "butter", icon: "folder" },
+    Study: { label: "배움과 성장의 기록", tone: "lavender", icon: "clock" },
+  };
+
+  function timeGreeting() {
+    const h = new Date().getHours();
+    if (h < 5) return { text: "고요한 새벽, 반가워요", icon: "moon" };
+    if (h < 11) return { text: "좋은 아침이에요", icon: "sun" };
+    if (h < 17) return { text: "따스한 오후예요", icon: "sun" };
+    if (h < 21) return { text: "포근한 저녁이에요", icon: "moon" };
+    return { text: "조용한 밤이에요", icon: "moon" };
+  }
+
+  /** 오늘 날짜로 정해지는 "오늘의 한 페이지". shuffle 이면 무작위로 다른 글을 고른다. */
+  let todayIndex = -1;
+  function pickToday(shuffle) {
+    const pool = state.docs;
+    if (!pool.length) return null;
+    if (shuffle) {
+      let next = Math.floor(Math.random() * pool.length);
+      if (pool.length > 1 && next === todayIndex) next = (next + 1) % pool.length;
+      todayIndex = next;
+    } else if (todayIndex < 0) {
+      const key = new Date().toISOString().slice(0, 10);
+      let hash = 0;
+      for (const ch of key) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+      todayIndex = hash % pool.length;
+    }
+    return pool[todayIndex];
+  }
+
+  /** Markdown 에서 첫 문단 몇 줄을 평문으로 뽑는다. */
+  function excerptFrom(markdown, max) {
+    const text = markdown
+      .replace(/```[\s\S]*?```/g, " ")
+      .replace(/<[^>]+>/g, " ")
+      .split(/\n\s*\n/)
+      .map((block) =>
+        block
+          .split("\n")
+          .filter((line) => !/^\s*(#|!\[|\||---|\* \*|>?\s*$)/.test(line))
+          .map((line) => line.replace(/^\s*(?:[-*+]|\d+\.|>)\s+/, ""))
+          .join(" ")
+          .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+          .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+          .replace(/[*_`~]+/g, "")
+          .replace(/\s+/g, " ")
+          .trim()
+      )
+      .find((block) => block.length >= 40);
+    if (!text) return "";
+    return text.length > max ? text.slice(0, max).replace(/\s+\S*$/, "") + "…" : text;
+  }
+
+  async function renderToday(shuffle) {
+    const body = $("todayBody");
+    if (!body) return;
+    const doc = pickToday(shuffle);
+    if (!doc) {
+      body.innerHTML = `<p class="fresh-today-empty">아직 기록이 없습니다.</p>`;
+      return;
+    }
+    body.classList.add("is-changing");
+    let excerpt = "";
+    try {
+      excerpt = excerptFrom(await fetchMarkdown(doc.path), 180);
+    } catch (_) {
+      /* 미리보기 없이 제목만 보여 준다 */
+    }
+    if (!$("todayBody")) return;
+    body.innerHTML = `
+      <a class="fresh-today-link" href="${escapeHtml(hrefFor(doc.path))}">
+        <small>${escapeHtml(crumbsLabel(doc))} · ${escapeHtml(doc.updated)}</small>
+        <strong>${escapeHtml(doc.title)}</strong>
+        ${excerpt ? `<p>${escapeHtml(excerpt)}</p>` : ""}
+        <span class="fresh-today-more">이어서 읽기${icon("arrow-right", 14)}</span>
+      </a>`;
+    // 프레임 콜백은 백그라운드 탭에서 멈출 수 있으므로 강제 리플로 뒤 바로 해제한다.
+    void body.offsetWidth;
+    body.classList.remove("is-changing");
+  }
 
   function formatSize(bytes) {
     if (bytes >= 1024 * 1024) return (bytes / 1024 / 1024).toFixed(1) + " MB";
@@ -885,59 +970,84 @@
     const categories = menu.categories.filter((c) => c.type === "folder");
     const recentSeen = recentDocs();
 
+    const greeting = timeGreeting();
+
     let html = `
-      <div class="home-heading">
-        <span class="home-kicker">${escapeHtml(site.title || "UCANON.COM")}</span>
-        <h1>개인 공부 기록을 나누는 공간</h1>
-        <p>${escapeHtml(site.description || "")}</p>
-      </div>
-      <section class="home-hero" aria-label="문서 찾기">
-        <div class="home-search-heading">${icon("search", 16)}문서 찾기<span class="home-search-scope">문서 ${menu.docCount}개 · 제목 · 경로 · 초성</span></div>
-        <form class="home-search" id="homeSearchForm" role="search">
+      <section class="fresh-hero" aria-label="소개와 검색">
+        <span class="fresh-blob blob-a" aria-hidden="true"></span>
+        <span class="fresh-blob blob-b" aria-hidden="true"></span>
+        <span class="fresh-blob blob-c" aria-hidden="true"></span>
+        <div class="fresh-hero-copy">
+          <span class="fresh-greeting">${icon(greeting.icon, 15)}${escapeHtml(greeting.text)}</span>
+          <h1>읽고, 배우고,<br />천천히 기록합니다.</h1>
+          <p>${escapeHtml(site.description || "")}</p>
+        </div>
+        <form class="home-search fresh-search" id="homeSearchForm" role="search">
           ${icon("search", 20)}
-          <input id="homeSearch" type="search" placeholder="예: 담론, ㄷㄹ, javascript, 세계관" autocomplete="off" spellcheck="false" aria-label="문서 검색" />
-          <button class="home-search-submit" type="submit">검색</button>
+          <input id="homeSearch" type="search" placeholder="어떤 기록을 찾고 있나요? 예: 담론, ㄷㄹ, javascript" autocomplete="off" spellcheck="false" aria-label="문서 검색" />
+          <button class="home-search-submit" type="submit">찾기</button>
         </form>
-        <div class="home-search-hint"><span><kbd>Ctrl</kbd>+<kbd>K</kbd> 어디서나 검색 · <kbd>/</kbd> 사이드바 검색</span><span>초성만 입력해도 찾을 수 있습니다</span></div>
         <div class="home-search-results" id="homeSearchResults" hidden></div>
+        <ul class="fresh-facts" aria-label="기록 현황">
+          <li><strong>${menu.docCount}</strong>편의 기록</li>
+          <li><strong>${categories.length}</strong>개의 서랍 · 폴더 ${folderCount}개</li>
+          <li>마지막 기록 <strong>${escapeHtml(latest ? latest.updated : "-")}</strong></li>
+          <li><strong>${formatSize(totalBytes)}</strong>의 글</li>
+        </ul>
       </section>
-      <div class="home-stats">
-        <article><div class="home-stat-label">${icon("file", 16)}문서</div><strong>${menu.docCount}</strong><small>Markdown 노트</small></article>
-        <article><div class="home-stat-label">${icon("layers", 16)}카테고리</div><strong>${categories.length}</strong><small>폴더 ${folderCount}개</small></article>
-        <article><div class="home-stat-label">${icon("clock", 16)}최근 수정</div><strong class="small">${escapeHtml(latest ? latest.updated : "-")}</strong><small>${escapeHtml(latest ? latest.title : "")}</small></article>
-        <article><div class="home-stat-label">${icon("database", 16)}분량</div><strong class="small">${formatSize(totalBytes)}</strong><small>본문 텍스트 합계</small></article>
-      </div>
-      <div class="home-columns">
-        <section class="home-card home-recent" aria-label="최근 수정 문서">
-          <h2><span>${icon("clock", 17)}최근 수정 문서</span><span class="home-section-note">수정일 기준</span></h2>
-          <ul>${recentUpdated.map((d) => docRow(d)).join("")}</ul>
+
+      <section class="fresh-today" id="todayCard" aria-label="오늘의 한 페이지">
+        <div class="fresh-today-head">
+          <span class="fresh-eyebrow">${icon("book", 14)}오늘의 한 페이지</span>
+          <button class="pill-button" type="button" id="todayShuffle">${icon("history", 13)}다른 글 보기</button>
+        </div>
+        <div id="todayBody"><div class="fresh-today-skeleton"></div></div>
+      </section>
+
+      <div class="fresh-section-head"><h2>기록의 서랍</h2><span>관심 있는 주제부터 천천히 둘러보세요</span></div>
+      <ul class="fresh-drawers">${categories
+        .map((c, i) => {
+          const sub = c.children.filter((n) => n.type === "folder").length;
+          const meta = CATEGORY_META[c.name] || { label: "모아 둔 기록", tone: DRAWER_TONES[i % DRAWER_TONES.length] };
+          return `<li><a class="fresh-drawer tone-${meta.tone}" href="${escapeHtml(hrefFor(c.path))}"><span class="fresh-drawer-icon">${icon(meta.icon || "folder", 20)}</span><strong>${escapeHtml(c.name)}</strong><small>${escapeHtml(meta.label)}</small><span class="fresh-drawer-count">${c.count}편${sub ? ` · 폴더 ${sub}` : ""}${icon("arrow-right", 14)}</span></a></li>`;
+        })
+        .join("")}</ul>
+
+      <div class="fresh-columns">
+        <section class="fresh-card" aria-label="최근에 쓴 글">
+          <div class="fresh-section-head small"><h2>최근에 다듬은 글</h2><span>수정일 기준</span></div>
+          <ol class="fresh-timeline">${recentUpdated
+            .map(
+              (d) =>
+                `<li><a href="${escapeHtml(hrefFor(d.path))}"><time datetime="${escapeHtml(d.updated)}">${escapeHtml(d.updated.slice(2).replace(/-/g, "."))}</time><span><strong>${escapeHtml(d.title)}</strong><small>${escapeHtml(crumbsLabel(d))}</small></span></a></li>`
+            )
+            .join("")}</ol>
         </section>
-        <section class="home-card home-libs" aria-label="카테고리">
-          <h2><span>${icon("layers", 17)}카테고리</span><span class="home-section-note">${categories.length}개</span></h2>
-          <ul>${categories
-            .map((c, i) => {
-              const sub = c.children.filter((n) => n.type === "folder").length;
-              return `<li><a class="home-document-row" href="${escapeHtml(hrefFor(c.path))}"><span class="home-library-icon ${CATEGORY_TONES[i % CATEGORY_TONES.length]}">${icon("folder", 18)}</span><span class="home-document-copy"><strong>${escapeHtml(c.name)}</strong><small>문서 ${c.count}개${sub ? ` · 하위 폴더 ${sub}개` : ""}</small></span><span class="home-row-arrow">${icon("arrow-right", 15)}</span></a></li>`;
-            })
-            .join("")}</ul>
-        </section>`;
+        <div class="fresh-side">`;
 
     if (recentSeen.length) {
       html += `
-        <section class="home-card home-recent" aria-label="최근 본 문서">
-          <h2><span>${icon("history", 17)}최근 본 문서</span><span class="home-section-note">이 브라우저 기준</span></h2>
-          <ul>${recentSeen.slice(0, 5).map((d) => docRow(d)).join("")}</ul>
-        </section>`;
+          <section class="fresh-card" aria-label="최근 본 문서">
+            <div class="fresh-section-head small"><h2>다시 펼쳐 보기</h2><span>최근 본 글</span></div>
+            <div class="fresh-chips">${recentSeen
+              .slice(0, 6)
+              .map((d) => `<a href="${escapeHtml(hrefFor(d.path))}">${icon("file", 13)}${escapeHtml(d.title)}</a>`)
+              .join("")}</div>
+          </section>`;
     }
 
     html += `
-        <section class="home-card home-about ${recentSeen.length ? "" : "span-2"}" aria-label="소개">
-          <h2><span>${icon("book", 17)}소개</span></h2>
-          <div id="homeReadme"><div class="home-empty">소개를 불러오는 중…</div></div>
-        </section>
+          <section class="fresh-card fresh-about" aria-label="소개">
+            <div class="fresh-section-head small"><h2>이 공간에 대하여</h2></div>
+            <div id="homeReadme"><div class="home-empty">소개를 불러오는 중…</div></div>
+            <p class="fresh-tip">${icon("search", 13)}<span><kbd>Ctrl</kbd> <kbd>K</kbd> 로 어디서나, <kbd>/</kbd> 로 사이드바에서 찾을 수 있어요. 초성만 입력해도 됩니다.</span></p>
+          </section>
+        </div>
       </div>`;
 
     els.home.innerHTML = html;
+    renderToday(false);
+    $("todayShuffle").addEventListener("click", () => renderToday(true));
 
     const form = $("homeSearchForm");
     const input = $("homeSearch");

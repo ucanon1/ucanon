@@ -100,8 +100,8 @@ function buildMenu() {
   return {
     site: {
       title: "UCANON.COM",
-      tagline: "personal study notes",
-      description: "개인 공부 기록을 나누는 공간입니다. 책, IT, 프로젝트, 공부 노트를 모아 둡니다.",
+      tagline: "a small study library",
+      description: "마음에 남은 책, 공부한 기술, 직접 만든 것들을 한 장씩 모아 두는 작은 서재입니다.",
       home: "README",
     },
     generatedAt: new Date().toISOString(),
