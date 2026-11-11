@@ -1198,7 +1198,8 @@
 
     const home = (state.menu.site && state.menu.site.home) || "README";
     try {
-      const md = await fetchMarkdown(home);
+      // README 중 "<!-- home:end" 표시 앞부분(소개·연락처)만 홈에 보여 주고, 뒤쪽 운영 안내는 README 파일에만 둔다.
+      const md = (await fetchMarkdown(home)).split("<!-- home:end")[0];
       if (token !== routeToken) return;
       const host = $("homeReadme");
       if (!host) return;

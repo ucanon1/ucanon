@@ -7,6 +7,8 @@
 * Homepage : [https://ucanon.com](https://ucanon.com)
 * Blog : [https://blog.naver.com/pskpassion](https://blog.naver.com/pskpassion)
 
+<!-- home:end — 이 줄 위쪽만 ucanon.com 홈 화면에 보입니다. 아래는 저장소 운영 안내입니다. -->
+
 ## 문서 추가·수정하기
 
 1. `blog/` 아래 원하는 폴더에 Markdown(`.md`) 파일을 추가하거나 고칩니다.
