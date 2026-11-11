@@ -1,0 +1,13 @@
+{
+  "name": "hogwarts-rules-test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "firebase emulators:exec --only firestore,auth --project demo-hogwarts \"node rules.test.mjs\"",
+    "emulators": "firebase emulators:start --only firestore,auth --project demo-hogwarts"
+  },
+  "devDependencies": {
+    "firebase": "13.1.0",
+    "firebase-tools": "15.34.2"
+  }
+}

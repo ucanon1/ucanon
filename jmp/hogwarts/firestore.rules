@@ -1,0 +1,114 @@
+rules_version = '2';
+
+// 호그와트 기숙사 컵 보안 규칙
+// - 응답자(익명 로그인): 자기 참가자 문서 생성, 답안 1건씩 추가(점수 갱신과 한 배치로만)
+// - 누구나: 참가자 이름·기숙사·점수 읽기(실시간 순위판)
+// - 관리자(Google 로그인 + admins 등록): 답안 전체 읽기, 삭제
+// 문항 수를 바꾸면 maxQuestions() 값과 js/firebase-config.js의 TOTAL_QUESTIONS도 함께 바꿉니다.
+service cloud.firestore {
+  match /databases/{db}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && request.auth.token.email_verified == true
+        && exists(/databases/$(db)/documents/admins/$(request.auth.token.email));
+    }
+
+    function maxQuestions() {
+      return 10;
+    }
+
+    function houses() {
+      return ['Gryffindor', 'Ravenclaw', 'Hufflepuff', 'Slytherin'];
+    }
+
+    match /admins/{email} {
+      // 로그인한 본인이 관리자인지 확인하는 용도로만 읽기 허용. 등록·삭제는 콘솔에서.
+      allow get: if signedIn() && request.auth.token.email == email;
+      allow list, write: if false;
+    }
+
+    match /games/{gameId} {
+      allow read, write: if false;
+
+      function participantPath(pid) {
+        return /databases/$(db)/documents/games/$(gameId)/participants/$(pid);
+      }
+
+      function responsePath(rid) {
+        return /databases/$(db)/documents/games/$(gameId)/responses/$(rid);
+      }
+
+      match /participants/{pid} {
+        allow read: if true;
+
+        allow create: if signedIn()
+          && request.resource.data.keys().hasOnly(['uid', 'name', 'house', 'score', 'correctCount', 'answered', 'createdAt', 'updatedAt'])
+          && request.resource.data.keys().hasAll(['uid', 'name', 'house', 'score', 'correctCount', 'answered', 'createdAt', 'updatedAt'])
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.name is string
+          && request.resource.data.name.size() >= 1
+          && request.resource.data.name.size() <= 80
+          && request.resource.data.house in houses()
+          && request.resource.data.score == 0
+          && request.resource.data.correctCount == 0
+          && request.resource.data.answered == 0
+          && request.resource.data.createdAt == request.time
+          && request.resource.data.updatedAt == request.time;
+
+        // 점수 갱신은 같은 배치에서 만들어지는 다음 문항 답안과 정확히 일치해야 합니다.
+        allow update: if signedIn()
+          && resource.data.uid == request.auth.uid
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['score', 'correctCount', 'answered', 'updatedAt'])
+          && request.resource.data.answered == resource.data.answered + 1
+          && request.resource.data.updatedAt == request.time
+          && scoreMatchesResponse(
+               getAfter(responsePath(pid + '_Q' + string(request.resource.data.answered))).data);
+
+        allow delete: if isAdmin();
+
+        function scoreMatchesResponse(r) {
+          return r.participantId == pid
+            && request.resource.data.score == resource.data.score + r.points
+            && ((r.correct == true && request.resource.data.correctCount == resource.data.correctCount + 1)
+             || (r.correct == false && request.resource.data.correctCount == resource.data.correctCount));
+        }
+      }
+
+      match /responses/{rid} {
+        allow get: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+        allow list: if isAdmin();
+
+        // 답안은 문항 순서대로 한 번만, 참가자 점수 갱신과 같은 배치로만 만들 수 있습니다.
+        allow create: if signedIn()
+          && request.resource.data.keys().hasOnly(['uid', 'participantId', 'questionId', 'answer', 'confidence', 'correct', 'points', 'submittedAt'])
+          && request.resource.data.keys().hasAll(['uid', 'participantId', 'questionId', 'answer', 'confidence', 'correct', 'points', 'submittedAt'])
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.participantId is string
+          && rid == request.resource.data.participantId + '_' + request.resource.data.questionId
+          && request.resource.data.answer in ['A', 'B', 'C', 'D']
+          && request.resource.data.confidence in [30, 45, 60, 75, 95]
+          && ((request.resource.data.correct == true && request.resource.data.points == request.resource.data.confidence)
+           || (request.resource.data.correct == false && request.resource.data.points + request.resource.data.confidence == 0))
+          && request.resource.data.submittedAt == request.time
+          && nextAnswerOf(
+               get(participantPath(request.resource.data.participantId)).data,
+               getAfter(participantPath(request.resource.data.participantId)).data);
+
+        allow update: if false;
+        allow delete: if isAdmin();
+
+        function nextAnswerOf(before, after) {
+          return before.uid == request.auth.uid
+            && before.answered < maxQuestions()
+            && request.resource.data.questionId == 'Q' + string(before.answered + 1)
+            && after.answered == before.answered + 1;
+        }
+      }
+    }
+  }
+}
