@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#100e13">
+  <title>호그와트 기숙사 컵 사용자 가이드</title>
+  <meta name="description" content="호그와트 기숙사 컵 퀴즈의 참가자 화면과 관리자 화면 사용법을 화면 이미지와 함께 설명합니다.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+  <style>
+    :root {
+      --bg: #141116;
+      --bg-2: #1c171b;
+      --panel: #221c20;
+      --ink: #efe6da;
+      --ink-soft: #d9cbbb;
+      --muted: #ab9d92;
+      --gold: #e1a75c;
+      --gold-bright: #ffd18a;
+      --line: rgba(226, 168, 96, .32);
+      --line-soft: rgba(226, 168, 96, .16);
+      --ok: #9dd0a5;
+      --no: #e78677;
+      --tip-bg: #1d2a22;
+      --warn-bg: #36221f;
+      --radius: 8px;
+      --sidebar: 270px;
+      --font-body: 'Noto Sans KR', system-ui, sans-serif;
+      --font-title: 'Gowun Batang', serif;
+      --font-display: 'Cinzel', 'Gowun Batang', serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.8 var(--font-body); }
+    a { color: var(--gold-bright); }
+    img { max-width: 100%; height: auto; display: block; }
+    code, kbd { font: 14px/1.4 ui-monospace, Consolas, monospace; background: #00000055; border: 1px solid var(--line-soft); border-radius: 4px; padding: 1px 6px; color: var(--gold-bright); }
+    h1, h2, h3 { font-family: var(--font-title); color: var(--gold-bright); line-height: 1.35; }
+    h2 { font-size: 28px; margin: 0 0 8px; padding-top: 8px; }
+    h3 { font-size: 21px; margin: 44px 0 10px; }
+    p { margin: 0 0 14px; }
+    section[id], h3[id] { scroll-margin-top: 20px; }
+
+    .layout { display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr); min-height: 100vh; }
+    nav.toc { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 28px 18px 40px 24px; background: var(--bg-2); border-right: 1px solid var(--line-soft); }
+    .toc .brand { font: 700 13px var(--font-display); letter-spacing: .14em; color: var(--gold-bright); text-decoration: none; display: block; margin-bottom: 22px; }
+    .toc ol { list-style: none; margin: 0; padding: 0; }
+    .toc > ol > li { margin: 14px 0 4px; }
+    .toc > ol > li > a { font-weight: 700; color: var(--ink); }
+    .toc li li a { display: block; padding: 3px 0 3px 12px; color: var(--muted); font-size: 14px; border-left: 2px solid transparent; }
+    .toc a { text-decoration: none; }
+    .toc a:hover, .toc a.active { color: var(--gold-bright); }
+    .toc li li a.active { border-left-color: var(--gold); }
+
+    main { max-width: 980px; padding: 48px 48px 100px; }
+    .cover { padding: 40px 36px; margin-bottom: 48px; border: 1px solid var(--line); border-radius: var(--radius); background: radial-gradient(ellipse at 50% 0, #3a3f52, #221a1c 70%); text-align: center; }
+    .cover .eyebrow { font: 600 12px var(--font-display); letter-spacing: .2em; color: var(--gold); margin: 0; }
+    .cover h1 { font-size: clamp(30px, 5vw, 44px); margin: 10px 0 12px; }
+    .cover p { color: var(--ink-soft); max-width: 640px; margin: 0 auto 8px; }
+    .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; margin-top: 18px; color: var(--muted); font-size: 14px; }
+
+    section.chapter { padding-top: 24px; margin-top: 56px; border-top: 1px solid var(--line-soft); }
+    section.chapter:first-of-type { border-top: 0; margin-top: 0; }
+    .lead { color: var(--ink-soft); font-size: 17px; }
+
+    figure { margin: 18px 0 26px; }
+    figure a { display: block; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #0c0a0d; box-shadow: 0 14px 40px #0007; }
+    figure a:hover { border-color: var(--gold); }
+    figure.phone { max-width: 360px; }
+    figure.narrow { max-width: 760px; }
+    .phones { display: flex; flex-wrap: wrap; gap: 20px; }
+    figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); }
+    figcaption b { color: var(--gold); font-weight: 500; margin-right: 6px; }
+
+    table { width: 100%; border-collapse: collapse; margin: 10px 0 22px; font-size: 15px; }
+    th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+    th { color: var(--gold-bright); font-weight: 500; background: #ffffff08; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .ok { color: var(--ok); }
+    .no { color: var(--no); }
+
+    ol.steps, ul.points { padding-left: 22px; margin: 0 0 16px; }
+    ol.steps li, ul.points li { margin: 6px 0; }
+    ol.steps li::marker { color: var(--gold); font-weight: 700; }
+    .note { margin: 16px 0 22px; padding: 14px 18px; border-left: 3px solid var(--ok); border-radius: 0 var(--radius) var(--radius) 0; background: var(--tip-bg); color: var(--ink-soft); font-size: 15px; }
+    .note.warn { border-left-color: var(--no); background: var(--warn-bg); }
+    .note strong { color: var(--ink); }
+    .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 18px 0 8px; }
+    .card { padding: 18px 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+    .card h4 { margin: 0 0 6px; font-size: 17px; color: var(--gold-bright); }
+    .card p { margin: 0 0 8px; color: var(--ink-soft); font-size: 15px; }
+    .flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 18px 0 8px; counter-reset: flow; }
+    .flow div { position: relative; padding: 16px 14px 14px; border: 1px solid var(--line-soft); border-radius: var(--radius); background: var(--panel); font-size: 14px; color: var(--ink-soft); }
+    .flow div::before { counter-increment: flow; content: counter(flow); display: inline-grid; place-items: center; width: 24px; height: 24px; margin-bottom: 6px; border-radius: 50%; background: var(--gold); color: #21150f; font-weight: 700; font-size: 13px; }
+    .flow b { display: block; color: var(--ink); font-size: 15px; }
+    details { margin: 10px 0; padding: 12px 16px; border: 1px solid var(--line-soft); border-radius: var(--radius); background: var(--panel); }
+    summary { cursor: pointer; font-weight: 700; color: var(--ink); }
+    details p { margin: 10px 0 0; color: var(--ink-soft); }
+    footer.doc-foot { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--line-soft); color: var(--muted); font-size: 13px; }
+    .to-top { position: fixed; right: 18px; bottom: 18px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 20px; background: var(--bg-2); color: var(--gold-bright); font-size: 13px; text-decoration: none; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      nav.toc { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line-soft); padding: 20px 16px; }
+      .toc li li { display: none; }
+      .toc > ol { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+      .toc > ol > li { margin: 0; }
+      main { padding: 28px 16px 80px; }
+      .cards, .flow { grid-template-columns: 1fr; }
+      .cover { padding: 28px 18px; }
+      table { font-size: 14px; }
+      th, td { padding: 8px; }
+    }
+    @media print {
+      nav.toc, .to-top { display: none; }
+      .layout { display: block; }
+      body { background: #fff; color: #111; }
+      h1, h2, h3, .card h4 { color: #6b4210; }
+      figure a { box-shadow: none; }
+      section.chapter { break-before: page; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <nav class="toc" aria-label="목차">
+    <a class="brand" href="#top">✦ HOUSE CUP 가이드</a>
+    <ol>
+      <li><a href="#overview">1. 한눈에 보기</a>
+        <ol>
+          <li><a href="#addresses">접속 주소</a></li>
+          <li><a href="#flow">진행 순서</a></li>
+          <li><a href="#rules">점수 규칙</a></li>
+        </ol>
+      </li>
+      <li><a href="#player">2. 참가자 화면</a>
+        <ol>
+          <li><a href="#p-home">첫 화면</a></li>
+          <li><a href="#p-name">이름 입력</a></li>
+          <li><a href="#p-house">기숙사 선택</a></li>
+          <li><a href="#p-question">문제 화면 구성</a></li>
+          <li><a href="#p-answer">답과 확신도 고르기</a></li>
+          <li><a href="#p-feedback">문항별 결과</a></li>
+          <li><a href="#p-finish">최종 결과</a></li>
+          <li><a href="#p-lang">언어 바꾸기</a></li>
+          <li><a href="#p-resume">이어서 풀기·새 참가자</a></li>
+          <li><a href="#p-mobile">휴대폰에서</a></li>
+        </ol>
+      </li>
+      <li><a href="#admin">3. 관리자 화면</a>
+        <ol>
+          <li><a href="#a-login">접속과 로그인</a></li>
+          <li><a href="#a-denied">권한이 없을 때</a></li>
+          <li><a href="#a-bar">상단 막대·게임 ID</a></li>
+          <li><a href="#a-summary">요약 지표</a></li>
+          <li><a href="#a-houses">기숙사 점수·확신도 분포</a></li>
+          <li><a href="#a-calibration">확신도 보정 그래프</a></li>
+          <li><a href="#a-questions">문항별 정답률</a></li>
+          <li><a href="#a-participants">참가자 순위·삭제</a></li>
+          <li><a href="#a-log">모든 답변 기록</a></li>
+          <li><a href="#a-matrix">참가자별 전체 답안</a></li>
+          <li><a href="#a-cleanup">데이터 정리</a></li>
+        </ol>
+      </li>
+      <li><a href="#operate">4. 운영 안내</a></li>
+      <li><a href="#faq">5. 자주 묻는 질문</a></li>
+    </ol>
+  </nav>
+
+  <main id="top">
+    <header class="cover">
+      <p class="eyebrow">HOGWARTS SCHOOL OF WITCHCRAFT AND WIZARDRY</p>
+      <h1>호그와트 기숙사 컵 사용자 가이드</h1>
+      <p>비판적 사고 퀴즈 «House Cup»의 참가자 화면과 관리자 화면 사용법을 화면 이미지와 함께 설명합니다.</p>
+      <p>참가자는 문제마다 정답과 함께 <strong>확신도</strong>를 걸고, 그 점수가 기숙사 점수로 모입니다.</p>
+      <div class="meta"><span>작성일 2026-11-11</span><span>대상: 진행 선생님·관리자, 참가 학생</span><span>문항 10개 · 기숙사 4개</span></div>
+    </header>
+
+    <!-- 1. 한눈에 보기 -->
+    <section class="chapter" id="overview">
+      <h2>1. 한눈에 보기</h2>
+      <p class="lead">화면은 참가자 화면과 관리자 화면 두 가지입니다. 참가자가 답을 낼 때마다 점수가 바로 저장되고, 모든 화면의 점수와 순위가 새로고침 없이 함께 바뀝니다.</p>
+
+      <h3 id="addresses">접속 주소</h3>
+      <table>
+        <thead><tr><th>화면</th><th>주소</th><th>누가 쓰나요</th></tr></thead>
+        <tbody>
+          <tr><td>참가자 화면</td><td><a href="https://ucanon.com/jmp/hogwarts/">https://ucanon.com/jmp/hogwarts/</a></td><td>학생. 로그인 없이 바로 참여</td></tr>
+          <tr><td>관리자 화면</td><td><a href="https://ucanon.com/jmp/hogwarts/admin.html">https://ucanon.com/jmp/hogwarts/admin.html</a></td><td>등록된 관리자. Google 계정으로 로그인</td></tr>
+        </tbody>
+      </table>
+      <p>두 화면은 서로 이어져 있습니다. 관리자 화면 오른쪽 위 <b>퀴즈 화면</b>을 누르면 참가자 화면으로, 참가자 화면 오른쪽 위 <b>관리자</b>를 누르면 관리자 화면으로 갑니다.</p>
+
+      <h3 id="flow">진행 순서</h3>
+      <div class="flow">
+        <div><b>관리자 준비</b>관리자 화면에 로그인해 실시간 연결을 확인합니다.</div>
+        <div><b>주소 공유</b>참가자 화면 주소를 학생들에게 나눠 줍니다.</div>
+        <div><b>퀴즈 진행</b>학생은 이름·기숙사를 고르고 10문항을 풉니다.</div>
+        <div><b>결과·정리</b>그래프와 기록을 보고 CSV로 저장한 뒤 데이터를 지웁니다.</div>
+      </div>
+
+      <h3 id="rules">점수 규칙</h3>
+      <p>문제마다 정답을 고르고, 그 답이 맞을 확률을 다섯 단계 중 하나로 고릅니다. 맞히면 확신도만큼 얻고, 틀리면 확신도만큼 잃습니다.</p>
+      <table>
+        <thead><tr><th>확신도</th><th class="num">정답일 때</th><th class="num">오답일 때</th><th>이럴 때 고르세요</th></tr></thead>
+        <tbody>
+          <tr><td>95%</td><td class="num ok">+95</td><td class="num no">−95</td><td>거의 확실할 때</td></tr>
+          <tr><td>75%</td><td class="num ok">+75</td><td class="num no">−75</td><td>꽤 자신 있을 때</td></tr>
+          <tr><td>60%</td><td class="num ok">+60</td><td class="num no">−60</td><td>조금 더 맞을 것 같을 때</td></tr>
+          <tr><td>45%</td><td class="num ok">+45</td><td class="num no">−45</td><td>반반에 가까울 때</td></tr>
+          <tr><td>30%</td><td class="num ok">+30</td><td class="num no">−30</td><td>거의 모를 때</td></tr>
+        </tbody>
+      </table>
+      <p>기숙사 점수는 그 기숙사를 고른 참가자들의 개인 점수를 모두 더한 값입니다. 무작정 높은 확신도를 고르기보다 자기 실력을 정확히 가늠하는 것이 기숙사에 유리합니다.</p>
+    </section>
+
+    <!-- 2. 참가자 화면 -->
+    <section class="chapter" id="player">
+      <h2>2. 참가자 화면</h2>
+      <p class="lead">학생이 쓰는 화면입니다. 로그인 없이 이름과 기숙사만 고르면 바로 시작합니다.</p>
+
+      <h3 id="p-home">첫 화면</h3>
+      <p>기숙사 컵과 대회 규칙을 소개합니다. 안내를 읽고 아래의 <b>기숙사 배정식 시작</b> 버튼을 누릅니다.</p>
+      <figure>
+        <a href="images/02-home-full.jpg" target="_blank" rel="noopener"><img src="images/02-home-full.jpg" alt="참가자 첫 화면. 제목, 기숙사 컵 안내문, 기숙사 배정식 시작 버튼" loading="lazy" width="1280" height="1231"></a>
+        <figcaption><b>그림 1</b>첫 화면. 위쪽에 언어 선택과 관리자 링크가 있습니다.</figcaption>
+      </figure>
+
+      <h3 id="p-name">이름 입력</h3>
+      <p>순위표에 보일 이름을 30자 이내로 입력하고 <b>계속</b>을 누릅니다. 이름은 다른 참가자에게도 보이므로 별명이나 이름만 쓰는 것이 좋습니다.</p>
+      <figure class="narrow">
+        <a href="images/03-name.jpg" target="_blank" rel="noopener"><img src="images/03-name.jpg" alt="참가자 이름 입력 화면" loading="lazy" width="1280" height="800"></a>
+        <figcaption><b>그림 2</b>이름 입력</figcaption>
+      </figure>
+
+      <h3 id="p-house">기숙사 선택</h3>
+      <p>네 기숙사의 특징을 읽고 대표할 기숙사를 누릅니다. 누르는 즉시 첫 문제로 넘어갑니다.</p>
+      <figure>
+        <a href="images/04-house.jpg" target="_blank" rel="noopener"><img src="images/04-house.jpg" alt="그리핀도르, 래번클로, 후플푸프, 슬리데린 네 기숙사 카드" loading="lazy" width="1280" height="997"></a>
+        <figcaption><b>그림 3</b>기숙사 선택. 카드 위쪽 선의 색이 기숙사 색입니다.</figcaption>
+      </figure>
+      <div class="note warn"><strong>기숙사는 고른 뒤 바꿀 수 없습니다.</strong> 잘못 골랐다면 처음 화면에서 <b>새 참가자로 시작</b>해야 하며, 이전 기록은 그대로 남습니다.</div>
+
+      <h3 id="p-question">문제 화면 구성</h3>
+      <p>문제 화면 위쪽에는 진행 상황과 점수가 늘 보입니다.</p>
+      <figure>
+        <a href="images/05-question-start.jpg" target="_blank" rel="noopener"><img src="images/05-question-start.jpg" alt="문제 화면 위쪽: 진행 막대, 기숙사 점수 띠, 개인 점수 띠, 문제 카드" loading="lazy" width="1280" height="800"></a>
+        <figcaption><b>그림 4</b>문제 화면 위쪽</figcaption>
+      </figure>
+      <table>
+        <thead><tr><th>영역</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>진행 막대</td><td>몇 번째 문제인지(예: 문제 1 / 10)와 진행 정도를 보여 줍니다.</td></tr>
+          <tr><td>기숙사 점수 띠</td><td>네 기숙사의 현재 점수입니다. 내 기숙사 칸 아래에 색 밑줄이 있고, 다른 참가자가 답을 내면 바로 바뀌며 바뀐 숫자가 살짝 커졌다 돌아옵니다.</td></tr>
+          <tr><td>개인 점수 띠</td><td>내 이름·기숙사, 개인 점수, 맞힌 수, 현재 순위를 보여 줍니다.</td></tr>
+          <tr><td>저장 상태</td><td>초록 점과 <b>저장됨</b>이면 지금까지의 답이 모두 저장된 상태입니다. 제출 중에는 <b>저장 중</b>, 문제가 생기면 빨간 점과 <b>저장 실패</b>가 보입니다.</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="p-answer">답과 확신도 고르기</h3>
+      <ol class="steps">
+        <li>문제를 읽고 A~D 중 답을 하나 누릅니다. 고른 답은 금색 테두리로 표시됩니다.</li>
+        <li><b>정답 확신도</b>에서 다섯 단계 중 하나를 누릅니다. 각 버튼 아래에 얻거나 잃는 점수가 적혀 있습니다.</li>
+        <li>답과 확신도를 모두 고르면 <b>답안 제출</b> 버튼이 켜집니다. 누르면 바로 저장됩니다.</li>
+      </ol>
+      <figure>
+        <a href="images/06-question-selected.jpg" target="_blank" rel="noopener"><img src="images/06-question-selected.jpg" alt="답 A와 확신도 75%를 고른 문제 카드와 답안 제출 버튼" loading="lazy" width="1280" height="1185"></a>
+        <figcaption><b>그림 5</b>답 A와 확신도 75%를 고른 상태</figcaption>
+      </figure>
+      <div class="note">제출한 답은 고칠 수 없습니다. 한 문제는 한 번만 제출되며, 같은 문제를 두 번 보내도 점수는 한 번만 반영됩니다.</div>
+
+      <h3 id="p-feedback">문항별 결과</h3>
+      <p>제출하면 곧바로 그 문제의 결과가 나옵니다.</p>
+      <ul class="points">
+        <li><b>정답!</b> 또는 <b>오답</b>과 함께 내가 고른 답과 실제 정답을 나란히 보여 줍니다.</li>
+        <li><b>이번 문제 점수</b>는 이 문제로 얻거나 잃은 점수입니다(초록은 득점, 빨강은 감점).</li>
+        <li>그 아래에 개인 누적 점수, 맞힌 수, 현재 순위가 나옵니다.</li>
+        <li><b>전체 기숙사 점수</b>와 <b>참가자 순위</b>(상위 10명과 나)는 실시간으로 바뀝니다. 내 줄은 갈색으로 강조됩니다.</li>
+      </ul>
+      <figure>
+        <a href="images/07-feedback-correct.jpg" target="_blank" rel="noopener"><img src="images/07-feedback-correct.jpg" alt="정답 결과 화면: 정답!, 내 답과 정답, 이번 문제 점수 +75, 개인 누적, 기숙사 점수, 참가자 순위" loading="lazy" width="1280" height="1581"></a>
+        <figcaption><b>그림 6</b>정답일 때 결과 화면</figcaption>
+      </figure>
+      <figure>
+        <a href="images/08-feedback-wrong.jpg" target="_blank" rel="noopener"><img src="images/08-feedback-wrong.jpg" alt="오답 결과 화면: 오답, 내 답 A와 정답 B, 이번 문제 점수 -60" loading="lazy" width="1280" height="1554"></a>
+        <figcaption><b>그림 7</b>오답일 때 결과 화면. 정답이 무엇이었는지 함께 보여 줍니다.</figcaption>
+      </figure>
+      <p><b>다음 문제</b>를 누르면 이어서 풉니다. 마지막 문제 뒤에는 버튼이 <b>결과 보기</b>로 바뀝니다.</p>
+
+      <h3 id="p-finish">최종 결과</h3>
+      <p>10문항을 모두 풀면 최종 결과가 나옵니다. 개인 누적 점수와 순위, 기숙사 점수, 내가 낸 답 10개의 정리표, 전체 참가자 순위를 보여 줍니다. 다른 참가자가 계속 풀고 있으면 기숙사 점수와 순위는 이 화면에서도 계속 바뀝니다.</p>
+      <figure>
+        <a href="images/09-finish.jpg" target="_blank" rel="noopener"><img src="images/09-finish.jpg" alt="최종 결과 화면: 트로피, 개인 누적 점수, 기숙사 점수, 내 답안 표, 참가자 순위" loading="lazy" width="1280" height="1915"></a>
+        <figcaption><b>그림 8</b>최종 결과 화면</figcaption>
+      </figure>
+
+      <h3 id="p-lang">언어 바꾸기</h3>
+      <p>오른쪽 위 <b>한국어 · English</b>에서 원하는 언어를 누릅니다. 지금 선택된 언어가 금색 바탕으로 표시되며, 문제·선택지·안내가 모두 바뀝니다. 고른 언어는 다음에 들어와도 유지됩니다. 언어를 바꿔도 푼 기록과 점수는 그대로입니다.</p>
+      <figure>
+        <a href="images/10-english.jpg" target="_blank" rel="noopener"><img src="images/10-english.jpg" alt="English가 선택된 최종 결과 화면" loading="lazy" width="1280" height="800"></a>
+        <figcaption><b>그림 9</b>English를 선택한 화면</figcaption>
+      </figure>
+
+      <h3 id="p-resume">이어서 풀기와 새 참가자</h3>
+      <p>풀던 도중 창을 닫았다가 다시 들어오면 풀던 문제부터 바로 이어집니다. 왼쪽 위 <b>✦ HOGWARTS ✦</b> 로고를 누르면 첫 화면으로 가며, 여기서 두 가지를 고를 수 있습니다.</p>
+      <figure class="narrow">
+        <a href="images/11-home-returning.jpg" target="_blank" rel="noopener"><img src="images/11-home-returning.jpg" alt="내 결과 보기와 새 참가자로 시작 버튼" loading="lazy" width="730" height="48"></a>
+        <figcaption><b>그림 10</b>다시 들어온 참가자의 첫 화면 버튼(다 푼 경우 ‘내 결과 보기’, 푸는 중이면 ‘이어서 풀기’)</figcaption>
+      </figure>
+      <ul class="points">
+        <li><b>이어서 풀기 / 내 결과 보기</b>: 내 기록으로 돌아갑니다.</li>
+        <li><b>새 참가자로 시작</b>: 한 기기를 여러 학생이 돌려 쓸 때 사용합니다. 앞사람 기록은 그대로 저장되어 있고, 새 이름으로 처음부터 시작합니다.</li>
+      </ul>
+
+      <h3 id="p-mobile">휴대폰에서</h3>
+      <p>휴대폰에서도 같은 주소로 들어오면 화면이 폭에 맞게 정리됩니다. 기숙사 점수와 개인 점수는 문제 위에 늘 보입니다.</p>
+      <div class="phones">
+        <figure class="phone">
+          <a href="images/12-mobile-question.jpg" target="_blank" rel="noopener"><img src="images/12-mobile-question.jpg" alt="휴대폰 문제 화면" loading="lazy" width="780" height="1688"></a>
+          <figcaption><b>그림 11</b>휴대폰 문제 화면</figcaption>
+        </figure>
+        <figure class="phone">
+          <a href="images/13-mobile-feedback.jpg" target="_blank" rel="noopener"><img src="images/13-mobile-feedback.jpg" alt="휴대폰 문항 결과 화면" loading="lazy" width="780" height="1688"></a>
+          <figcaption><b>그림 12</b>휴대폰 문항 결과 화면</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 3. 관리자 화면 -->
+    <section class="chapter" id="admin">
+      <h2>3. 관리자 화면</h2>
+      <p class="lead">진행자가 실시간 결과를 보고 기록을 관리하는 화면입니다. 그래프와 표는 답안이 들어올 때마다 자동으로 다시 계산되므로 새로고침할 필요가 없습니다.</p>
+
+      <h3 id="a-login">접속과 로그인</h3>
+      <ol class="steps">
+        <li><a href="https://ucanon.com/jmp/hogwarts/admin.html">관리자 화면</a>에 들어갑니다.</li>
+        <li><b>Google 계정으로 로그인</b>을 누르고, 뜨는 창에서 관리자로 등록된 Google 계정을 고릅니다.</li>
+        <li>로그인되면 바로 대시보드가 열립니다. 한 번 로그인하면 같은 브라우저에서는 다음에도 로그인이 유지됩니다.</li>
+      </ol>
+      <figure>
+        <a href="images/01-admin-login.jpg" target="_blank" rel="noopener"><img src="images/01-admin-login.jpg" alt="관리자 로그인 화면과 Google 계정으로 로그인 버튼" loading="lazy" width="1280" height="800"></a>
+        <figcaption><b>그림 13</b>관리자 로그인 화면</figcaption>
+      </figure>
+      <div class="note warn"><strong>로그인 창이 뜨지 않으면</strong> 브라우저가 팝업을 막은 것입니다. 주소창 오른쪽의 팝업 차단 표시를 눌러 허용하거나, 카카오톡처럼 앱 안에서 열린 브라우저가 아니라 Chrome·Safari에서 직접 여세요.</div>
+
+      <h3 id="a-denied">권한이 없을 때</h3>
+      <p>관리자로 등록되지 않은 Google 계정으로 로그인하면 아래 화면이 나옵니다. <b>다른 계정으로 로그인</b>을 눌러 등록된 계정으로 다시 로그인합니다. 관리자 추가는 Firebase 콘솔의 <code>admins</code> 컬렉션에서 합니다(4장 참고).</p>
+      <figure>
+        <a href="images/14-admin-no-permission.jpg" target="_blank" rel="noopener"><img src="images/14-admin-no-permission.jpg" alt="권한이 없습니다 안내와 다른 계정으로 로그인 버튼" loading="lazy" width="1280" height="800"></a>
+        <figcaption><b>그림 14</b>관리자로 등록되지 않은 계정</figcaption>
+      </figure>
+
+      <h3 id="a-bar">상단 막대와 게임 ID</h3>
+      <figure>
+        <a href="images/25-admin-bar.jpg" target="_blank" rel="noopener"><img src="images/25-admin-bar.jpg" alt="게임 ID 입력칸, 이동 버튼, 실시간 표시, 로그인 계정, 로그아웃" loading="lazy" width="1040" height="50"></a>
+        <figcaption><b>그림 15</b>대시보드 상단 막대</figcaption>
+      </figure>
+      <table>
+        <thead><tr><th>항목</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>게임 ID</td><td>지금 보고 있는 회차입니다. 기본값은 <code>house-cup-2026</code>입니다. 다른 회차를 보려면 ID를 입력하고 <b>이동</b>을 누릅니다.</td></tr>
+          <tr><td>실시간 표시</td><td>초록 점과 <b>실시간 · 시각</b>이 보이면 연결된 상태이며, 시각은 마지막으로 데이터가 바뀐 때입니다. 빨간 점이면 연결이 끊긴 것이니 새로고침합니다.</td></tr>
+          <tr><td>계정·로그아웃</td><td>로그인한 관리자 계정과 로그아웃 버튼입니다.</td></tr>
+        </tbody>
+      </table>
+      <p>맨 위 메뉴의 <b>기숙사</b>, <b>그래프</b>, <b>답변 기록</b>을 누르면 해당 영역으로 바로 이동합니다.</p>
+
+      <h3 id="a-summary">요약 지표</h3>
+      <figure>
+        <a href="images/15-admin-dashboard.jpg" target="_blank" rel="noopener"><img src="images/15-admin-dashboard.jpg" alt="관리자 대시보드 첫 화면: 상단 막대, 요약 지표 다섯 개, 기숙사 점수와 확신도 분포 그래프" loading="lazy" width="1280" height="800"></a>
+        <figcaption><b>그림 16</b>대시보드 첫 화면</figcaption>
+      </figure>
+      <table>
+        <thead><tr><th>지표</th><th>뜻</th></tr></thead>
+        <tbody>
+          <tr><td>참가자</td><td>첫 답을 제출한 참가자 수</td></tr>
+          <tr><td>완료</td><td>10문항을 모두 푼 참가자 수</td></tr>
+          <tr><td>제출된 답안</td><td>지금까지 저장된 답의 총 개수</td></tr>
+          <tr><td>전체 정답률</td><td>모든 답 가운데 맞힌 답의 비율</td></tr>
+          <tr><td>평균 개인 점수</td><td>참가자 개인 점수의 평균</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="a-houses">기숙사 점수와 확신도 분포</h3>
+      <figure>
+        <a href="images/17-admin-house-tier.jpg" target="_blank" rel="noopener"><img src="images/17-admin-house-tier.jpg" alt="기숙사 점수 막대 그래프와 확신도별 응답 분포 막대 그래프" loading="lazy" width="1040" height="309"></a>
+        <figcaption><b>그림 17</b>기숙사 점수(왼쪽)와 확신도별 응답 분포(오른쪽)</figcaption>
+      </figure>
+      <ul class="points">
+        <li><b>기숙사 점수</b>: 높은 순으로 정렬되며 막대 색은 기숙사 색입니다. 점수가 음수면 막대가 왼쪽으로 그려집니다. 막대에 마우스를 올리면 참가 인원이 보입니다.</li>
+        <li><b>확신도별 응답 분포</b>: 학생들이 어떤 확신도를 얼마나 골랐는지 보여 줍니다. 95%에 몰려 있으면 지나친 자신감을, 30%에 몰려 있으면 소극적인 태도를 짐작할 수 있습니다.</li>
+      </ul>
+
+      <h3 id="a-calibration">확신도 보정 그래프</h3>
+      <p>이 퀴즈의 핵심 과제 그래프입니다. 각 확신도를 고른 답이 실제로 얼마나 맞았는지 자동으로 계산해 보여 줍니다.</p>
+      <figure>
+        <a href="images/18-admin-calibration.jpg" target="_blank" rel="noopener"><img src="images/18-admin-calibration.jpg" alt="확신도 보정 그래프와 확신도별 판정 표" loading="lazy" width="1040" height="951"></a>
+        <figcaption><b>그림 18</b>확신도 보정 그래프와 판정 표</figcaption>
+      </figure>
+      <ul class="points">
+        <li>가로축은 학생이 고른 확신도, 세로축은 그 답들의 실제 정답률입니다.</li>
+        <li><b>점선</b>은 이상적인 보정(확신도 = 정답률)입니다. 75%를 골랐다면 실제로도 75% 정도 맞아야 잘 보정된 것입니다.</li>
+        <li>점이 점선보다 <b>위</b>에 있으면 실제보다 자신을 낮게 본 것(<b>과소확신</b>), <b>아래</b>에 있으면 높게 본 것(<b>과대확신</b>)입니다.</li>
+        <li>아래 표의 <b>차이</b>는 실제 정답률에서 확신도를 뺀 값입니다. ±10%p 안이면 <b>잘 맞음</b>으로 판정합니다.</li>
+      </ul>
+      <div class="note">예시 그림에서는 95%를 고른 답의 정답률이 55%에 그쳐 과대확신이 크게 나타났습니다. 수업 마무리에서 “확신이 클수록 정말 더 잘 맞았나?”를 함께 이야기해 보기 좋은 자료입니다.</div>
+
+      <h3 id="a-questions">문항별 정답률</h3>
+      <figure>
+        <a href="images/19-admin-questions.jpg" target="_blank" rel="noopener"><img src="images/19-admin-questions.jpg" alt="문항별 정답률 막대 그래프와 문항 분석 표" loading="lazy" width="1040" height="1034"></a>
+        <figcaption><b>그림 19</b>문항별 정답률</figcaption>
+      </figure>
+      <p>막대가 짧을수록 어려운 문항입니다. 아래 표에서 문항별 응답 수, 정답률, 평균 확신도, 점수 합계를 보고, <b>가장 많이 고른 오답</b>으로 학생들이 어떤 개념을 헷갈렸는지 확인할 수 있습니다.</p>
+
+      <h3 id="a-participants">참가자 순위와 삭제</h3>
+      <figure>
+        <a href="images/20-admin-participants.jpg" target="_blank" rel="noopener"><img src="images/20-admin-participants.jpg" alt="참가자 순위 표: 순위, 이름, 기숙사, 진행, 정답, 개인 점수, 잃은 점수, 마지막 제출, 삭제 버튼" loading="lazy" width="1040" height="654"></a>
+        <figcaption><b>그림 20</b>참가자 순위</figcaption>
+      </figure>
+      <ul class="points">
+        <li><b>진행</b>은 푼 문항 수입니다. 10/10이 아니면 아직 푸는 중입니다.</li>
+        <li><b>잃은 점수</b>는 틀린 문제에서 잃은 점수의 합입니다. 확신도를 무리하게 고른 참가자를 찾을 때 씁니다.</li>
+        <li><b>삭제</b>를 누르고 확인하면 그 참가자와 답안이 모두 지워집니다. 장난스러운 이름이나 잘못 들어온 기록을 정리할 때 씁니다. 지운 기록은 되돌릴 수 없고, 해당 학생 화면에는 “관리자가 이 참가 기록을 삭제했습니다”가 표시됩니다.</li>
+      </ul>
+
+      <h3 id="a-log">모든 답변 기록</h3>
+      <p>제출된 모든 답을 최신순으로 보여 줍니다. 누가 언제 어떤 답을 어떤 확신도로 냈는지 한 줄씩 확인할 수 있습니다.</p>
+      <figure>
+        <a href="images/21-admin-log.jpg" target="_blank" rel="noopener"><img src="images/21-admin-log.jpg" alt="모든 답변 기록 표와 검색·필터, CSV 내려받기 버튼" loading="lazy" width="1040" height="713"></a>
+        <figcaption><b>그림 21</b>모든 답변 기록</figcaption>
+      </figure>
+      <p>위쪽 필터로 원하는 기록만 볼 수 있습니다. 필터는 함께 적용되며, 오른쪽 위에 <b>보이는 건수 / 전체 건수</b>가 표시됩니다.</p>
+      <table>
+        <thead><tr><th>필터</th><th>예시</th></tr></thead>
+        <tbody>
+          <tr><td>이름 검색</td><td>이름 일부를 입력하면 그 참가자의 답만 봅니다.</td></tr>
+          <tr><td>기숙사</td><td>특정 기숙사 참가자의 답만 봅니다.</td></tr>
+          <tr><td>문항</td><td>Q1~Q10 중 한 문항의 답만 봅니다.</td></tr>
+          <tr><td>정답·오답</td><td>맞힌 답 또는 틀린 답만 봅니다.</td></tr>
+        </tbody>
+      </table>
+      <figure>
+        <a href="images/22-admin-log-filter.jpg" target="_blank" rel="noopener"><img src="images/22-admin-log-filter.jpg" alt="슬리데린과 오답만 필터를 적용한 답변 기록" loading="lazy" width="1040" height="442"></a>
+        <figcaption><b>그림 22</b>슬리데린 + 오답만 필터를 적용한 예</figcaption>
+      </figure>
+      <p><b>CSV 내려받기</b>를 누르면 지금 필터가 적용된 기록을 엑셀에서 열 수 있는 파일로 저장합니다. 제출 시각(한국 시간), 이름, 기숙사, 문항과 제목, 고른 답과 그 내용, 정답, 확신도, 결과, 점수가 들어 있습니다.</p>
+
+      <h3 id="a-matrix">참가자별 전체 답안</h3>
+      <figure>
+        <a href="images/23-admin-matrix.jpg" target="_blank" rel="noopener"><img src="images/23-admin-matrix.jpg" alt="참가자 한 명이 한 줄인 문항별 답안 표" loading="lazy" width="1040" height="669"></a>
+        <figcaption><b>그림 23</b>참가자별 전체 답안</figcaption>
+      </figure>
+      <p>참가자 한 명이 한 줄이고, 문항마다 답·확신도·정오(○/×)·점수를 보여 줍니다. 표가 넓으므로 옆으로 밀어서 봅니다. <b>CSV 내려받기(구글 설문 형식)</b>는 구글 설문 응답처럼 한 사람 한 줄 형식으로 저장합니다.</p>
+
+      <h3 id="a-cleanup">데이터 정리</h3>
+      <figure class="narrow">
+        <a href="images/24-admin-delete.jpg" target="_blank" rel="noopener"><img src="images/24-admin-delete.jpg" alt="이 게임 데이터 모두 삭제 버튼" loading="lazy" width="1040" height="192"></a>
+        <figcaption><b>그림 24</b>데이터 정리</figcaption>
+      </figure>
+      <p>행사가 끝나면 필요한 CSV를 먼저 내려받고, <b>이 게임 데이터 모두 삭제</b>로 참가자 이름과 답안을 지웁니다. 실수로 지우지 않도록 확인 창에 게임 ID를 그대로 입력해야 삭제됩니다. 지운 데이터는 되돌릴 수 없습니다.</p>
+    </section>
+
+    <!-- 4. 운영 안내 -->
+    <section class="chapter" id="operate">
+      <h2>4. 운영 안내</h2>
+
+      <h3>회차(게임 ID) 나누기</h3>
+      <p>반이나 날짜별로 따로 겨루려면 주소 끝에 <code>?game=회차ID</code>를 붙여 공유합니다. 회차 ID는 영문 소문자, 숫자, 하이픈으로 40자 이내입니다.</p>
+      <table>
+        <thead><tr><th>용도</th><th>주소 예시</th></tr></thead>
+        <tbody>
+          <tr><td>참가자(1반)</td><td><code>https://ucanon.com/jmp/hogwarts/?game=class-1</code></td></tr>
+          <tr><td>관리자(1반)</td><td><code>https://ucanon.com/jmp/hogwarts/admin.html?game=class-1</code></td></tr>
+        </tbody>
+      </table>
+      <p>회차마다 점수와 순위, 기록이 완전히 따로 쌓입니다. 관리자 화면에서는 게임 ID 칸에 입력해 바꿔 볼 수도 있습니다.</p>
+
+      <div class="cards">
+        <div class="card">
+          <h4>행사 전 점검</h4>
+          <p>1. 관리자 화면에 로그인해 초록색 <b>실시간</b> 표시를 확인합니다.</p>
+          <p>2. 시험용 회차(예: <code>?game=test</code>)로 한 문제를 풀어 보고 기록에 뜨는지 봅니다.</p>
+          <p>3. 시험 회차 데이터를 삭제하고, 실제 회차 주소를 준비합니다.</p>
+        </div>
+        <div class="card">
+          <h4>행사 후 정리</h4>
+          <p>1. 확신도 보정 그래프와 문항별 정답률로 수업을 마무리합니다.</p>
+          <p>2. 두 가지 CSV를 내려받아 보관합니다.</p>
+          <p>3. <b>이 게임 데이터 모두 삭제</b>로 이름과 기록을 지웁니다.</p>
+        </div>
+      </div>
+
+      <h3>관리자 추가</h3>
+      <p>Firebase 콘솔(프로젝트 <code>ucanon-hogwarts</code>)의 Firestore에서 <code>admins</code> 컬렉션에 새 관리자의 Google 이메일을 문서 ID로 추가합니다. 필드는 아무것이나 하나 있으면 됩니다. 자세한 절차는 저장소의 <code>docs/setup.md</code>에 있습니다.</p>
+    </section>
+
+    <!-- 5. FAQ -->
+    <section class="chapter" id="faq">
+      <h2>5. 자주 묻는 질문</h2>
+      <details open>
+        <summary>‘저장 실패 · 다시 시도’가 떠요.</summary>
+        <p>인터넷 연결이 잠시 끊긴 경우입니다. 연결을 확인한 뒤 같은 버튼을 다시 누르세요. 앞선 제출이 이미 저장되었다면 서버 기록을 그대로 이어받으므로 점수가 두 번 들어가지 않습니다.</p>
+      </details>
+      <details>
+        <summary>화면이 이상하거나 ‘… is not a function’ 같은 오류가 나요.</summary>
+        <p>사이트가 막 업데이트되어 브라우저에 옛 파일이 남은 경우입니다. <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>(Mac은 <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>)로 강력 새로고침을 한 번 하세요. 휴대폰은 브라우저를 완전히 닫았다가 다시 엽니다.</p>
+      </details>
+      <details>
+        <summary>관리자 로그인 창이 열리지 않아요.</summary>
+        <p>팝업 차단 때문입니다. 브라우저에서 이 사이트의 팝업을 허용하거나, 카카오톡·인스타그램 등 앱 안 브라우저가 아니라 Chrome·Safari로 직접 여세요.</p>
+      </details>
+      <details>
+        <summary>한 대의 태블릿을 여러 학생이 돌려 써도 되나요?</summary>
+        <p>됩니다. 한 학생이 끝나면 로고를 눌러 첫 화면으로 가서 <b>새 참가자로 시작</b>을 누르세요. 앞 학생의 기록은 그대로 남습니다.</p>
+      </details>
+      <details>
+        <summary>‘관리자가 이 참가 기록을 삭제했습니다’라고 나와요.</summary>
+        <p>관리자가 그 참가자를 삭제한 경우입니다. 아래의 <b>새 참가자로 시작</b>을 눌러 다시 참여하면 됩니다.</p>
+      </details>
+      <details>
+        <summary>기숙사를 잘못 골랐어요.</summary>
+        <p>기숙사는 바꿀 수 없습니다. 새 참가자로 다시 시작하고, 관리자에게 이전 기록 삭제를 요청하세요.</p>
+      </details>
+      <details>
+        <summary>다른 사람이 내 점수를 바꿀 수 있나요?</summary>
+        <p>없습니다. 각 참가자는 자기 기록에만 답을 추가할 수 있고, 문항 순서대로 한 번씩만 제출됩니다. 점수는 제출한 답과 확신도로만 계산되며, 다른 사람의 답 기록은 관리자만 볼 수 있습니다.</p>
+      </details>
+    </section>
+
+    <footer class="doc-foot">
+      <p>화면 이미지는 예시 참가자 데이터로 2026-11-11에 캡처했습니다. 실제 화면의 숫자와 이름은 행사마다 다릅니다.</p>
+      <p>관련 문서: 구축·운영 안내 <code>docs/setup.md</code> · 시스템 설계 <code>docs/firebase-survey-architecture.md</code></p>
+    </footer>
+  </main>
+</div>
+<a class="to-top" href="#top" aria-label="맨 위로">↑ 맨 위</a>
+<script>
+  // 읽고 있는 절을 목차에 표시
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('.toc a[href^="#"]'));
+    var targets = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); }).filter(Boolean);
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id); });
+      });
+    }, { rootMargin: '0px 0px -75% 0px' });
+    targets.forEach(function (t) { io.observe(t); });
+  })();
+</script>
+</body>
+</html>
