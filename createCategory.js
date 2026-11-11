@@ -1,7 +1,8 @@
 /**
  * blog 하위 디렉터리의 Markdown 문서를 모두 찾아 메뉴 트리를 menu.json 으로 저장한다.
  *
- *   node createCategory.js            → ./menu.json 생성 + HTML 의 CSS/JS 주소에 버전(?v=해시) 갱신
+ *   node createCategory.js            → ./menu.json 생성, doc-ids.json(문서·폴더 ID) 갱신,
+ *                                       HTML 의 CSS/JS 주소에 버전(?v=해시) 갱신
  *   node createCategory.js --check    → 변경 여부만 확인(종료 코드 1 이면 갱신 필요)
  *
  * 규칙
@@ -137,8 +138,126 @@ function stampAssets() {
   return versions;
 }
 
+/* --------------------------------------------------------------------------
+   문서·폴더 ID 레지스트리 (doc-ids.json)
+   - 주소는 #/doc/{id}, #/folder/{id} 로 만든다. 한 번 준 ID 는 바꾸거나 재사용하지 않는다.
+   - 문서를 옮기거나 이름을 바꿔도 다음 중 하나가 같으면 기존 ID 를 이어받는다.
+       1) 내용 해시가 같다(이름만 바꾼 경우)   2) 파일 이름이 같다(폴더만 옮긴 경우)
+     둘 다 바뀌면 새 문서로 보고 새 ID 를 준다.
+   - 지운 문서의 ID 는 retired 에 해시와 함께 남겨, 같은 내용이 돌아오면 되살린다.
+   -------------------------------------------------------------------------- */
+
+const REGISTRY_FILE = path.join(ROOT, "doc-ids.json");
+
+function loadRegistry() {
+  try {
+    const reg = JSON.parse(fs.readFileSync(REGISTRY_FILE, "utf8"));
+    return {
+      nextDocId: reg.nextDocId || 1,
+      nextFolderId: reg.nextFolderId || 1,
+      docs: reg.docs || {},
+      folders: reg.folders || {},
+      retired: reg.retired || {},
+    };
+  } catch (_) {
+    return { nextDocId: 1, nextFolderId: 1, docs: {}, folders: {}, retired: {} };
+  }
+}
+
+function saveRegistry(reg) {
+  const sortObj = (obj, key) =>
+    Object.fromEntries(Object.entries(obj).sort((a, b) => (key ? key(a[1]) - key(b[1]) : 0) || collator.compare(a[0], b[0])));
+  const out = {
+    _comment: "createCategory.js 가 관리하는 문서·폴더 ID 목록입니다. 한 번 부여한 ID 는 바뀌지 않도록 직접 수정하지 마세요.",
+    nextDocId: reg.nextDocId,
+    nextFolderId: reg.nextFolderId,
+    docs: sortObj(reg.docs, (v) => v.id),
+    folders: sortObj(reg.folders, (v) => v),
+    retired: reg.retired,
+  };
+  fs.writeFileSync(REGISTRY_FILE, JSON.stringify(out, null, 2) + "\n", "utf8");
+}
+
+function contentHash(docPath) {
+  const data = fs.readFileSync(path.join(ROOT, docPath + ".md"));
+  return crypto.createHash("sha1").update(data).digest("hex").slice(0, 16);
+}
+
+function flattenFolders(nodes, out = []) {
+  for (const node of nodes) {
+    if (node.type === "folder") {
+      out.push(node);
+      flattenFolders(node.children, out);
+    }
+  }
+  return out;
+}
+
+/** menu 의 모든 문서·폴더에 id 를 붙이고 레지스트리를 갱신한다. 반환값: 새로 만든 ID 수 */
+function assignIds(menu, reg) {
+  const docs = flattenDocs(menu.categories);
+  const livePaths = new Set(docs.map((d) => d.path));
+  // 사라진 경로(옮겨졌거나 지워진 문서) — 이어받기 후보
+  const orphans = Object.entries(reg.docs)
+    .filter(([p]) => !livePaths.has(p))
+    .map(([p, v]) => ({ path: p, id: v.id, hash: v.hash, name: p.slice(p.lastIndexOf("/") + 1) }));
+  const used = new Set(Object.entries(reg.docs).filter(([p]) => livePaths.has(p)).map(([, v]) => v.id));
+  let created = 0;
+
+  for (const doc of docs) {
+    const hash = contentHash(doc.path);
+    let entry = reg.docs[doc.path];
+    if (!entry) {
+      const name = doc.path.slice(doc.path.lastIndexOf("/") + 1);
+      const match =
+        orphans.find((o) => !used.has(o.id) && o.hash === hash) ||
+        orphans.find((o) => !used.has(o.id) && o.name === name);
+      let id;
+      if (match) {
+        id = match.id;
+        delete reg.docs[match.path];
+      } else if (reg.retired[hash] && !used.has(reg.retired[hash])) {
+        id = reg.retired[hash];
+        delete reg.retired[hash];
+      } else {
+        id = reg.nextDocId++;
+        created++;
+      }
+      entry = { id };
+    }
+    entry.hash = hash;
+    reg.docs[doc.path] = entry;
+    used.add(entry.id);
+    doc.id = String(entry.id);
+  }
+
+  // 남은 고아 문서는 지워진 것으로 보고 retired 로 옮긴다.
+  for (const [p, v] of Object.entries(reg.docs)) {
+    if (!livePaths.has(p)) {
+      if (v.hash) reg.retired[v.hash] = v.id;
+      delete reg.docs[p];
+    }
+  }
+
+  // 폴더: 경로 기준. 지워진 폴더 ID 는 재사용하지 않는다.
+  const folders = flattenFolders(menu.categories);
+  const liveFolders = new Set(folders.map((f) => f.path));
+  for (const folder of folders) {
+    if (!reg.folders[folder.path]) {
+      reg.folders[folder.path] = reg.nextFolderId++;
+      created++;
+    }
+    folder.id = String(reg.folders[folder.path]);
+  }
+  for (const p of Object.keys(reg.folders)) if (!liveFolders.has(p)) delete reg.folders[p];
+
+  return created;
+}
+
 function main() {
   const menu = buildMenu();
+  const registry = loadRegistry();
+  const createdIds = assignIds(menu, registry);
   const json = JSON.stringify(menu, null, 2) + "\n";
 
   if (process.argv.includes("--check")) {
@@ -154,6 +273,8 @@ function main() {
   }
 
   fs.writeFileSync(OUT_FILE, json, "utf8");
+  saveRegistry(registry);
+  if (createdIds) console.log(`새 ID ${createdIds}개 부여 — doc-ids.json 갱신`);
   const v = stampAssets();
   console.log("자원 버전 갱신 — index.css?v=" + v["index.css"] + ", index.js?v=" + v["index.js"]);
   console.log(`menu.json 저장 완료 — 문서 ${menu.docCount}개, 카테고리 ${menu.categories.length}개`);

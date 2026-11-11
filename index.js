@@ -59,19 +59,45 @@
     };
   }
 
-  /** 문서 경로("blog/Book/담론") → 해시 링크("#blog/Book/담론") */
+  /**
+   * 문서·폴더 경로 → ID 기반 해시 링크.
+   *   문서 "blog/Book/담론" → "#/doc/9",  폴더 "blog/Book" → "#/folder/1",  홈 "" → "#/"
+   * ID 는 createCategory.js 가 doc-ids.json 에서 관리한다. ID 가 없으면(메뉴 밖 문서) 경로를 그대로 쓴다.
+   */
   function hrefFor(path) {
+    if (!path) return "#/";
+    const doc = state.byPath.get(path);
+    if (doc && doc.id) return "#/doc/" + doc.id;
+    const folder = state.folders.get(path);
+    if (folder && folder.id) return "#/folder/" + folder.id;
     return "#" + path;
   }
 
-  /** 해시에서 현재 경로를 읽는다. 과거 링크(/#blog/…)와 호환. */
+  /**
+   * 해시에서 현재 문서·폴더 경로를 읽는다.
+   * 예전 주소(#blog/Book/담론)로 들어오면 ID 주소로 바꿔 기록을 남기지 않고 교체한다.
+   */
   function currentPath() {
-    const raw = location.hash.replace(/^#\/?/, "");
-    try {
-      return decodeURIComponent(raw);
-    } catch (_) {
-      return raw;
+    const raw = location.hash.replace(/^#/, "");
+    const byId = /^\/(doc|folder)\/([\w-]+)\/?$/.exec(raw);
+    if (byId) {
+      const map = byId[1] === "doc" ? state.docById : state.folderById;
+      const node = map.get(byId[2]);
+      return node ? node.path : "#missing:" + byId[1] + "/" + byId[2];
     }
+    let path = raw.replace(/^\/+/, "");
+    try {
+      path = decodeURIComponent(path);
+    } catch (_) {
+      /* 그대로 사용 */
+    }
+    if (path) {
+      const canonical = hrefFor(path);
+      if (canonical !== "#" + path && history.replaceState) {
+        history.replaceState(null, "", location.pathname + location.search + canonical);
+      }
+    }
+    return path;
   }
 
   function navigate(path) {
@@ -114,6 +140,8 @@
     docs: [], // 트리 순서의 평탄화 목록
     byPath: new Map(), // path → doc
     folders: new Map(), // path → folder (parent 포함)
+    docById: new Map(), // id → doc
+    folderById: new Map(), // id → folder
     expanded: new Set(readStore(STORAGE.expanded, [])),
     current: null, // 열린 문서 path
     viewer: null,
@@ -200,12 +228,15 @@
     state.docs = [];
     state.byPath.clear();
     state.folders.clear();
+    state.docById.clear();
+    state.folderById.clear();
 
     const walk = (nodes, crumbs, parent) => {
       for (const node of nodes) {
         if (node.type === "folder") {
           const folder = Object.assign({}, node, { crumbs, parent: parent ? parent.path : null, depth: crumbs.length });
           state.folders.set(node.path, folder);
+          if (node.id) state.folderById.set(String(node.id), folder);
           walk(node.children, crumbs.concat([{ name: node.name, path: node.path }]), folder);
         } else {
           const doc = Object.assign({}, node, {
@@ -220,6 +251,7 @@
           });
           state.docs.push(doc);
           state.byPath.set(node.path, doc);
+          if (node.id) state.docById.set(String(node.id), doc);
         }
       }
     };
@@ -855,6 +887,16 @@
       await showHome(token);
       return;
     }
+    if (path.startsWith("#missing:")) {
+      // 메뉴에 없는 ID — 문서 요청을 보내지 않고 바로 안내한다.
+      const [kind, id] = path.slice(9).split("/");
+      state.current = null;
+      renderBreadcrumb([], kind === "doc" ? "문서 #" + id : "폴더 #" + id);
+      setTitle("찾을 수 없음");
+      markActive(null);
+      renderState("notfound", (kind === "doc" ? "문서 ID " : "폴더 ID ") + id);
+      return;
+    }
     if (state.folders.has(path)) {
       showFolder(path);
       return;
@@ -1237,7 +1279,7 @@
     let html = "";
     headings.forEach((h, i) => {
       if (!h.id) h.id = slugify(h.textContent, i + 1);
-      html += `<li class="depth-${h.tagName === "H3" ? 3 : 2}" data-target="${escapeHtml(h.id)}"><a href="#${escapeHtml(currentPath())}" data-heading="${escapeHtml(h.id)}">${escapeHtml(h.textContent)}</a></li>`;
+      html += `<li class="depth-${h.tagName === "H3" ? 3 : 2}" data-target="${escapeHtml(h.id)}"><a href="${escapeHtml(hrefFor(state.current || ""))}" data-heading="${escapeHtml(h.id)}">${escapeHtml(h.textContent)}</a></li>`;
     });
     els.outlineList.innerHTML = html;
     els.workspaceBody.classList.add("has-outline");

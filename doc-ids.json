@@ -1,0 +1,233 @@
+{
+  "_comment": "createCategory.js 가 관리하는 문서·폴더 ID 목록입니다. 한 번 부여한 ID 는 바뀌지 않도록 직접 수정하지 마세요.",
+  "nextDocId": 54,
+  "nextFolderId": 12,
+  "docs": {
+    "blog/Book/가르침과 배움의 영성": {
+      "id": 1,
+      "hash": "fdd0238d264b4fc9"
+    },
+    "blog/Book/공부하는 독종이 살아 남는다": {
+      "id": 2,
+      "hash": "cb0405792cb0ef74"
+    },
+    "blog/Book/그건 사랑이었네": {
+      "id": 3,
+      "hash": "6763f5e51d9e34f3"
+    },
+    "blog/Book/기도의 영을 받는 법": {
+      "id": 4,
+      "hash": "b651b6fe4f799b5c"
+    },
+    "blog/Book/나는 다시 태어나려고 기다리고 있어": {
+      "id": 5,
+      "hash": "fb73bcbe9c18f117"
+    },
+    "blog/Book/내 생애 단 한번": {
+      "id": 6,
+      "hash": "83a4f91314b01ede"
+    },
+    "blog/Book/닌텐도이야기": {
+      "id": 7,
+      "hash": "c4632bb52ed7e52a"
+    },
+    "blog/Book/담론": {
+      "id": 8,
+      "hash": "d5538af170210967"
+    },
+    "blog/Book/백년을 살아보니": {
+      "id": 9,
+      "hash": "260702d8a6372852"
+    },
+    "blog/Book/복음과 삶": {
+      "id": 10,
+      "hash": "c709e283fcbb4e4b"
+    },
+    "blog/Book/비밀의 방": {
+      "id": 11,
+      "hash": "53d13e9b38b127ea"
+    },
+    "blog/Book/삶을 변혁시키는 책 읽기": {
+      "id": 12,
+      "hash": "06c08be04c115221"
+    },
+    "blog/Book/성경은 드라마다": {
+      "id": 13,
+      "hash": "6479fb041a826a39"
+    },
+    "blog/Book/세계관은 이야기다": {
+      "id": 14,
+      "hash": "422db0c0a2f2d043"
+    },
+    "blog/Book/세상을 만드는 글자 코딩": {
+      "id": 15,
+      "hash": "3e1dd57b54dd5ff1"
+    },
+    "blog/Book/신도의 공동생활": {
+      "id": 16,
+      "hash": "629f45f988ea5a90"
+    },
+    "blog/Book/쓸 만한 도끼 한 자루 준비합니다": {
+      "id": 17,
+      "hash": "31f3e82b6797c6ff"
+    },
+    "blog/Book/아몬드": {
+      "id": 18,
+      "hash": "06ddce9dfab3b0d8"
+    },
+    "blog/Book/완벽한 공부법": {
+      "id": 19,
+      "hash": "963460d77a5df3ef"
+    },
+    "blog/Book/웨스터민스터 소교리문답": {
+      "id": 20,
+      "hash": "c0f7deac58892fa9"
+    },
+    "blog/Book/잠수복과 나비": {
+      "id": 21,
+      "hash": "276e92c6c9ca1f85"
+    },
+    "blog/Book/전태일 평전": {
+      "id": 22,
+      "hash": "33a8667d4297a10a"
+    },
+    "blog/Book/중독에서 자유로워지려면": {
+      "id": 23,
+      "hash": "3a47e3ecd011c5ff"
+    },
+    "blog/Book/창조 타락 구속": {
+      "id": 24,
+      "hash": "12fcc02a91f03301"
+    },
+    "blog/Book/처음 만나는 기독교 세계관": {
+      "id": 25,
+      "hash": "82a193ce3bd28cf1"
+    },
+    "blog/Book/하나님을 경외하는 마음": {
+      "id": 26,
+      "hash": "2153943cd3b3c1f4"
+    },
+    "blog/Book/한비야님의 그건 사랑이었네에서 소개한 책들": {
+      "id": 27,
+      "hash": "0593c5e584edf451"
+    },
+    "blog/Book/Study is HARD WORK": {
+      "id": 28,
+      "hash": "d3498d75aad044b5"
+    },
+    "blog/Book/The Passionate Programmer": {
+      "id": 29,
+      "hash": "1f417797a0473adb"
+    },
+    "blog/IT/Database/GraphQL": {
+      "id": 30,
+      "hash": "8f857920bb355ad3"
+    },
+    "blog/IT/JAVA/POJO": {
+      "id": 31,
+      "hash": "01fd7983cbab232d"
+    },
+    "blog/IT/JAVA/Thymeleaf와_JSP_동시에_사용하기": {
+      "id": 32,
+      "hash": "9f56afa52c5bd5dd"
+    },
+    "blog/IT/JAVA/UUID": {
+      "id": 33,
+      "hash": "9c1b269ba0ba39a8"
+    },
+    "blog/IT/Javascript_CSS_HTML/기초부터 완성까지, 프런트엔드": {
+      "id": 34,
+      "hash": "ed74446337370c3f"
+    },
+    "blog/IT/Javascript_CSS_HTML/브라우저 렌더링 최적화와 뷰포트 밖 요소 처리에 대한 웹 표준 기술": {
+      "id": 35,
+      "hash": "3ad507aac46640b3"
+    },
+    "blog/IT/Javascript_CSS_HTML/웹 브라우저 기능을 활용한 프런트엔드 오류 수집 전략": {
+      "id": 36,
+      "hash": "cd7428b49d5e5e72"
+    },
+    "blog/IT/Javascript_CSS_HTML/escape_encodeURI_encodeURLComponent": {
+      "id": 37,
+      "hash": "1c6342067dbe56a5"
+    },
+    "blog/IT/Javascript_CSS_HTML/Head First Object-Oriented Analysis & Design": {
+      "id": 38,
+      "hash": "a286c5d1fc0a95cb"
+    },
+    "blog/IT/Javascript_CSS_HTML/How Javascript Works": {
+      "id": 39,
+      "hash": "f73873ec8455ff18"
+    },
+    "blog/IT/Javascript_CSS_HTML/Javascript the good parts(자바스크립트 핵심 가이드)": {
+      "id": 40,
+      "hash": "4983435541c3d25a"
+    },
+    "blog/IT/Javascript_CSS_HTML/Javascript_Cookie": {
+      "id": 41,
+      "hash": "03b9d2ca1e04328d"
+    },
+    "blog/IT/Javascript_CSS_HTML/Javascript_Loading_Sequence": {
+      "id": 42,
+      "hash": "4b0170b9e0856663"
+    },
+    "blog/IT/Javascript_CSS_HTML/jQuery": {
+      "id": 43,
+      "hash": "e8677744caf3ca4a"
+    },
+    "blog/IT/Javascript_CSS_HTML/Maintainable_Javascript": {
+      "id": 44,
+      "hash": "95fd0c24cc7454bc"
+    },
+    "blog/IT/LowCodePlatform/No-Code 플랫폼 비교 분석": {
+      "id": 45,
+      "hash": "cdd31edd6d4ca593"
+    },
+    "blog/IT/LowCodePlatform/OutSystems와 Java 아키텍처 비교 분석": {
+      "id": 46,
+      "hash": "7d52d32206d739dc"
+    },
+    "blog/IT/SoftwareEngineering/소프트웨어 개발의 모든 것 (All Of Software Everything)": {
+      "id": 47,
+      "hash": "2030c28f366bcee0"
+    },
+    "blog/IT/SoftwareEngineering/프로그래머로 사는 법 (Making it big on software)": {
+      "id": 48,
+      "hash": "7cd46f54b57d0e3d"
+    },
+    "blog/IT/Web/서비스 워커와 웹 워커 비교": {
+      "id": 49,
+      "hash": "81b91f08cd26a60d"
+    },
+    "blog/IT/Web/SameSiteCookie": {
+      "id": 50,
+      "hash": "def57104aef37c73"
+    },
+    "blog/MyProject/FamilyCodingClass/코딩캠프일정&자료": {
+      "id": 51,
+      "hash": "190c964db5225230"
+    },
+    "blog/Study/내 안에 리더십 발견하기": {
+      "id": 52,
+      "hash": "edeaf1b336732307"
+    },
+    "blog/Study/테크니컬 라이팅": {
+      "id": 53,
+      "hash": "4b11e24609f7dc6d"
+    }
+  },
+  "folders": {
+    "blog/Book": 1,
+    "blog/IT": 2,
+    "blog/IT/Database": 3,
+    "blog/IT/JAVA": 4,
+    "blog/IT/Javascript_CSS_HTML": 5,
+    "blog/IT/LowCodePlatform": 6,
+    "blog/IT/SoftwareEngineering": 7,
+    "blog/IT/Web": 8,
+    "blog/MyProject": 9,
+    "blog/MyProject/FamilyCodingClass": 10,
+    "blog/Study": 11
+  },
+  "retired": {}
+}
