@@ -15,9 +15,10 @@ import {
 } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
 import {
   getFirestore, connectFirestoreEmulator, doc, getDoc, setDoc, collection, getDocs,
-  onSnapshot, writeBatch, serverTimestamp, increment
+  onSnapshot, writeBatch, serverTimestamp, increment, query, where
 } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
 import { firebaseConfig, DEFAULT_GAME_ID, TOTAL_QUESTIONS } from './firebase-config.js';
+import { TIERS as DATA_TIERS, HOUSES as DATA_HOUSES } from './data.js';
 
 const params = new URLSearchParams(location.search);
 const requestedGame = params.get('game') || '';
@@ -26,8 +27,8 @@ export const GAME_ID = /^[a-z0-9-]{1,40}$/.test(requestedGame) ? requestedGame :
 // localhost에서는 Firebase 에뮬레이터에 붙습니다. 실제 DB로 시험하려면 주소에 ?prod 를 붙입니다.
 export const USE_EMULATOR = ['localhost', '127.0.0.1'].includes(location.hostname) && !params.has('prod');
 
-const HOUSES = ['Gryffindor', 'Ravenclaw', 'Hufflepuff', 'Slytherin'];
-const TIERS = [30, 45, 60, 75, 95];
+const HOUSES = DATA_HOUSES.map(h => h.id);
+const TIERS = [...DATA_TIERS].sort((a, b) => a - b);
 const SAVE_TIMEOUT_MS = 15000;
 
 function setup(name) {
@@ -99,8 +100,16 @@ export async function submitAnswer(state, answer) {
 export async function recover(state, questionId) {
   const { fs } = player();
   await playerUser();
-  const snap = await getDoc(responseRef(fs, state.id, questionId));
-  if (!snap.exists()) return null;
+  // 없는 답안 문서는 규칙상 읽기가 거부되므로(소유자 확인 불가) '없음'으로 봅니다.
+  const snap = await getDoc(responseRef(fs, state.id, questionId)).catch(e => {
+    if (e.code === 'permission-denied') return null;
+    throw e;
+  });
+  if (!snap?.exists()) {
+    // 관리자가 이 참가자를 삭제했다면 더 이상 이어서 풀 수 없습니다.
+    if (state.joined && !(await getDoc(participantRef(fs, state.id))).exists()) return { removed: true };
+    return null;
+  }
   state.joined = true;
   const r = snap.data();
   return { questionId: r.questionId, answer: r.answer, confidence: r.confidence, correct: r.correct, points: r.points };
@@ -181,16 +190,12 @@ export async function isAdmin(user) {
   }
 }
 
-// 기존 /api/admin 응답과 같은 모양으로 돌려줍니다.
-export async function adminData() {
-  const { fs } = admin();
-  const [pSnap, rSnap] = await Promise.all([
-    getDocs(collection(fs, 'games', GAME_ID, 'participants')),
-    getDocs(collection(fs, 'games', GAME_ID, 'responses'))
-  ]);
-  const base = buildBoard(pSnap.docs).participants;
+// 관리자 집계: 참가자·답안 문서로 순위, 답변 기록, 확신도 보정표를 계산합니다.
+function buildAdmin(pDocs, rDocs) {
+  const board = buildBoard(pDocs);
+  const base = board.participants;
   const byId = Object.fromEntries(base.map(p => [p.id, p]));
-  const responses = rSnap.docs.map(d => {
+  const responses = rDocs.map(d => {
     const r = d.data(), p = byId[r.participantId];
     return {
       participantId: r.participantId, participant: p?.name ?? '(삭제됨)', house: p?.house ?? '',
@@ -206,7 +211,39 @@ export async function adminData() {
     const rows = responses.filter(r => r.confidence === c), correct = rows.filter(r => r.correct).length;
     return { confidence: c, count: rows.length, correct, accuracy: rows.length ? Math.round(correct / rows.length * 100) : 0 };
   }).filter(row => row.count > 0);
-  return { gameId: GAME_ID, totalQuestions: TOTAL_QUESTIONS, participants, responses, calibration };
+  return { gameId: GAME_ID, totalQuestions: TOTAL_QUESTIONS, houses: board.houses, participants, responses, calibration };
+}
+
+export async function adminData() {
+  const { fs } = admin();
+  const [pSnap, rSnap] = await Promise.all([
+    getDocs(collection(fs, 'games', GAME_ID, 'participants')),
+    getDocs(collection(fs, 'games', GAME_ID, 'responses'))
+  ]);
+  return buildAdmin(pSnap.docs, rSnap.docs);
+}
+
+// 관리자 실시간 구독: 참가자나 답안이 바뀔 때마다 집계를 다시 계산해 onData에 넘깁니다.
+// 돌려주는 함수를 부르면 구독을 끝냅니다.
+export function watchAdmin(onData, onError) {
+  const { fs } = admin();
+  let pDocs = null, rDocs = null;
+  const emit = () => { if (pDocs && rDocs) onData(buildAdmin(pDocs, rDocs)); };
+  const fail = e => { console.error('관리자 구독 실패', e); onError?.(e); };
+  const u1 = onSnapshot(collection(fs, 'games', GAME_ID, 'participants'), s => { pDocs = s.docs; emit(); }, fail);
+  const u2 = onSnapshot(collection(fs, 'games', GAME_ID, 'responses'), s => { rDocs = s.docs; emit(); }, fail);
+  return () => { u1(); u2(); };
+}
+
+// 참가자 한 명과 그 답안을 삭제합니다(부적절한 이름 정리 등).
+export async function deleteParticipant(participantId) {
+  const { fs } = admin();
+  const rSnap = await getDocs(query(collection(fs, 'games', GAME_ID, 'responses'), where('participantId', '==', participantId)));
+  const batch = writeBatch(fs);
+  rSnap.forEach(d => batch.delete(d.ref));
+  batch.delete(participantRef(fs, participantId));
+  await batch.commit();
+  return rSnap.size;
 }
 
 // 현재 게임의 참가자와 답안을 모두 삭제합니다(개인정보 정리용).
