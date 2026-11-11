@@ -17,8 +17,8 @@ import {
   getFirestore, connectFirestoreEmulator, doc, getDoc, setDoc, collection, getDocs,
   onSnapshot, writeBatch, serverTimestamp, increment, query, where
 } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
-import { firebaseConfig, DEFAULT_GAME_ID, TOTAL_QUESTIONS } from './firebase-config.js?v=202611111928';
-import { TIERS as DATA_TIERS, HOUSES as DATA_HOUSES } from './data.js?v=202611111928';
+import { firebaseConfig, DEFAULT_GAME_ID, TOTAL_QUESTIONS } from './firebase-config.js?v=202611111957';
+import { TIERS as DATA_TIERS, HOUSES as DATA_HOUSES } from './data.js?v=202611111957';
 
 const params = new URLSearchParams(location.search);
 const requestedGame = params.get('game') || '';

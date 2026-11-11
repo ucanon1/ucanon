@@ -1,8 +1,8 @@
 // 사용자 화면: 이름 → 기숙사 선택 → 10문항(정답 + 확신도) → 결과
 // 답안은 제출할 때마다 Firestore에 저장되고, 기숙사 점수와 순위는 실시간으로 갱신됩니다.
-import * as db from './hogwarts-db.js?v=202611111928';
-import { HOUSES, QUESTIONS, TIERS, INTRO } from './data.js?v=202611111928';
-import { $, $$, esc, richText, signed, signClass, houseOf, choiceText, LETTERS, scoreStrip, rankingTable } from './ui.js?v=202611111928';
+import * as db from './hogwarts-db.js?v=202611111957';
+import { HOUSES, QUESTIONS, TIERS, INTRO } from './data.js?v=202611111957';
+import { $, $$, esc, richText, signed, signClass, houseOf, choiceText, LETTERS, scoreStrip, rankingTable } from './ui.js?v=202611111957';
 
 const T = {
   ko: {
@@ -322,6 +322,7 @@ function applyLang(next) {
   try { localStorage.setItem('hogwarts-lang', lang); } catch { /* 저장소를 못 쓰는 브라우저 */ }
   $$('.lang-switch [data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
   $('#adminLink').textContent = lang === 'ko' ? '관리자' : 'Admin';
+  $('#helpLink').textContent = lang === 'ko' ? '도움말' : 'Help';
 }
 
 $('.lang-switch').addEventListener('click', e => {

@@ -1,9 +1,9 @@
 // 관리자 화면: Google 로그인 → admins 허용 목록 확인 → 실시간 집계
 // 참가자나 답안이 바뀌면 그래프와 표가 자동으로 다시 계산됩니다.
-import * as db from './hogwarts-db.js?v=202611111928';
-import { HOUSES, QUESTIONS, TIERS } from './data.js?v=202611111928';
-import { $, esc, signed, signClass, houseOf, houseLabel, questionOf, choiceText, downloadCsv, formatTime, localStamp } from './ui.js?v=202611111928';
-import { calibrationChart, barChart } from './charts.js?v=202611111928';
+import * as db from './hogwarts-db.js?v=202611111957';
+import { HOUSES, QUESTIONS, TIERS } from './data.js?v=202611111957';
+import { $, esc, signed, signClass, houseOf, houseLabel, questionOf, choiceText, downloadCsv, formatTime, localStamp } from './ui.js?v=202611111957';
+import { calibrationChart, barChart } from './charts.js?v=202611111957';
 
 const root = $('#admin');
 const filters = { text: '', house: '', question: '', result: '' };
