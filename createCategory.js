@@ -1,117 +1,133 @@
 /**
- * blog 하위 디렉터리에 있는 파일을 모두 검색해서 메뉴를 생성해서 index.html에 저장한다. 
+ * blog 하위 디렉터리의 Markdown 문서를 모두 찾아 메뉴 트리를 menu.json 으로 저장한다.
+ *
+ *   node createCategory.js            → ./menu.json 생성
+ *   node createCategory.js --check    → 변경 여부만 확인(종료 코드 1 이면 갱신 필요)
+ *
+ * 규칙
+ *   - 폴더 구조가 그대로 트리가 된다. (blog/IT/Web/… → IT › Web › …)
+ *   - 이름이 "_" 로 시작하는 문서(초안)와 "." 로 시작하는 폴더는 제외한다.
+ *   - 문서가 하나도 없는 폴더는 메뉴에 넣지 않는다.
+ *   - 폴더 먼저, 그다음 문서를 한국어 로캘 순으로 정렬한다.
+ *   - 문서의 updated 는 파일 수정 시각(YYYY-MM-DD)이다. 홈의 "최근 수정" 목록에 쓴다.
+ *
+ * index.html 은 이 파일을 fetch 해서 사이드바 트리·검색·홈 화면을 만든다.
  */
 
-var fs = require('fs');
-var path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-var bookPath = './blog/Book';
+const ROOT = path.resolve(__dirname);
+const BLOG_DIR = path.join(ROOT, "blog");
+const OUT_FILE = path.join(ROOT, "menu.json");
 
-let categoryMenu = "";
+const collator = new Intl.Collator("ko", { numeric: true, sensitivity: "base" });
 
-function createFile(fileName, htmlContent) {
-    fs.writeFile(fileName, htmlContent, (error) => {
-        if (error) {
-            console.error("파일 저장 중 오류 발생:", error);
-        } else {
-            console.log("파일이 저장되었습니다.");
-        }
-    });
+function toPosix(p) {
+  return p.split(path.sep).join("/");
 }
 
-function findSubDirectories(startPath) {
-    const foundDirectories = [];
-    const files = fs.readdirSync(startPath);
-
-    files.forEach(file => {
-        const filePath = path.join(startPath, file);
-        const fileInfo = fs.statSync(filePath);
-
-        if (fileInfo.isDirectory() && !path.basename(filePath).startsWith(".")) {
-        foundDirectories.push(path.basename(filePath));
-        findSubDirectories(filePath, foundDirectories);
-        }
-    });
-
-    return foundDirectories;
+function isoDate(stat) {
+  return stat.mtime.toISOString().slice(0, 10);
 }
 
-function findAllFiles(currentPath, foundFiles = []) {
-    const filesAndDirectories = fs.readdirSync(currentPath);
-  
-    filesAndDirectories.forEach(item => {
-      const itemPath = path.join(currentPath, item);
-      const itemInfo = fs.statSync(itemPath);
-  
-      if (itemInfo.isDirectory()) {
-        findAllFiles(itemPath, foundFiles);
-      } else {
-        foundFiles.push(itemPath);
-      }
-    });
-  
-    return foundFiles;
-}
+/** 폴더 하나를 읽어 { folders, docs } 로 나눈다. */
+function readFolder(absDir) {
+  const entries = fs.readdirSync(absDir, { withFileTypes: true });
+  const folders = [];
+  const docs = [];
 
-function createIndexFile() {
-    const FirstDepthDirectories = findSubDirectories(process.cwd() + "/blog");
-    for(let i = 0; i < FirstDepthDirectories.length; i++) {
-        const files = findAllFiles(process.cwd() + "/blog/" + FirstDepthDirectories[i]);
+  for (const entry of entries) {
+    if (entry.name.startsWith(".")) continue;
+    const abs = path.join(absDir, entry.name);
 
-        if (files.length > 0) {
-            categoryMenu += '<li><div class="main">' + FirstDepthDirectories[i] + '</div><ul>\n';
-        }
-
-        for(let j = 0; j < files.length; j++) { 
-            let filePath = files[j].substr(files[j].indexOf("blog\\")).replaceAll("\\", "/");
-            let noteName = filePath.substring(filePath.lastIndexOf("/")+1, filePath.indexOf(".md"));
-            if ((noteName.indexOf("_") !== 0) && (filePath.indexOf(".md") > 0)) {
-                categoryMenu += '<li><a onclick="javascript:goPage(\'' +  filePath.substring(0, filePath.indexOf(".md")) + '\')">' + noteName + '</a></li>\n';
-            }
-        }
-
-        if (files.length > 0) {
-            categoryMenu += '</ul></li>\n';
-        }
+    if (entry.isDirectory()) {
+      const child = buildFolder(abs);
+      if (child) folders.push(child);
+    } else if (entry.isFile() && entry.name.toLowerCase().endsWith(".md")) {
+      const title = entry.name.slice(0, -3);
+      if (title.startsWith("_")) continue; // 초안
+      const stat = fs.statSync(abs);
+      docs.push({
+        type: "doc",
+        title,
+        path: toPosix(path.relative(ROOT, abs)).replace(/\.md$/i, ""),
+        updated: isoDate(stat),
+        size: stat.size,
+      });
     }
+  }
 
-    let htmlContent = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>ucanon.com</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="Description" content="This site was created for the purpose of sharing personal study content." />
-        <link rel="stylesheet" href="index.css" />
-        <script src="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-viewer.js"></script>
-        <script src="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
-        <script src="openSource/jquery/jquery-1.12.4.min.js"></script>
-        <link rel="stylesheet" href="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-viewer.css" />
-        <link rel="stylesheet" href="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/github.min.css" />
-        <script defer src="index.js"></script>
-    </head>
-    <body>
-        <h2 class="main_title"><a href="/">UCANON.COM</a></h2>
-        <header></header>
-        <section>
-            <nav class="left_menu">
-                <ul>
-                    ${categoryMenu}
-                </ul>
-            </nav>
-            <article id="content">
-                <div id="viewer"></div>
-            </article>
-        </section>
-        <footer>
-            <p></p>
-        </footer>
-    </body>
-    </html>
-    `;
-    
-    createFile("index.html", htmlContent);
+  folders.sort((a, b) => collator.compare(a.name, b.name));
+  docs.sort((a, b) => collator.compare(a.title, b.title));
+  return { folders, docs };
 }
 
-createIndexFile();
+function countDocs(node) {
+  if (node.type === "doc") return 1;
+  return node.children.reduce((sum, child) => sum + countDocs(child), 0);
+}
+
+function buildFolder(absDir) {
+  const { folders, docs } = readFolder(absDir);
+  const children = [...folders, ...docs];
+  if (children.length === 0) return null;
+  const node = {
+    type: "folder",
+    name: path.basename(absDir),
+    path: toPosix(path.relative(ROOT, absDir)),
+    children,
+  };
+  node.count = countDocs(node);
+  return node;
+}
+
+function flattenDocs(nodes, out = []) {
+  for (const node of nodes) {
+    if (node.type === "doc") out.push(node);
+    else flattenDocs(node.children, out);
+  }
+  return out;
+}
+
+function buildMenu() {
+  const { folders, docs } = readFolder(BLOG_DIR);
+  const categories = [...folders, ...docs];
+  const all = flattenDocs(categories);
+  const latest = all.reduce((max, d) => (d.updated > max ? d.updated : max), "");
+
+  return {
+    site: {
+      title: "UCANON.COM",
+      tagline: "personal study notes",
+      description: "개인 공부 기록을 나누는 공간입니다. 책, IT, 프로젝트, 공부 노트를 모아 둡니다.",
+      home: "README",
+    },
+    generatedAt: new Date().toISOString(),
+    docCount: all.length,
+    latestUpdated: latest,
+    categories,
+  };
+}
+
+function main() {
+  const menu = buildMenu();
+  const json = JSON.stringify(menu, null, 2) + "\n";
+
+  if (process.argv.includes("--check")) {
+    let current = "";
+    try { current = fs.readFileSync(OUT_FILE, "utf8"); } catch (_) { /* 없음 */ }
+    const strip = (s) => s.replace(/"generatedAt": "[^"]*"/, "");
+    if (strip(current) === strip(json)) {
+      console.log("menu.json 은 최신입니다.");
+      process.exit(0);
+    }
+    console.log("menu.json 갱신이 필요합니다. `node createCategory.js` 를 실행하세요.");
+    process.exit(1);
+  }
+
+  fs.writeFileSync(OUT_FILE, json, "utf8");
+  console.log(`menu.json 저장 완료 — 문서 ${menu.docCount}개, 카테고리 ${menu.categories.length}개`);
+}
+
+main();

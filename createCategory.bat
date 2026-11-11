@@ -1,1 +1,2 @@
-node createCategory.js
+@echo off
+node "%~dp0createCategory.js"

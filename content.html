@@ -1,28 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UCANON.COM</title>
+    <meta name="description" content="개인 공부 기록을 나누는 공간입니다. 책, IT, 프로젝트, 공부 노트를 모아 둡니다." />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="favicon.ico" />
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem("ucanon.theme");
+                var theme = saved === "dark" || saved === "light"
+                    ? saved
+                    : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+                document.documentElement.setAttribute("data-theme", theme);
+            } catch (e) { /* 기본 테마 */ }
+        })();
+    </script>
+    <link rel="stylesheet" href="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-viewer.css" />
+    <link rel="stylesheet" href="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/github.min.css" />
+    <link rel="stylesheet" href="index.css" />
+    <script src="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-viewer.js"></script>
+    <script src="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
+    <script defer src="index.js"></script>
+</head>
+<!-- 사이드바 없이 본문만 보여 주는 리더 전용 화면. 주소는 index.html 과 같은 해시 형식(#blog/…)을 쓴다. -->
+<body data-layout="reader">
+    <svg hidden aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="i-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></symbol>
+        <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></symbol>
+        <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+        <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+        <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></symbol>
+        <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5"/></symbol>
+        <symbol id="i-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="m20 4-9 9"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></symbol>
+        <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></symbol>
+        <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></symbol>
+        <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></symbol>
+        <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+        <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></symbol>
+        <symbol id="i-database" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+        <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19a2 2 0 0 1 2-2h13"/></symbol>
+        <symbol id="i-history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l3 2"/></symbol>
+    </svg>
 
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>ucanon.com</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="Description" content="This site was created for the purpose of sharing personal study content." />
-        <link rel="stylesheet" href="index.css" />
-        <script src="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-viewer.js"></script>
-        <script src="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
-        <script src="openSource/jquery/jquery-1.12.4.min.js"></script>
-        <link rel="stylesheet" href="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-viewer.css" />
-        <link rel="stylesheet" href="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/github.min.css" />
-        <script defer src="index.js"></script>
-    </head>
-    <body></body>
-        <header></header>
-            <article id="content" class="full">
-                <div id="viewer"></div>
-            </article>
-        </section>
-        <footer>
-            <p></p>
-        </footer>
-    </body>
-    </html>
-    
+    <div class="app-shell" id="app">
+        <div class="workspace">
+            <div class="workspace-body" id="workspaceBody">
+                <main class="reader-scroll" id="reader" tabindex="-1">
+                    <div class="reader-inner">
+                        <section class="home" id="home" hidden aria-label="홈"></section>
+                        <section class="folder" id="folder" hidden aria-label="폴더"></section>
+
+                        <article class="document" id="document" hidden>
+                            <header class="document-head">
+                                <div class="document-head-copy">
+                                    <span class="document-kicker" id="docKicker"></span>
+                                    <div class="document-meta" id="docMeta"></div>
+                                </div>
+                                <div class="document-actions">
+                                    <button class="pill-button" id="copyLink" type="button">
+                                        <svg width="14" height="14"><use href="#i-link"/></svg>링크 복사
+                                    </button>
+                                    <a class="pill-button" id="rawLink" href="#" target="_blank" rel="noopener">
+                                        <svg width="14" height="14"><use href="#i-external"/></svg>원문
+                                    </a>
+                                </div>
+                            </header>
+                            <div class="document-body" id="viewer"></div>
+                            <nav class="document-pager" id="pager" aria-label="이전·다음 문서"></nav>
+                        </article>
+
+                        <div class="reader-state" id="readerState" hidden></div>
+
+                        <footer class="site-footer">
+                            <span>© <span id="footerYear"></span> UCANON.COM · 개인 공부 기록</span>
+                            <span class="footer-links">
+                                <a href="/">전체 화면으로 보기</a>
+                            </span>
+                        </footer>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

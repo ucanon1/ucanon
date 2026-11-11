@@ -1,90 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UCANON.COM</title>
+    <meta name="description" content="개인 공부 기록을 나누는 공간입니다. 책, IT, 프로젝트, 공부 노트를 모아 둡니다." />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="favicon.ico" />
+    <script>
+        /* 저장된 테마를 첫 페인트 전에 적용해 화면이 깜빡이지 않게 한다. */
+        (function () {
+            try {
+                var saved = localStorage.getItem("ucanon.theme");
+                var theme = saved === "dark" || saved === "light"
+                    ? saved
+                    : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+                document.documentElement.setAttribute("data-theme", theme);
+            } catch (e) { /* 저장소 접근 불가 — 기본 테마 */ }
+        })();
+    </script>
+    <link rel="stylesheet" href="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-viewer.css" />
+    <link rel="stylesheet" href="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/github.min.css" />
+    <link rel="stylesheet" href="index.css" />
+    <script src="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-viewer.js"></script>
+    <script src="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
+    <script defer src="index.js"></script>
+</head>
+<body>
+    <svg hidden aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+        <symbol id="i-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></symbol>
+        <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+        <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></symbol>
+        <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19a2 2 0 0 1 2-2h13"/></symbol>
+        <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+        <symbol id="i-database" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+        <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+        <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></symbol>
+        <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+        <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+        <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+        <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+        <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.7.3 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></symbol>
+        <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5"/></symbol>
+        <symbol id="i-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="m20 4-9 9"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></symbol>
+        <symbol id="i-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 9 5 5 5-5"/><path d="M5 4h14"/></symbol>
+        <symbol id="i-collapse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5-5 5 5"/><path d="M5 20h14"/></symbol>
+        <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></symbol>
+        <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></symbol>
+        <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></symbol>
+        <symbol id="i-history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l3 2"/></symbol>
+    </svg>
 
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>ucanon.com</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="Description" content="This site was created for the purpose of sharing personal study content." />
-        <link rel="stylesheet" href="index.css" />
-        <script src="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-viewer.js"></script>
-        <script src="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
-        <script src="openSource/jquery/jquery-1.12.4.min.js"></script>
-        <link rel="stylesheet" href="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/toastui-editor-viewer.css" />
-        <link rel="stylesheet" href="openSource/toastUI/editor/node_modules/@toast-ui/editor/dist/github.min.css" />
-        <script defer src="index.js"></script>
-    </head>
-    <body>
-        <h2 class="main_title"><a href="/">UCANON.COM</a></h2>
-        <header></header>
-        <section>
-            <nav class="left_menu">
-                <ul>
-                    <li><div class="main">Book</div><ul>
-<li><a onclick="javascript:goPage('blog/Book/Study is HARD WORK')">Study is HARD WORK</a></li>
-<li><a onclick="javascript:goPage('blog/Book/The Passionate Programmer')">The Passionate Programmer</a></li>
-<li><a onclick="javascript:goPage('blog/Book/공부하는 독종이 살아 남는다')">공부하는 독종이 살아 남는다</a></li>
-<li><a onclick="javascript:goPage('blog/Book/그건 사랑이었네')">그건 사랑이었네</a></li>
-<li><a onclick="javascript:goPage('blog/Book/기도의 영을 받는 법')">기도의 영을 받는 법</a></li>
-<li><a onclick="javascript:goPage('blog/Book/나는 다시 태어나려고 기다리고 있어')">나는 다시 태어나려고 기다리고 있어</a></li>
-<li><a onclick="javascript:goPage('blog/Book/내 생애 단 한번')">내 생애 단 한번</a></li>
-<li><a onclick="javascript:goPage('blog/Book/닌텐도이야기')">닌텐도이야기</a></li>
-<li><a onclick="javascript:goPage('blog/Book/담론')">담론</a></li>
-<li><a onclick="javascript:goPage('blog/Book/백년을 살아보니')">백년을 살아보니</a></li>
-<li><a onclick="javascript:goPage('blog/Book/복음과 삶')">복음과 삶</a></li>
-<li><a onclick="javascript:goPage('blog/Book/비밀의 방')">비밀의 방</a></li>
-<li><a onclick="javascript:goPage('blog/Book/삶을 변혁시키는 책 읽기')">삶을 변혁시키는 책 읽기</a></li>
-<li><a onclick="javascript:goPage('blog/Book/성경은 드라마다')">성경은 드라마다</a></li>
-<li><a onclick="javascript:goPage('blog/Book/세계관은 이야기다')">세계관은 이야기다</a></li>
-<li><a onclick="javascript:goPage('blog/Book/세상을 만드는 글자 코딩')">세상을 만드는 글자 코딩</a></li>
-<li><a onclick="javascript:goPage('blog/Book/신도의 공동생활')">신도의 공동생활</a></li>
-<li><a onclick="javascript:goPage('blog/Book/쓸 만한 도끼 한 자루 준비합니다')">쓸 만한 도끼 한 자루 준비합니다</a></li>
-<li><a onclick="javascript:goPage('blog/Book/아몬드')">아몬드</a></li>
-<li><a onclick="javascript:goPage('blog/Book/완벽한 공부법')">완벽한 공부법</a></li>
-<li><a onclick="javascript:goPage('blog/Book/웨스터민스터 소교리문답')">웨스터민스터 소교리문답</a></li>
-<li><a onclick="javascript:goPage('blog/Book/잠수복과 나비')">잠수복과 나비</a></li>
-<li><a onclick="javascript:goPage('blog/Book/전태일 평전')">전태일 평전</a></li>
-<li><a onclick="javascript:goPage('blog/Book/중독에서 자유로워지려면')">중독에서 자유로워지려면</a></li>
-<li><a onclick="javascript:goPage('blog/Book/창조 타락 구속')">창조 타락 구속</a></li>
-<li><a onclick="javascript:goPage('blog/Book/처음 만나는 기독교 세계관')">처음 만나는 기독교 세계관</a></li>
-<li><a onclick="javascript:goPage('blog/Book/하나님을 경외하는 마음')">하나님을 경외하는 마음</a></li>
-<li><a onclick="javascript:goPage('blog/Book/한비야님의 그건 사랑이었네에서 소개한 책들')">한비야님의 그건 사랑이었네에서 소개한 책들</a></li>
-</ul></li>
-<li><div class="main">IT</div><ul>
-<li><a onclick="javascript:goPage('blog/IT/Database/GraphQL')">GraphQL</a></li>
-<li><a onclick="javascript:goPage('blog/IT/JAVA/POJO')">POJO</a></li>
-<li><a onclick="javascript:goPage('blog/IT/JAVA/Thymeleaf와_JSP_동시에_사용하기')">Thymeleaf와_JSP_동시에_사용하기</a></li>
-<li><a onclick="javascript:goPage('blog/IT/JAVA/UUID')">UUID</a></li>
-<li><a onclick="javascript:goPage('blog/IT/Javascript_CSS_HTML/escape_encodeURI_encodeURLComponent')">escape_encodeURI_encodeURLComponent</a></li>
-<li><a onclick="javascript:goPage('blog/IT/Javascript_CSS_HTML/Head First Object-Oriented Analysis & Design')">Head First Object-Oriented Analysis & Design</a></li>
-<li><a onclick="javascript:goPage('blog/IT/Javascript_CSS_HTML/How Javascript Works')">How Javascript Works</a></li>
-<li><a onclick="javascript:goPage('blog/IT/Javascript_CSS_HTML/Javascript the good parts(자바스크립트 핵심 가이드)')">Javascript the good parts(자바스크립트 핵심 가이드)</a></li>
-<li><a onclick="javascript:goPage('blog/IT/Javascript_CSS_HTML/Javascript_Cookie')">Javascript_Cookie</a></li>
-<li><a onclick="javascript:goPage('blog/IT/Javascript_CSS_HTML/Javascript_Loading_Sequence')">Javascript_Loading_Sequence</a></li>
-<li><a onclick="javascript:goPage('blog/IT/Javascript_CSS_HTML/jQuery')">jQuery</a></li>
-<li><a onclick="javascript:goPage('blog/IT/Javascript_CSS_HTML/Maintainable_Javascript')">Maintainable_Javascript</a></li>
-<li><a onclick="javascript:goPage('blog/IT/Javascript_CSS_HTML/기초부터 완성까지, 프런트엔드')">기초부터 완성까지, 프런트엔드</a></li>
-<li><a onclick="javascript:goPage('blog/IT/SoftwareEngineering/소프트웨어 개발의 모든 것 (All Of Software Everything)')">소프트웨어 개발의 모든 것 (All Of Software Everything)</a></li>
-<li><a onclick="javascript:goPage('blog/IT/SoftwareEngineering/프로그래머로 사는 법 (Making it big on software)')">프로그래머로 사는 법 (Making it big on software)</a></li>
-<li><a onclick="javascript:goPage('blog/IT/Web/서비스 워커와 웹 워커 비교')">서비스 워커와 웹 워커 비교</a></li>
-</ul></li>
-<li><div class="main">MyProject</div><ul>
-<li><a onclick="javascript:goPage('blog/MyProject/FamilyCodingClass/코딩캠프일정&자료')">코딩캠프일정&자료</a></li>
-</ul></li>
-<li><div class="main">Study</div><ul>
-<li><a onclick="javascript:goPage('blog/Study/내 안에 리더십 발견하기')">내 안에 리더십 발견하기</a></li>
-<li><a onclick="javascript:goPage('blog/Study/테크니컬 라이팅')">테크니컬 라이팅</a></li>
-</ul></li>
+    <div class="app-shell" id="app">
+        <aside class="sidebar" id="sidebar" aria-label="문서 탐색">
+            <div class="brand-row">
+                <a class="brand" href="/" data-route="" aria-label="UCANON.COM 홈으로">
+                    <span class="brand-mark" aria-hidden="true">U</span>
+                    <span class="brand-copy"><strong>UCANON</strong><span>personal study notes</span></span>
+                </a>
+                <button class="icon-button mobile-close" id="sidebarClose" type="button" aria-label="메뉴 닫기">
+                    <svg width="18" height="18"><use href="#i-close"/></svg>
+                </button>
+            </div>
 
-                </ul>
-            </nav>
-            <article id="content">
-                <div id="viewer"></div>
-            </article>
-        </section>
-        <footer>
-            <p></p>
-        </footer>
-    </body>
-    </html>
-    
+            <div class="tree-head">
+                <label class="tree-search" id="treeSearchBox">
+                    <svg width="16" height="16"><use href="#i-search"/></svg>
+                    <input id="treeSearch" type="search" placeholder="문서 검색 — 제목·경로·초성" autocomplete="off" spellcheck="false" aria-label="문서 검색" aria-controls="treeResults" />
+                    <kbd aria-hidden="true">/</kbd>
+                    <button class="tree-search-clear" id="treeSearchClear" type="button" aria-label="검색어 지우기">
+                        <svg width="14" height="14"><use href="#i-close"/></svg>
+                    </button>
+                </label>
+            </div>
+
+            <div class="tree-scroll" id="treeScroll">
+                <div class="section-label-row" id="treeLabelRow">
+                    <span class="section-label">Library</span>
+                    <div>
+                        <button class="tiny-icon-button" id="treeExpandAll" type="button" title="모두 펼치기" aria-label="모두 펼치기">
+                            <svg width="15" height="15"><use href="#i-expand"/></svg>
+                        </button>
+                        <button class="tiny-icon-button" id="treeCollapseAll" type="button" title="모두 접기" aria-label="모두 접기">
+                            <svg width="15" height="15"><use href="#i-collapse"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <ul class="tree-root" id="tree" role="tree" aria-label="문서 트리"></ul>
+                <div class="search-results" id="treeResults" hidden aria-live="polite"></div>
+            </div>
+
+            <div class="tree-foot">
+                <small id="treeFootCount">문서를 불러오는 중…</small>
+                <small id="treeFootUpdated"></small>
+            </div>
+        </aside>
+        <div class="mobile-scrim" id="scrim" hidden></div>
+
+        <div class="workspace">
+            <header class="topbar">
+                <div class="topbar-title">
+                    <button class="icon-button mobile-only" id="menuButton" type="button" aria-label="메뉴 열기" aria-controls="sidebar" aria-expanded="false">
+                        <svg width="20" height="20"><use href="#i-menu"/></svg>
+                    </button>
+                    <nav class="breadcrumb" id="breadcrumb" aria-label="현재 위치"></nav>
+                </div>
+                <button class="command-trigger" id="commandTrigger" type="button" aria-haspopup="dialog">
+                    <svg width="16" height="16"><use href="#i-search"/></svg>
+                    <span>문서 이름이나 초성으로 검색…</span>
+                    <kbd>Ctrl K</kbd>
+                </button>
+                <div class="topbar-actions">
+                    <button class="icon-button theme-toggle" id="themeToggle" type="button" aria-label="테마 전환" title="테마 전환">
+                        <svg class="icon-sun" width="18" height="18"><use href="#i-sun"/></svg>
+                        <svg class="icon-moon" width="18" height="18"><use href="#i-moon"/></svg>
+                    </button>
+                    <a class="icon-button" href="https://github.com/James-Park" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+                        <svg width="18" height="18"><use href="#i-github"/></svg>
+                    </a>
+                </div>
+            </header>
+
+            <div class="workspace-body" id="workspaceBody">
+                <main class="reader-scroll" id="reader" tabindex="-1">
+                    <div class="reader-inner">
+                        <section class="home" id="home" hidden aria-label="홈"></section>
+
+                        <section class="folder" id="folder" hidden aria-label="폴더"></section>
+
+                        <article class="document" id="document" hidden>
+                            <header class="document-head">
+                                <div class="document-head-copy">
+                                    <span class="document-kicker" id="docKicker"></span>
+                                    <div class="document-meta" id="docMeta"></div>
+                                </div>
+                                <div class="document-actions">
+                                    <button class="pill-button" id="copyLink" type="button">
+                                        <svg width="14" height="14"><use href="#i-link"/></svg>링크 복사
+                                    </button>
+                                    <a class="pill-button" id="rawLink" href="#" target="_blank" rel="noopener">
+                                        <svg width="14" height="14"><use href="#i-external"/></svg>원문
+                                    </a>
+                                </div>
+                            </header>
+                            <div class="document-body" id="viewer"></div>
+                            <nav class="document-pager" id="pager" aria-label="이전·다음 문서"></nav>
+                        </article>
+
+                        <div class="reader-state" id="readerState" hidden></div>
+
+                        <footer class="site-footer">
+                            <span>© <span id="footerYear"></span> UCANON.COM · 개인 공부 기록</span>
+                            <span class="footer-links">
+                                <a href="https://github.com/James-Park" target="_blank" rel="noopener">GitHub</a>
+                                <a href="https://blog.naver.com/pskpassion" target="_blank" rel="noopener">Blog</a>
+                                <a href="mailto:pskpassion@gmail.com">E-mail</a>
+                            </span>
+                        </footer>
+                    </div>
+                </main>
+
+                <aside class="outline" id="outline" aria-label="문서 목차">
+                    <span class="outline-label">On this page</span>
+                    <ol id="outlineList"></ol>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    <div class="command-scrim" id="commandScrim" hidden>
+        <div class="command-palette" role="dialog" aria-modal="true" aria-label="문서 검색">
+            <div class="command-input">
+                <svg width="18" height="18"><use href="#i-search"/></svg>
+                <input id="commandInput" type="search" placeholder="문서 검색 — 제목, 경로, 초성(예: ㄷㄹ)" autocomplete="off" spellcheck="false" aria-label="문서 검색" role="combobox" aria-expanded="true" aria-controls="commandOptions" aria-autocomplete="list" />
+                <kbd>Esc</kbd>
+            </div>
+            <div class="command-options" id="commandOptions" role="listbox" aria-label="검색 결과"></div>
+            <div class="command-footer">
+                <span><kbd>↑</kbd><kbd>↓</kbd> 이동</span>
+                <span><kbd>Enter</kbd> 열기</span>
+                <span><kbd>Esc</kbd> 닫기</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
