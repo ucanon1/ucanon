@@ -135,7 +135,6 @@
   --sidebar-width: 288px;
   --outline-width: 0px;
   --topbar-height: 64px;
-  --reader-max: 860px;
 }
 
 :root[data-theme="dark"] {
@@ -911,9 +910,7 @@ li[aria-expanded="false"] > ul {
 
 .reader-inner {
   width: 100%;
-  max-width: calc(var(--reader-max) + 2 * 48px);
   min-height: 100%;
-  margin: 0 auto;
   padding: 36px 48px 48px;
   display: flex;
   flex-direction: column;

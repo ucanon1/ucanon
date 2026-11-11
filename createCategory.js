@@ -1,7 +1,7 @@
 /**
  * blog 하위 디렉터리의 Markdown 문서를 모두 찾아 메뉴 트리를 menu.json 으로 저장한다.
  *
- *   node createCategory.js            → ./menu.json 생성
+ *   node createCategory.js            → ./menu.json 생성 + HTML 의 CSS/JS 주소에 버전(?v=해시) 갱신
  *   node createCategory.js --check    → 변경 여부만 확인(종료 코드 1 이면 갱신 필요)
  *
  * 규칙
@@ -15,6 +15,7 @@
  */
 
 const fs = require("fs");
+const crypto = require("crypto");
 const path = require("path");
 
 const ROOT = path.resolve(__dirname);
@@ -110,6 +111,32 @@ function buildMenu() {
   };
 }
 
+/**
+ * index.css · index.js 내용 해시를 HTML 의 자원 주소에 ?v= 로 붙인다.
+ * 배포 직후 브라우저·CDN 캐시에 남은 예전 CSS/JS 가 새 HTML 과 섞여 화면이 깨지는 것을 막는다.
+ */
+function stampAssets() {
+  const assets = ["index.css", "index.js"];
+  const pages = ["index.html", "content.html", "view.html"];
+  const versions = {};
+  for (const asset of assets) {
+    const data = fs.readFileSync(path.join(ROOT, asset));
+    versions[asset] = crypto.createHash("sha1").update(data).digest("hex").slice(0, 10);
+  }
+  for (const page of pages) {
+    const file = path.join(ROOT, page);
+    if (!fs.existsSync(file)) continue;
+    const before = fs.readFileSync(file, "utf8");
+    let after = before;
+    for (const asset of assets) {
+      const re = new RegExp('((?:href|src)="' + asset.replace(".", "\\.") + ')(?:\\?v=[^"]*)?"', "g");
+      after = after.replace(re, '$1?v=' + versions[asset] + '"');
+    }
+    if (after !== before) fs.writeFileSync(file, after, "utf8");
+  }
+  return versions;
+}
+
 function main() {
   const menu = buildMenu();
   const json = JSON.stringify(menu, null, 2) + "\n";
@@ -127,6 +154,8 @@ function main() {
   }
 
   fs.writeFileSync(OUT_FILE, json, "utf8");
+  const v = stampAssets();
+  console.log("자원 버전 갱신 — index.css?v=" + v["index.css"] + ", index.js?v=" + v["index.js"]);
   console.log(`menu.json 저장 완료 — 문서 ${menu.docCount}개, 카테고리 ${menu.categories.length}개`);
 }
 
