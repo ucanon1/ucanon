@@ -1,7 +1,7 @@
 /**
  * blog 하위 디렉터리의 Markdown 문서를 모두 찾아 메뉴 트리를 menu.json 으로 저장한다.
  *
- *   node createCategory.js            → ./menu.json 생성, doc-ids.json(문서·폴더 ID) 갱신,
+ *   node createCategory.js            → ./menu.json 생성, doc-ids.json(문서 key·ID, 폴더 ID) 갱신,
  *                                       HTML 의 CSS/JS 주소에 버전(?v=해시) 갱신
  *   node createCategory.js --check    → 변경 여부만 확인(종료 코드 1 이면 갱신 필요)
  *
@@ -140,7 +140,11 @@ function stampAssets() {
 
 /* --------------------------------------------------------------------------
    문서·폴더 ID 레지스트리 (doc-ids.json)
-   - 주소는 #/doc/{id}, #/folder/{id} 로 만든다. 한 번 준 ID 는 바꾸거나 재사용하지 않는다.
+   - 문서 주소는 #/{key}, 폴더 주소는 #/folder/{id} 로 만든다.
+   - key 는 문서가 처음 등록될 때의 내용 해시(16자리)로 정하고 이후 내용이 바뀌어도 고정한다.
+     같은 key 가 이미 있으면(빈 파일·복사본) 경로를 섞어 다시 만들어 항상 유일하게 한다.
+   - hash 는 현재 내용 해시로, 문서를 고칠 때마다 갱신된다(이름 변경 추적용).
+   - 한 번 준 ID·key 는 바꾸거나 재사용하지 않는다.
    - 문서를 옮기거나 이름을 바꿔도 다음 중 하나가 같으면 기존 ID 를 이어받는다.
        1) 내용 해시가 같다(이름만 바꾼 경우)   2) 파일 이름이 같다(폴더만 옮긴 경우)
      둘 다 바뀌면 새 문서로 보고 새 ID 를 준다.
@@ -171,7 +175,7 @@ function saveRegistry(reg) {
     _comment: "createCategory.js 가 관리하는 문서·폴더 ID 목록입니다. 한 번 부여한 ID 는 바뀌지 않도록 직접 수정하지 마세요.",
     nextDocId: reg.nextDocId,
     nextFolderId: reg.nextFolderId,
-    docs: sortObj(reg.docs, (v) => v.id),
+    docs: Object.fromEntries(Object.entries(sortObj(reg.docs, (v) => v.id)).map(([p, v]) => [p, { id: v.id, key: v.key, hash: v.hash }])),
     folders: sortObj(reg.folders, (v) => v),
     retired: reg.retired,
   };
@@ -193,6 +197,17 @@ function flattenFolders(nodes, out = []) {
   return out;
 }
 
+function sha16(text) {
+  return crypto.createHash("sha1").update(text).digest("hex").slice(0, 16);
+}
+
+/** 문서 주소용 고정 key. 처음 본 내용 해시를 쓰되, 이미 쓰인 값이면 경로를 섞어 다시 만든다. */
+function newKey(hash, docPath, taken) {
+  let key = hash;
+  for (let n = 1; taken.has(key); n++) key = sha16(hash + "|" + docPath + "|" + n);
+  return key;
+}
+
 /** menu 의 모든 문서·폴더에 id 를 붙이고 레지스트리를 갱신한다. 반환값: 새로 만든 ID 수 */
 function assignIds(menu, reg) {
   const docs = flattenDocs(menu.categories);
@@ -202,6 +217,16 @@ function assignIds(menu, reg) {
     .filter(([p]) => !livePaths.has(p))
     .map(([p, v]) => ({ path: p, id: v.id, hash: v.hash, name: p.slice(p.lastIndexOf("/") + 1) }));
   const used = new Set(Object.entries(reg.docs).filter(([p]) => livePaths.has(p)).map(([, v]) => v.id));
+  // 예전 레지스트리(key 없음)는 현재 내용 해시를 key 로 고정한다.
+  const takenKeys = new Set();
+  for (const v of Object.values(reg.docs)) if (v.key) takenKeys.add(v.key);
+  for (const v of Object.values(reg.retired)) if (v && v.key) takenKeys.add(v.key);
+  for (const [p, v] of Object.entries(reg.docs)) {
+    if (!v.key && v.hash) {
+      v.key = newKey(v.hash, p, takenKeys);
+      takenKeys.add(v.key);
+    }
+  }
   let created = 0;
 
   for (const doc of docs) {
@@ -212,29 +237,34 @@ function assignIds(menu, reg) {
       const match =
         orphans.find((o) => !used.has(o.id) && o.hash === hash) ||
         orphans.find((o) => !used.has(o.id) && o.name === name);
-      let id;
+      const retired = reg.retired[hash];
+      const retiredId = retired && typeof retired === "object" ? retired.id : retired;
       if (match) {
-        id = match.id;
+        entry = { id: match.id, key: reg.docs[match.path].key };
         delete reg.docs[match.path];
-      } else if (reg.retired[hash] && !used.has(reg.retired[hash])) {
-        id = reg.retired[hash];
+      } else if (retiredId && !used.has(retiredId)) {
+        entry = { id: retiredId, key: retired.key };
         delete reg.retired[hash];
       } else {
-        id = reg.nextDocId++;
+        entry = { id: reg.nextDocId++ };
         created++;
       }
-      entry = { id };
+      if (!entry.key) {
+        entry.key = newKey(hash, doc.path, takenKeys);
+        takenKeys.add(entry.key);
+      }
     }
     entry.hash = hash;
     reg.docs[doc.path] = entry;
     used.add(entry.id);
     doc.id = String(entry.id);
+    doc.key = entry.key;
   }
 
   // 남은 고아 문서는 지워진 것으로 보고 retired 로 옮긴다.
   for (const [p, v] of Object.entries(reg.docs)) {
     if (!livePaths.has(p)) {
-      if (v.hash) reg.retired[v.hash] = v.id;
+      if (v.hash) reg.retired[v.hash] = { id: v.id, key: v.key };
       delete reg.docs[p];
     }
   }

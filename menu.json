@@ -5,9 +5,9 @@
     "description": "마음에 남은 책, 공부한 기술, 직접 만든 것들을 한 장씩 모아 두는 작은 서재입니다.",
     "home": "README"
   },
-  "generatedAt": "2026-11-11T13:21:48.097Z",
+  "generatedAt": "2026-11-11T15:08:55.038Z",
   "docCount": 53,
-  "latestUpdated": "2025-12-18",
+  "latestUpdated": "2026-11-11",
   "categories": [
     {
       "type": "folder",
@@ -20,7 +20,8 @@
           "path": "blog/Book/가르침과 배움의 영성",
           "updated": "2025-06-09",
           "size": 4160,
-          "id": "1"
+          "id": "1",
+          "key": "fdd0238d264b4fc9"
         },
         {
           "type": "doc",
@@ -28,7 +29,8 @@
           "path": "blog/Book/공부하는 독종이 살아 남는다",
           "updated": "2023-09-06",
           "size": 4382,
-          "id": "2"
+          "id": "2",
+          "key": "cb0405792cb0ef74"
         },
         {
           "type": "doc",
@@ -36,7 +38,8 @@
           "path": "blog/Book/그건 사랑이었네",
           "updated": "2024-07-22",
           "size": 1077,
-          "id": "3"
+          "id": "3",
+          "key": "6763f5e51d9e34f3"
         },
         {
           "type": "doc",
@@ -44,7 +47,8 @@
           "path": "blog/Book/기도의 영을 받는 법",
           "updated": "2023-09-06",
           "size": 1438,
-          "id": "4"
+          "id": "4",
+          "key": "b651b6fe4f799b5c"
         },
         {
           "type": "doc",
@@ -52,7 +56,8 @@
           "path": "blog/Book/나는 다시 태어나려고 기다리고 있어",
           "updated": "2023-09-06",
           "size": 6043,
-          "id": "5"
+          "id": "5",
+          "key": "fb73bcbe9c18f117"
         },
         {
           "type": "doc",
@@ -60,7 +65,8 @@
           "path": "blog/Book/내 생애 단 한번",
           "updated": "2024-10-15",
           "size": 11455,
-          "id": "6"
+          "id": "6",
+          "key": "83a4f91314b01ede"
         },
         {
           "type": "doc",
@@ -68,7 +74,8 @@
           "path": "blog/Book/닌텐도이야기",
           "updated": "2023-09-06",
           "size": 15783,
-          "id": "7"
+          "id": "7",
+          "key": "c4632bb52ed7e52a"
         },
         {
           "type": "doc",
@@ -76,7 +83,8 @@
           "path": "blog/Book/담론",
           "updated": "2023-09-06",
           "size": 4754,
-          "id": "8"
+          "id": "8",
+          "key": "d5538af170210967"
         },
         {
           "type": "doc",
@@ -84,7 +92,8 @@
           "path": "blog/Book/백년을 살아보니",
           "updated": "2023-09-06",
           "size": 5375,
-          "id": "9"
+          "id": "9",
+          "key": "260702d8a6372852"
         },
         {
           "type": "doc",
@@ -92,7 +101,8 @@
           "path": "blog/Book/복음과 삶",
           "updated": "2024-10-30",
           "size": 10306,
-          "id": "10"
+          "id": "10",
+          "key": "c709e283fcbb4e4b"
         },
         {
           "type": "doc",
@@ -100,7 +110,8 @@
           "path": "blog/Book/비밀의 방",
           "updated": "2023-09-06",
           "size": 1008,
-          "id": "11"
+          "id": "11",
+          "key": "53d13e9b38b127ea"
         },
         {
           "type": "doc",
@@ -108,7 +119,8 @@
           "path": "blog/Book/삶을 변혁시키는 책 읽기",
           "updated": "2023-09-06",
           "size": 1576,
-          "id": "12"
+          "id": "12",
+          "key": "06c08be04c115221"
         },
         {
           "type": "doc",
@@ -116,7 +128,8 @@
           "path": "blog/Book/성경은 드라마다",
           "updated": "2024-10-27",
           "size": 41704,
-          "id": "13"
+          "id": "13",
+          "key": "6479fb041a826a39"
         },
         {
           "type": "doc",
@@ -124,7 +137,8 @@
           "path": "blog/Book/세계관은 이야기다",
           "updated": "2023-09-06",
           "size": 22549,
-          "id": "14"
+          "id": "14",
+          "key": "422db0c0a2f2d043"
         },
         {
           "type": "doc",
@@ -132,7 +146,8 @@
           "path": "blog/Book/세상을 만드는 글자 코딩",
           "updated": "2023-09-06",
           "size": 23738,
-          "id": "15"
+          "id": "15",
+          "key": "3e1dd57b54dd5ff1"
         },
         {
           "type": "doc",
@@ -140,7 +155,8 @@
           "path": "blog/Book/신도의 공동생활",
           "updated": "2024-11-26",
           "size": 5743,
-          "id": "16"
+          "id": "16",
+          "key": "629f45f988ea5a90"
         },
         {
           "type": "doc",
@@ -148,7 +164,8 @@
           "path": "blog/Book/쓸 만한 도끼 한 자루 준비합니다",
           "updated": "2024-07-22",
           "size": 5103,
-          "id": "17"
+          "id": "17",
+          "key": "31f3e82b6797c6ff"
         },
         {
           "type": "doc",
@@ -156,7 +173,8 @@
           "path": "blog/Book/아몬드",
           "updated": "2023-09-06",
           "size": 2411,
-          "id": "18"
+          "id": "18",
+          "key": "06ddce9dfab3b0d8"
         },
         {
           "type": "doc",
@@ -164,7 +182,8 @@
           "path": "blog/Book/완벽한 공부법",
           "updated": "2023-09-06",
           "size": 2277,
-          "id": "19"
+          "id": "19",
+          "key": "963460d77a5df3ef"
         },
         {
           "type": "doc",
@@ -172,7 +191,8 @@
           "path": "blog/Book/웨스터민스터 소교리문답",
           "updated": "2023-09-06",
           "size": 16907,
-          "id": "20"
+          "id": "20",
+          "key": "c0f7deac58892fa9"
         },
         {
           "type": "doc",
@@ -180,7 +200,8 @@
           "path": "blog/Book/잠수복과 나비",
           "updated": "2023-09-06",
           "size": 893,
-          "id": "21"
+          "id": "21",
+          "key": "276e92c6c9ca1f85"
         },
         {
           "type": "doc",
@@ -188,7 +209,8 @@
           "path": "blog/Book/전태일 평전",
           "updated": "2023-09-06",
           "size": 1479,
-          "id": "22"
+          "id": "22",
+          "key": "33a8667d4297a10a"
         },
         {
           "type": "doc",
@@ -196,7 +218,8 @@
           "path": "blog/Book/중독에서 자유로워지려면",
           "updated": "2023-09-06",
           "size": 2548,
-          "id": "23"
+          "id": "23",
+          "key": "3a47e3ecd011c5ff"
         },
         {
           "type": "doc",
@@ -204,7 +227,8 @@
           "path": "blog/Book/창조 타락 구속",
           "updated": "2023-09-06",
           "size": 15515,
-          "id": "24"
+          "id": "24",
+          "key": "12fcc02a91f03301"
         },
         {
           "type": "doc",
@@ -212,7 +236,8 @@
           "path": "blog/Book/처음 만나는 기독교 세계관",
           "updated": "2023-09-06",
           "size": 3948,
-          "id": "25"
+          "id": "25",
+          "key": "82a193ce3bd28cf1"
         },
         {
           "type": "doc",
@@ -220,7 +245,8 @@
           "path": "blog/Book/하나님을 경외하는 마음",
           "updated": "2023-09-06",
           "size": 3195,
-          "id": "26"
+          "id": "26",
+          "key": "2153943cd3b3c1f4"
         },
         {
           "type": "doc",
@@ -228,7 +254,8 @@
           "path": "blog/Book/한비야님의 그건 사랑이었네에서 소개한 책들",
           "updated": "2023-09-06",
           "size": 1950,
-          "id": "27"
+          "id": "27",
+          "key": "0593c5e584edf451"
         },
         {
           "type": "doc",
@@ -236,7 +263,8 @@
           "path": "blog/Book/Study is HARD WORK",
           "updated": "2023-09-06",
           "size": 2112,
-          "id": "28"
+          "id": "28",
+          "key": "d3498d75aad044b5"
         },
         {
           "type": "doc",
@@ -244,7 +272,8 @@
           "path": "blog/Book/The Passionate Programmer",
           "updated": "2023-12-14",
           "size": 23059,
-          "id": "29"
+          "id": "29",
+          "key": "1f417797a0473adb"
         }
       ],
       "count": 29,
@@ -266,7 +295,8 @@
               "path": "blog/IT/Database/GraphQL",
               "updated": "2024-12-10",
               "size": 5233,
-              "id": "30"
+              "id": "30",
+              "key": "8f857920bb355ad3"
             }
           ],
           "count": 1,
@@ -283,7 +313,8 @@
               "path": "blog/IT/JAVA/POJO",
               "updated": "2023-09-06",
               "size": 2605,
-              "id": "31"
+              "id": "31",
+              "key": "01fd7983cbab232d"
             },
             {
               "type": "doc",
@@ -291,7 +322,8 @@
               "path": "blog/IT/JAVA/Thymeleaf와_JSP_동시에_사용하기",
               "updated": "2024-07-23",
               "size": 3875,
-              "id": "32"
+              "id": "32",
+              "key": "9f56afa52c5bd5dd"
             },
             {
               "type": "doc",
@@ -299,7 +331,8 @@
               "path": "blog/IT/JAVA/UUID",
               "updated": "2023-09-06",
               "size": 1894,
-              "id": "33"
+              "id": "33",
+              "key": "9c1b269ba0ba39a8"
             }
           ],
           "count": 3,
@@ -316,7 +349,8 @@
               "path": "blog/IT/Javascript_CSS_HTML/기초부터 완성까지, 프런트엔드",
               "updated": "2024-09-27",
               "size": 34165,
-              "id": "34"
+              "id": "34",
+              "key": "ed74446337370c3f"
             },
             {
               "type": "doc",
@@ -324,7 +358,8 @@
               "path": "blog/IT/Javascript_CSS_HTML/브라우저 렌더링 최적화와 뷰포트 밖 요소 처리에 대한 웹 표준 기술",
               "updated": "2025-12-18",
               "size": 11762,
-              "id": "35"
+              "id": "35",
+              "key": "3ad507aac46640b3"
             },
             {
               "type": "doc",
@@ -332,15 +367,17 @@
               "path": "blog/IT/Javascript_CSS_HTML/웹 브라우저 기능을 활용한 프런트엔드 오류 수집 전략",
               "updated": "2025-08-28",
               "size": 7018,
-              "id": "36"
+              "id": "36",
+              "key": "cd7428b49d5e5e72"
             },
             {
               "type": "doc",
               "title": "escape_encodeURI_encodeURLComponent",
               "path": "blog/IT/Javascript_CSS_HTML/escape_encodeURI_encodeURLComponent",
-              "updated": "2023-09-06",
+              "updated": "2026-11-11",
               "size": 2679,
-              "id": "37"
+              "id": "37",
+              "key": "1c6342067dbe56a5"
             },
             {
               "type": "doc",
@@ -348,7 +385,8 @@
               "path": "blog/IT/Javascript_CSS_HTML/Head First Object-Oriented Analysis & Design",
               "updated": "2023-09-06",
               "size": 3483,
-              "id": "38"
+              "id": "38",
+              "key": "a286c5d1fc0a95cb"
             },
             {
               "type": "doc",
@@ -356,7 +394,8 @@
               "path": "blog/IT/Javascript_CSS_HTML/How Javascript Works",
               "updated": "2024-07-22",
               "size": 4393,
-              "id": "39"
+              "id": "39",
+              "key": "f73873ec8455ff18"
             },
             {
               "type": "doc",
@@ -364,7 +403,8 @@
               "path": "blog/IT/Javascript_CSS_HTML/Javascript the good parts(자바스크립트 핵심 가이드)",
               "updated": "2023-09-06",
               "size": 6808,
-              "id": "40"
+              "id": "40",
+              "key": "4983435541c3d25a"
             },
             {
               "type": "doc",
@@ -372,7 +412,8 @@
               "path": "blog/IT/Javascript_CSS_HTML/Javascript_Cookie",
               "updated": "2024-12-02",
               "size": 14127,
-              "id": "41"
+              "id": "41",
+              "key": "03b9d2ca1e04328d"
             },
             {
               "type": "doc",
@@ -380,7 +421,8 @@
               "path": "blog/IT/Javascript_CSS_HTML/Javascript_Loading_Sequence",
               "updated": "2024-09-09",
               "size": 6768,
-              "id": "42"
+              "id": "42",
+              "key": "4b0170b9e0856663"
             },
             {
               "type": "doc",
@@ -388,7 +430,8 @@
               "path": "blog/IT/Javascript_CSS_HTML/jQuery",
               "updated": "2023-09-06",
               "size": 1842,
-              "id": "43"
+              "id": "43",
+              "key": "e8677744caf3ca4a"
             },
             {
               "type": "doc",
@@ -396,7 +439,8 @@
               "path": "blog/IT/Javascript_CSS_HTML/Maintainable_Javascript",
               "updated": "2023-09-06",
               "size": 2373,
-              "id": "44"
+              "id": "44",
+              "key": "95fd0c24cc7454bc"
             }
           ],
           "count": 11,
@@ -413,7 +457,8 @@
               "path": "blog/IT/LowCodePlatform/No-Code 플랫폼 비교 분석",
               "updated": "2025-01-09",
               "size": 5956,
-              "id": "45"
+              "id": "45",
+              "key": "cdd31edd6d4ca593"
             },
             {
               "type": "doc",
@@ -421,7 +466,8 @@
               "path": "blog/IT/LowCodePlatform/OutSystems와 Java 아키텍처 비교 분석",
               "updated": "2025-01-09",
               "size": 3865,
-              "id": "46"
+              "id": "46",
+              "key": "7d52d32206d739dc"
             }
           ],
           "count": 2,
@@ -438,7 +484,8 @@
               "path": "blog/IT/SoftwareEngineering/소프트웨어 개발의 모든 것 (All Of Software Everything)",
               "updated": "2023-09-06",
               "size": 11101,
-              "id": "47"
+              "id": "47",
+              "key": "2030c28f366bcee0"
             },
             {
               "type": "doc",
@@ -446,7 +493,8 @@
               "path": "blog/IT/SoftwareEngineering/프로그래머로 사는 법 (Making it big on software)",
               "updated": "2024-09-27",
               "size": 9856,
-              "id": "48"
+              "id": "48",
+              "key": "7cd46f54b57d0e3d"
             }
           ],
           "count": 2,
@@ -463,7 +511,8 @@
               "path": "blog/IT/Web/서비스 워커와 웹 워커 비교",
               "updated": "2024-09-12",
               "size": 1857,
-              "id": "49"
+              "id": "49",
+              "key": "81b91f08cd26a60d"
             },
             {
               "type": "doc",
@@ -471,7 +520,8 @@
               "path": "blog/IT/Web/SameSiteCookie",
               "updated": "2025-02-07",
               "size": 15822,
-              "id": "50"
+              "id": "50",
+              "key": "def57104aef37c73"
             }
           ],
           "count": 2,
@@ -497,7 +547,8 @@
               "path": "blog/MyProject/FamilyCodingClass/코딩캠프일정&자료",
               "updated": "2023-09-06",
               "size": 2607,
-              "id": "51"
+              "id": "51",
+              "key": "190c964db5225230"
             }
           ],
           "count": 1,
@@ -518,7 +569,8 @@
           "path": "blog/Study/내 안에 리더십 발견하기",
           "updated": "2023-09-06",
           "size": 3223,
-          "id": "52"
+          "id": "52",
+          "key": "edeaf1b336732307"
         },
         {
           "type": "doc",
@@ -526,7 +578,8 @@
           "path": "blog/Study/테크니컬 라이팅",
           "updated": "2023-09-06",
           "size": 820,
-          "id": "53"
+          "id": "53",
+          "key": "4b11e24609f7dc6d"
         }
       ],
       "count": 2,

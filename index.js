@@ -60,14 +60,14 @@
   }
 
   /**
-   * 문서·폴더 경로 → ID 기반 해시 링크.
-   *   문서 "blog/Book/담론" → "#/doc/9",  폴더 "blog/Book" → "#/folder/1",  홈 "" → "#/"
-   * ID 는 createCategory.js 가 doc-ids.json 에서 관리한다. ID 가 없으면(메뉴 밖 문서) 경로를 그대로 쓴다.
+   * 문서·폴더 경로 → 고정 주소.
+   *   문서 "blog/Book/담론" → "#/1c6342067dbe56a5"(고정 해시 key),  폴더 "blog/Book" → "#/folder/1",  홈 "" → "#/"
+   * key·ID 는 createCategory.js 가 doc-ids.json 에서 관리한다. 없으면(메뉴 밖 문서) 경로를 그대로 쓴다.
    */
   function hrefFor(path) {
     if (!path) return "#/";
     const doc = state.byPath.get(path);
-    if (doc && doc.id) return "#/doc/" + doc.id;
+    if (doc && doc.key) return "#/" + doc.key;
     const folder = state.folders.get(path);
     if (folder && folder.id) return "#/folder/" + folder.id;
     return "#" + path;
@@ -79,11 +79,22 @@
    */
   function currentPath() {
     const raw = location.hash.replace(/^#/, "");
+    const byKey = /^\/([0-9a-f]{16})\/?$/.exec(raw);
+    if (byKey) {
+      const doc = state.docByKey.get(byKey[1]);
+      return doc ? doc.path : "#missing:doc/" + byKey[1];
+    }
     const byId = /^\/(doc|folder)\/([\w-]+)\/?$/.exec(raw);
     if (byId) {
+      // 문서는 예전 숫자 ID 주소(#/doc/9) — 찾으면 해시 주소로 교체한다.
       const map = byId[1] === "doc" ? state.docById : state.folderById;
       const node = map.get(byId[2]);
-      return node ? node.path : "#missing:" + byId[1] + "/" + byId[2];
+      if (!node) return "#missing:" + byId[1] + "/" + byId[2];
+      const canonical = hrefFor(node.path);
+      if (canonical !== "#" + raw && history.replaceState) {
+        history.replaceState(null, "", location.pathname + location.search + canonical);
+      }
+      return node.path;
     }
     let path = raw.replace(/^\/+/, "");
     try {
@@ -140,7 +151,8 @@
     docs: [], // 트리 순서의 평탄화 목록
     byPath: new Map(), // path → doc
     folders: new Map(), // path → folder (parent 포함)
-    docById: new Map(), // id → doc
+    docById: new Map(), // 예전 숫자 id → doc
+    docByKey: new Map(), // 고정 해시 key → doc
     folderById: new Map(), // id → folder
     expanded: new Set(readStore(STORAGE.expanded, [])),
     current: null, // 열린 문서 path
@@ -229,6 +241,7 @@
     state.byPath.clear();
     state.folders.clear();
     state.docById.clear();
+    state.docByKey.clear();
     state.folderById.clear();
 
     const walk = (nodes, crumbs, parent) => {
@@ -252,6 +265,7 @@
           state.docs.push(doc);
           state.byPath.set(node.path, doc);
           if (node.id) state.docById.set(String(node.id), doc);
+          if (node.key) state.docByKey.set(node.key, doc);
         }
       }
     };
@@ -891,10 +905,10 @@
       // 메뉴에 없는 ID — 문서 요청을 보내지 않고 바로 안내한다.
       const [kind, id] = path.slice(9).split("/");
       state.current = null;
-      renderBreadcrumb([], kind === "doc" ? "문서 #" + id : "폴더 #" + id);
+      renderBreadcrumb([], kind === "doc" ? "문서 " + id : "폴더 #" + id);
       setTitle("찾을 수 없음");
       markActive(null);
-      renderState("notfound", (kind === "doc" ? "문서 ID " : "폴더 ID ") + id);
+      renderState("notfound", (kind === "doc" ? "문서 " : "폴더 ID ") + id);
       return;
     }
     if (state.folders.has(path)) {
