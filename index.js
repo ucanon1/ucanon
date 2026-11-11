@@ -60,25 +60,46 @@
   }
 
   /**
-   * 문서·폴더 경로 → 고정 주소.
-   *   문서 "blog/Book/담론" → "#/1c6342067dbe56a5"(고정 해시 key),  폴더 "blog/Book" → "#/folder/1",  홈 "" → "#/"
+   * 주소 체계
+   *   index.html(사이드바 있는 화면)은 문서를 공유 주소 그대로 보여 준다 — 주소창을 복사해 공유해도 미리보기가 나온다.
+   *     문서 "/p/{key}/"   폴더 "/#/folder/{id}"   홈 "/"
+   *   content.html·view.html 은 지금처럼 해시 주소를 쓴다.
+   *     문서 "#/{key}"     폴더 "#/folder/{id}"    홈 "#/"
    * key·ID 는 createCategory.js 가 doc-ids.json 에서 관리한다. 없으면(메뉴 밖 문서) 경로를 그대로 쓴다.
+   * /p/{key}/ 는 GitHub Pages 의 정적 공유 페이지라 새로고침해도 같은 문서로 돌아온다(사람은 /#/{key} 를 거쳐 다시 이 주소가 된다).
    */
+  const useSharePath = document.body.getAttribute("data-layout") !== "reader";
+
   function hrefFor(path) {
-    if (!path) return "#/";
+    const base = useSharePath ? "/" : "";
+    if (!path) return useSharePath ? "/" : "#/";
     const doc = state.byPath.get(path);
-    if (doc && doc.key) return "#/" + doc.key;
+    if (doc && doc.key) return useSharePath ? "/p/" + doc.key + "/" : "#/" + doc.key;
     const folder = state.folders.get(path);
-    if (folder && folder.id) return "#/folder/" + folder.id;
-    return "#" + path;
+    if (folder && folder.id) return base + "#/folder/" + folder.id;
+    return base + "#" + path;
+  }
+
+  /** 지금 주소창 주소(hrefFor 와 같은 꼴) */
+  function currentUrl() {
+    return useSharePath ? location.pathname + location.hash : location.hash || "#/";
   }
 
   /**
-   * 해시에서 현재 문서·폴더 경로를 읽는다.
-   * 예전 주소(#blog/Book/담론)로 들어오면 ID 주소로 바꿔 기록을 남기지 않고 교체한다.
+   * 주소에서 현재 문서·폴더 경로를 읽는다.
+   *   /p/{key}/, #/{key}, #/folder/{id}, 예전 #/doc/{id}·#blog/… 를 모두 받는다.
+   * 정식 주소가 아니면 route() 가 기록을 남기지 않고 정식 주소로 교체한다.
    */
   function currentPath() {
     const raw = location.hash.replace(/^#/, "");
+    if (useSharePath && !(raw.startsWith("/") && raw.length > 1)) {
+      // /p/{key}/#제목 같은 문서 안 앵커는 주소 해석에서 무시한다.
+      const share = /^\/p\/([0-9a-f]{16})\/?$/.exec(location.pathname);
+      if (share) {
+        const doc = state.docByKey.get(share[1]);
+        return doc ? doc.path : "#missing:doc/" + share[1];
+      }
+    }
     const byKey = /^\/([0-9a-f]{16})\/?$/.exec(raw);
     if (byKey) {
       const doc = state.docByKey.get(byKey[1]);
@@ -86,15 +107,9 @@
     }
     const byId = /^\/(doc|folder)\/([\w-]+)\/?$/.exec(raw);
     if (byId) {
-      // 문서는 예전 숫자 ID 주소(#/doc/9) — 찾으면 해시 주소로 교체한다.
       const map = byId[1] === "doc" ? state.docById : state.folderById;
       const node = map.get(byId[2]);
-      if (!node) return "#missing:" + byId[1] + "/" + byId[2];
-      const canonical = hrefFor(node.path);
-      if (canonical !== "#" + raw && history.replaceState) {
-        history.replaceState(null, "", location.pathname + location.search + canonical);
-      }
-      return node.path;
+      return node ? node.path : "#missing:" + byId[1] + "/" + byId[2];
     }
     let path = raw.replace(/^\/+/, "");
     try {
@@ -102,22 +117,49 @@
     } catch (_) {
       /* 그대로 사용 */
     }
-    if (path) {
-      const canonical = hrefFor(path);
-      if (canonical !== "#" + path && history.replaceState) {
-        history.replaceState(null, "", location.pathname + location.search + canonical);
-      }
-    }
     return path;
+  }
+
+  /** 주소창을 정식 주소로 맞춘다(기록은 남기지 않음). */
+  function syncUrl(path) {
+    if (path.startsWith("#missing:") || !history.replaceState) return;
+    const canonical = hrefFor(path);
+    if (canonical === currentUrl()) return;
+    if (useSharePath && canonical === location.pathname && !location.hash.startsWith("#/")) return; // 문서 안 앵커 유지
+    if (!useSharePath) {
+      history.replaceState(null, "", location.pathname + location.search + canonical);
+    } else if (!(canonical === "/" && location.pathname === "/" && (location.hash === "" || location.hash === "#/"))) {
+      history.replaceState(null, "", canonical);
+    }
   }
 
   function navigate(path) {
     const target = hrefFor(path || "");
-    if (location.hash === target || (!path && !location.hash)) {
+    if (target === currentUrl()) {
+      route();
+    } else if (useSharePath) {
+      history.pushState(null, "", target);
       route();
     } else {
       location.hash = target;
     }
+  }
+
+  /** index.html 안의 링크(/p/…, /#/…, /)는 페이지를 다시 읽지 않고 화면만 바꾼다. */
+  function onDocumentClick(event) {
+    if (!useSharePath || event.defaultPrevented || event.button !== 0) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = event.target.closest && event.target.closest("a[href]");
+    if (!link || (link.target && link.target !== "_self") || link.hasAttribute("download")) return;
+    const url = new URL(link.href, location.href);
+    if (url.origin !== location.origin) return;
+    if (!(url.pathname === "/" || /^\/p\/[0-9a-f]{16}\/?$/.test(url.pathname))) return;
+    const raw = link.getAttribute("href");
+    if (raw.startsWith("#") && !raw.startsWith("#/")) return; // 같은 페이지 안 앵커
+    event.preventDefault();
+    const target = url.pathname + url.hash;
+    if (target !== currentUrl()) history.pushState(null, "", target);
+    route();
   }
 
   /* -- 한글 초성 --------------------------------------------------------------- */
@@ -894,6 +936,7 @@
 
   async function route() {
     const path = currentPath();
+    syncUrl(path);
     closePalette();
     const token = ++routeToken;
 
@@ -1331,7 +1374,13 @@
   }
 
   function bindEvents() {
-    window.addEventListener("hashchange", route);
+    window.addEventListener("hashchange", () => {
+      // /p/{key}/#제목 같은 문서 안 앵커 이동은 화면을 다시 그리지 않는다.
+      if (useSharePath && location.pathname.startsWith("/p/") && !location.hash.startsWith("#/")) return;
+      route();
+    });
+    window.addEventListener("popstate", route);
+    document.addEventListener("click", onDocumentClick);
 
     if (els.footerYear) els.footerYear.textContent = String(new Date().getFullYear());
 
