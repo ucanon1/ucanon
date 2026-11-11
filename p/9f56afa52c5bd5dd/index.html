@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Thymeleaf와_JSP_동시에_사용하기 · UCANON.COM</title>
+<meta name="description" content="SpringBoot 프로젝트에서 Thymeleaf와 JSP에 사용하는 방법을 설명합니다. 위와 같이 webapp/WEB-INF/view/ 디렉터리에 JSP 파일(getSession.jsp) 파일을 생성합니다. 아래는 샘플 파일 코드(getSession.jsp)…" />
+<link rel="canonical" href="https://ucanon.com/p/9f56afa52c5bd5dd/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="UCANON.COM" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="Thymeleaf와_JSP_동시에_사용하기" />
+<meta property="og:description" content="SpringBoot 프로젝트에서 Thymeleaf와 JSP에 사용하는 방법을 설명합니다. 위와 같이 webapp/WEB-INF/view/ 디렉터리에 JSP 파일(getSession.jsp) 파일을 생성합니다. 아래는 샘플 파일 코드(getSession.jsp)…" />
+<meta property="og:url" content="https://ucanon.com/p/9f56afa52c5bd5dd/" />
+<meta property="og:image" content="https://ucanon.com/blog/IT/JAVA/Thymeleaf%EC%99%80_JSP_%EB%8F%99%EC%8B%9C%EC%97%90_%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0.assets/image-20221107002321353.png" />
+<meta property="article:modified_time" content="2024-07-23" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Thymeleaf와_JSP_동시에_사용하기" />
+<meta name="twitter:description" content="SpringBoot 프로젝트에서 Thymeleaf와 JSP에 사용하는 방법을 설명합니다. 위와 같이 webapp/WEB-INF/view/ 디렉터리에 JSP 파일(getSession.jsp) 파일을 생성합니다. 아래는 샘플 파일 코드(getSession.jsp)…" />
+<meta name="twitter:image" content="https://ucanon.com/blog/IT/JAVA/Thymeleaf%EC%99%80_JSP_%EB%8F%99%EC%8B%9C%EC%97%90_%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0.assets/image-20221107002321353.png" />
+<link rel="icon" href="/favicon.ico" />
+<script>
+/* 사람은 사이트 화면(#/9f56afa52c5bd5dd)으로 보내고, 검색엔진·미리보기 봇은 이 페이지를 그대로 읽게 한다. */
+(function () {
+  if (!/bot|crawl|spider|slurp|preview|scrap|facebookexternalhit|embedly|whatsapp|telegram|discord|skype|line\/|lighthouse|headless/i.test(navigator.userAgent)) location.replace("/#/9f56afa52c5bd5dd");
+})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Thymeleaf와_JSP_동시에_사용하기","description":"SpringBoot 프로젝트에서 Thymeleaf와 JSP에 사용하는 방법을 설명합니다. 위와 같이 webapp/WEB-INF/view/ 디렉터리에 JSP 파일(getSession.jsp) 파일을 생성합니다. 아래는 샘플 파일 코드(getSession.jsp)…","image":"https://ucanon.com/blog/IT/JAVA/Thymeleaf%EC%99%80_JSP_%EB%8F%99%EC%8B%9C%EC%97%90_%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0.assets/image-20221107002321353.png","dateModified":"2024-07-23","inLanguage":"ko","mainEntityOfPage":"https://ucanon.com/p/9f56afa52c5bd5dd/","publisher":{"@type":"Organization","name":"UCANON.COM","url":"https://ucanon.com/"}}</script>
+<style>
+body{margin:0;background:#faf8f4;color:#2b2722;font:16px/1.75 -apple-system,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+main{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+a{color:#3f7a5e}nav{font-size:14px;color:#7a7268}h1{font-size:32px;line-height:1.3;margin:12px 0 4px}
+.meta{font-size:13px;color:#7a7268;margin-bottom:32px}img{max-width:100%;height:auto}
+pre{background:#f1ede6;padding:14px;overflow:auto;border-radius:8px}code{font-family:Consolas,monospace;font-size:.92em}
+blockquote{margin:0;padding-left:16px;border-left:3px solid #c9d9cf;color:#5a534a}
+table{border-collapse:collapse}th,td{border:1px solid #ddd6cc;padding:6px 10px}
+.go{display:inline-block;margin-top:40px;padding:10px 16px;border-radius:8px;background:#4f8a6e;color:#fff;text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="/">UCANON.COM</a> › IT › JAVA</nav>
+<article>
+<h1>Thymeleaf와_JSP_동시에_사용하기</h1>
+<p class="meta">수정 <time datetime="2024-07-23">2024-07-23</time></p>
+<p>SpringBoot 프로젝트에서 Thymeleaf와 JSP에 사용하는 방법을 설명합니다.</p>
+<h3>1. JSP 설정하기</h3>
+<h4>1) pom.xml에 JSP 라이브러리 추가</h4>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+    &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+    &lt;artifactId&gt;tomcat-embed-jasper&lt;/artifactId&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+<h4>2) application.properties에 JSP 설정 추가</h4>
+<pre><code class="language-properties"># JSP 설정
+spring.mvc.view.prefix=/WEB-INF/view/
+spring.mvc.view.suffix=.jsp</code></pre>
+<p><img src="https://ucanon.com/blog/IT/JAVA/Thymeleaf%EC%99%80_JSP_%EB%8F%99%EC%8B%9C%EC%97%90_%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0.assets/image-20221107002321353.png" alt="" loading="lazy" /></p>
+<p>위와 같이 webapp/WEB-INF/view/ 디렉터리에 JSP 파일(getSession.jsp) 파일을 생성합니다.</p>
+<p>아래는 샘플 파일 코드(getSession.jsp) 입니다.</p>
+<pre><code class="language-jsp">&lt;%@ page contentType=&quot;text/html; charset=utf-8&quot; session=&quot;true&quot;%&gt;                    
+&lt;%@ page import=&quot;java.util.Date&quot;%&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;/head&gt;
+&lt;body&gt;
+세션 ID : &lt;%= session.getId() %&gt; &lt;br&gt;
+세션 생성 시간 : &lt;%= new Date(session.getCreationTime()) %&gt; &lt;br&gt;
+세션 최근 접근 시간 : &lt;%= new Date(session.getLastAccessedTime())  %&gt; &lt;br&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>아래는 getSession.jsp 파일을 반환하는 Controller(SessionController.java) 샘플 파일 코드입니다.</p>
+<pre><code class="language-java">import java.util.Locale;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class SessionController {
+	
+	@GetMapping(value = &quot;/getSession&quot;)
+	public String getSession(Locale locale, Model model) {
+		return &quot;getSession&quot;;
+	}
+}</code></pre>
+<h3>2. Thymeleaf 설정하기</h3>
+<h4>1) pom.xml에 Thymeleaf 라이브러리 추가</h4>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+<h4>2) application.properties에 Thymeleaf 설정 추가</h4>
+<pre><code class="language-properties"># Thymeleaf 설정
+spring.thymeleaf.cache=false
+spring.thymeleaf.prefix=classpath:templates/
+spring.thymeleaf.suffix=.html
+spring.thymeleaf.view-names=th/*</code></pre>
+<p>JSP를 사용하기 위해서 Thymeleaf 설정에서 중요한 부분이 view-names 설정입니다.</p>
+<p>view-names를 &quot;th/*&quot;로 설정할 경우 thymeleaf template 파일의 디렉터리와 Controller의 Path를 모두 &quot;th&quot;로 설정해야 합니다.</p>
+<p><img src="https://ucanon.com/blog/IT/JAVA/Thymeleaf%EC%99%80_JSP_%EB%8F%99%EC%8B%9C%EC%97%90_%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0.assets/image-20221104175341123.png" alt="" loading="lazy" /></p>
+<p>아래는 샘플 파일(fruit.html)입니다.</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;thymeleaf sample&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;span th:text=&quot;${fruit.fruit1}&quot;&gt;&lt;/span&gt;&lt;br/&gt;
+    &lt;span th:text=&quot;${fruit.fruit2}&quot;&gt;&lt;/span&gt;&lt;br/&gt;
+    &lt;span th:text=&quot;${fruit.fruit3}&quot;&gt;&lt;/span&gt;&lt;br/&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>그리고 fruit.html 파일을 호출하는 Controller의 Path로 아래와 같이 &quot;th&quot;로 해야 합니다.</p>
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+// URL을 &quot;th&quot;로 해야 합니다.
+@RequestMapping(&quot;/th&quot;)
+public class FruitController {
+ 
+	@RequestMapping(value = &quot;/fruit&quot;)
+    public String getFruit(Model model) {
+    	Map&lt;String, String&gt; fruitmap = new HashMap&lt;String, String&gt;();
+    	fruitmap.put(&quot;fruit1&quot;, &quot;apple&quot;);
+    	fruitmap.put(&quot;fruit2&quot;, &quot;banana&quot;);
+    	fruitmap.put(&quot;fruit3&quot;, &quot;orange&quot;);
+        model.addAttribute(&quot;fruit&quot;, fruitmap);
+        return &quot;th/fruit.html&quot;;   // &quot;th&quot; 디렉터리의 fruit.html 템플릿 파일을 호출합니다.
+    }
+}</code></pre>
+</article>
+<a class="go" href="/#/9f56afa52c5bd5dd">서재에서 보기 →</a>
+</main>
+</body>
+</html>

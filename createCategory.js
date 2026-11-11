@@ -3,6 +3,7 @@
  *
  *   node createCategory.js            → ./menu.json 생성, doc-ids.json(문서 key·ID, 폴더 ID) 갱신,
  *                                       HTML 의 CSS/JS 주소에 버전(?v=해시) 갱신
+ *                                       p/{key}/index.html(공유·검색용 정적 페이지), sitemap.xml, robots.txt 생성
  *   node createCategory.js --check    → 변경 여부만 확인(종료 코드 1 이면 갱신 필요)
  *
  * 규칙
@@ -18,6 +19,7 @@
 const fs = require("fs");
 const crypto = require("crypto");
 const path = require("path");
+const { buildSharePages } = require("./share-pages");
 
 const ROOT = path.resolve(__dirname);
 const BLOG_DIR = path.join(ROOT, "blog");
@@ -104,6 +106,8 @@ function buildMenu() {
       tagline: "a small study library",
       description: "마음에 남은 책, 공부한 기술, 직접 만든 것들을 한 장씩 모아 두는 작은 서재입니다.",
       home: "README",
+      url: "https://ucanon.com",
+      ogImage: "og-image.png",
     },
     generatedAt: new Date().toISOString(),
     docCount: all.length,
@@ -305,6 +309,8 @@ function main() {
   fs.writeFileSync(OUT_FILE, json, "utf8");
   saveRegistry(registry);
   if (createdIds) console.log(`새 ID ${createdIds}개 부여 — doc-ids.json 갱신`);
+  const share = buildSharePages(ROOT, flattenDocs(menu.categories), menu.site);
+  console.log(`공유 페이지 — 갱신 ${share.written}개, 정리 ${share.removed}개 (p/{key}/, sitemap.xml)`);
   const v = stampAssets();
   console.log("자원 버전 갱신 — index.css?v=" + v["index.css"] + ", index.js?v=" + v["index.js"]);
   console.log(`menu.json 저장 완료 — 문서 ${menu.docCount}개, 카테고리 ${menu.categories.length}개`);

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>escape_encodeURI_encodeURLComponent · UCANON.COM</title>
+<meta name="description" content="javascript의 escape, encodeURI, encodeURIComponent 인코딩 함수의 동작을 비교합니다. ASCII 문자에 해당하지 않는 문자들을 모두 16진수 형태로 바꾸어 줍니다. 표기법은 1바이트일 경우 %XX이고, 2바이트일 경우…" />
+<link rel="canonical" href="https://ucanon.com/p/1c6342067dbe56a5/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="UCANON.COM" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="escape_encodeURI_encodeURLComponent" />
+<meta property="og:description" content="javascript의 escape, encodeURI, encodeURIComponent 인코딩 함수의 동작을 비교합니다. ASCII 문자에 해당하지 않는 문자들을 모두 16진수 형태로 바꾸어 줍니다. 표기법은 1바이트일 경우 %XX이고, 2바이트일 경우…" />
+<meta property="og:url" content="https://ucanon.com/p/1c6342067dbe56a5/" />
+<meta property="og:image" content="https://ucanon.com/og-image.png" />
+<meta property="article:modified_time" content="2026-11-11" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="escape_encodeURI_encodeURLComponent" />
+<meta name="twitter:description" content="javascript의 escape, encodeURI, encodeURIComponent 인코딩 함수의 동작을 비교합니다. ASCII 문자에 해당하지 않는 문자들을 모두 16진수 형태로 바꾸어 줍니다. 표기법은 1바이트일 경우 %XX이고, 2바이트일 경우…" />
+<meta name="twitter:image" content="https://ucanon.com/og-image.png" />
+<link rel="icon" href="/favicon.ico" />
+<script>
+/* 사람은 사이트 화면(#/1c6342067dbe56a5)으로 보내고, 검색엔진·미리보기 봇은 이 페이지를 그대로 읽게 한다. */
+(function () {
+  if (!/bot|crawl|spider|slurp|preview|scrap|facebookexternalhit|embedly|whatsapp|telegram|discord|skype|line\/|lighthouse|headless/i.test(navigator.userAgent)) location.replace("/#/1c6342067dbe56a5");
+})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"escape_encodeURI_encodeURLComponent","description":"javascript의 escape, encodeURI, encodeURIComponent 인코딩 함수의 동작을 비교합니다. ASCII 문자에 해당하지 않는 문자들을 모두 16진수 형태로 바꾸어 줍니다. 표기법은 1바이트일 경우 %XX이고, 2바이트일 경우…","image":"https://ucanon.com/og-image.png","dateModified":"2026-11-11","inLanguage":"ko","mainEntityOfPage":"https://ucanon.com/p/1c6342067dbe56a5/","publisher":{"@type":"Organization","name":"UCANON.COM","url":"https://ucanon.com/"}}</script>
+<style>
+body{margin:0;background:#faf8f4;color:#2b2722;font:16px/1.75 -apple-system,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+main{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+a{color:#3f7a5e}nav{font-size:14px;color:#7a7268}h1{font-size:32px;line-height:1.3;margin:12px 0 4px}
+.meta{font-size:13px;color:#7a7268;margin-bottom:32px}img{max-width:100%;height:auto}
+pre{background:#f1ede6;padding:14px;overflow:auto;border-radius:8px}code{font-family:Consolas,monospace;font-size:.92em}
+blockquote{margin:0;padding-left:16px;border-left:3px solid #c9d9cf;color:#5a534a}
+table{border-collapse:collapse}th,td{border:1px solid #ddd6cc;padding:6px 10px}
+.go{display:inline-block;margin-top:40px;padding:10px 16px;border-radius:8px;background:#4f8a6e;color:#fff;text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="/">UCANON.COM</a> › IT › Javascript_CSS_HTML</nav>
+<article>
+<h1>escape_encodeURI_encodeURLComponent</h1>
+<p class="meta">수정 <time datetime="2026-11-11">2026-11-11</time></p>
+<h2>escape, encodeURI, encodeURIComponent 인코딩 함수 비교</h2>
+<p>javascript의 escape, encodeURI, encodeURIComponent 인코딩 함수의 동작을 비교합니다.</p>
+<h3>escape</h3>
+<ul><li>ASCII 문자에 해당하지 않는 문자들을 모두 16진수 형태로 바꾸어 줍니다.</li><li>표기법은 1바이트일 경우 %XX이고, 2바이트일 경우 %uXXXX입니다.</li><li>unescape 함수를 통해서 다시 디코딩할 수 있습니다.</li><li>MDN 사이트에서  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/escape">escape 함수 설명</a>을 보면, 하위 호환성을 위해서 ECMA-262 스펙에서 Deprecated 되지 않았지만, 새로운 자바스크립트 코드를 작성할 때는 escape 함수를 사용하지 말 것을 권고하고 있습니다.</li></ul>
+<pre><code class="language-javascript">escape(&quot;!_한글, Hangul_!&quot;)
+&gt;&gt; &quot;%21_%uD55C%uAE00%2C%20Hangul_%21&quot;
+unescape(&quot;%21_%uD55C%uAE00%2C%20Hangul_%21&quot;)
+&gt;&gt;ㄴ &quot;!_한글, Hangul_!&quot;</code></pre>
+<h3>encodeURI</h3>
+<ul><li>encodeURI 함수는 &quot;A-Z a-z 0-9 ; , / ? : @ &amp; = + $ - _ . ! ~ * ' ( ) #&quot;를 제외하고 escape 처리를 수행합니다.</li><li>decodeURI 함수를 통해서 다시 디코딩할 수 있습니다.</li></ul>
+<pre><code class="language-javascript">encodeURI(&quot;https://tistory.com/_hangul한글!&quot;)
+&gt;&gt; &quot;https://tistory.com/_hangul%ED%95%9C%EA%B8%80!&quot;
+decodeURI(&quot;https://tistory.com/_hangul%ED%95%9C%EA%B8%80!&quot;)
+&gt;&gt; &quot;https://tistory.com/_hangul한글!&quot;</code></pre>
+<h3>encodeURIComponent</h3>
+<ul><li>encodeURIComponent 함수는 &quot;A-Z a-z 0-9 - _ . ! ~ * ' ( )&quot;를 제외하고 escape 처리를 합니다.</li><li>decodeURICompoent 함수를 통해서  다시 디코딩할 수 있습니다.</li><li>아래의 예제 코드의 실행 결과를 보면, encodeURI 함수와 다르게 URL의 '/'도 escape 처리된 것을 볼 수 있습니다.</li></ul>
+<pre><code class="language-javascript">encodeURIComponent(&quot;https://tistory.com/#_hangul한글!&quot;)
+&gt;&gt; &quot;https%3A%2F%2Ftistory.com%2F%23_hangul%ED%95%9C%EA%B8%80!&quot;
+decodeURIComponent(&quot;https%3A%2F%2Ftistory.com%2F%23_hangul%ED%95%9C%EA%B8%80!&quot;)
+&gt;&gt; &quot;https://tistory.com/#_hangul한글!&quot;</code></pre>
+<h3>escape, encodeURI, encodeURIComponent 사용 용도 비교</h3>
+<ul><li>escape 함수는 사용하지 않습니다. (비권장)</li><li>URI 전체를 인코딩할 때는 encodeURI를 사용합니다.</li><li>URI에서 파라미터만을 인코딩할 때는 encodeURIComponent를 사용합니다.</li></ul>
+<h3>Reference</h3>
+<ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/escape">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/escape</a></li><li><a href="https://tc39.es/ecma262/#sec-escape-string">https://tc39.es/ecma262/#sec-escape-string</a></li><li><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/encodeURI">https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/encodeURI</a></li><li><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent</a></li></ul>
+</article>
+<a class="go" href="/#/1c6342067dbe56a5">서재에서 보기 →</a>
+</main>
+</body>
+</html>

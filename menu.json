@@ -3,9 +3,11 @@
     "title": "UCANON.COM",
     "tagline": "a small study library",
     "description": "마음에 남은 책, 공부한 기술, 직접 만든 것들을 한 장씩 모아 두는 작은 서재입니다.",
-    "home": "README"
+    "home": "README",
+    "url": "https://ucanon.com",
+    "ogImage": "og-image.png"
   },
-  "generatedAt": "2026-11-11T15:08:55.038Z",
+  "generatedAt": "2026-11-11T15:19:50.546Z",
   "docCount": 53,
   "latestUpdated": "2026-11-11",
   "categories": [

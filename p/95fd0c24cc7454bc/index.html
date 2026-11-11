@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Maintainable_Javascript · UCANON.COM</title>
+<meta name="description" content="'Maintainable Javascript'을 읽으면서 메모한 몇 가지 내용들을 정리해 본다. strict Mode는 전역으로 선언하지 않는다. strict 모드는 함수 안에서만 사용해야 하며 절대로 전역으로 사용하지 않아야 한다. eval()은 절대 사용하지…" />
+<link rel="canonical" href="https://ucanon.com/p/95fd0c24cc7454bc/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="UCANON.COM" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="Maintainable_Javascript" />
+<meta property="og:description" content="'Maintainable Javascript'을 읽으면서 메모한 몇 가지 내용들을 정리해 본다. strict Mode는 전역으로 선언하지 않는다. strict 모드는 함수 안에서만 사용해야 하며 절대로 전역으로 사용하지 않아야 한다. eval()은 절대 사용하지…" />
+<meta property="og:url" content="https://ucanon.com/p/95fd0c24cc7454bc/" />
+<meta property="og:image" content="https://ucanon.com/og-image.png" />
+<meta property="article:modified_time" content="2023-09-06" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Maintainable_Javascript" />
+<meta name="twitter:description" content="'Maintainable Javascript'을 읽으면서 메모한 몇 가지 내용들을 정리해 본다. strict Mode는 전역으로 선언하지 않는다. strict 모드는 함수 안에서만 사용해야 하며 절대로 전역으로 사용하지 않아야 한다. eval()은 절대 사용하지…" />
+<meta name="twitter:image" content="https://ucanon.com/og-image.png" />
+<link rel="icon" href="/favicon.ico" />
+<script>
+/* 사람은 사이트 화면(#/95fd0c24cc7454bc)으로 보내고, 검색엔진·미리보기 봇은 이 페이지를 그대로 읽게 한다. */
+(function () {
+  if (!/bot|crawl|spider|slurp|preview|scrap|facebookexternalhit|embedly|whatsapp|telegram|discord|skype|line\/|lighthouse|headless/i.test(navigator.userAgent)) location.replace("/#/95fd0c24cc7454bc");
+})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Maintainable_Javascript","description":"'Maintainable Javascript'을 읽으면서 메모한 몇 가지 내용들을 정리해 본다. strict Mode는 전역으로 선언하지 않는다. strict 모드는 함수 안에서만 사용해야 하며 절대로 전역으로 사용하지 않아야 한다. eval()은 절대 사용하지…","image":"https://ucanon.com/og-image.png","dateModified":"2023-09-06","inLanguage":"ko","mainEntityOfPage":"https://ucanon.com/p/95fd0c24cc7454bc/","publisher":{"@type":"Organization","name":"UCANON.COM","url":"https://ucanon.com/"}}</script>
+<style>
+body{margin:0;background:#faf8f4;color:#2b2722;font:16px/1.75 -apple-system,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+main{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+a{color:#3f7a5e}nav{font-size:14px;color:#7a7268}h1{font-size:32px;line-height:1.3;margin:12px 0 4px}
+.meta{font-size:13px;color:#7a7268;margin-bottom:32px}img{max-width:100%;height:auto}
+pre{background:#f1ede6;padding:14px;overflow:auto;border-radius:8px}code{font-family:Consolas,monospace;font-size:.92em}
+blockquote{margin:0;padding-left:16px;border-left:3px solid #c9d9cf;color:#5a534a}
+table{border-collapse:collapse}th,td{border:1px solid #ddd6cc;padding:6px 10px}
+.go{display:inline-block;margin-top:40px;padding:10px 16px;border-radius:8px;background:#4f8a6e;color:#fff;text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="/">UCANON.COM</a> › IT › Javascript_CSS_HTML</nav>
+<article>
+<h1>Maintainable_Javascript</h1>
+<p class="meta">수정 <time datetime="2023-09-06">2023-09-06</time></p>
+<ul><li>'Maintainable Javascript'을 읽으면서 메모한 몇 가지 내용들을 정리해 본다.</li></ul>
+<h3>Warning</h3>
+<ul><li>strict Mode는 전역으로 선언하지 않는다.</li><li>strict 모드는 함수 안에서만 사용해야 하며 절대로 전역으로 사용하지 않아야 한다.</li></ul>
+<pre><code class="language-javascript">(function() {
+
+    &quot;use strict&quot;
+
+    function doSomething() {
+
+    }
+
+    function doSomethingElse() {
+
+}</code></pre>
+<ul><li>eval()은 절대 사용하지 않는다.</li><li>with 문은 절대 사용하지 않는다. 이 문장은 strict 모드에서 사용할 수 없을 뿐만 아니라 앞으로 나올 ECMAScript에서 사용할 수 없게 될 수도 있다.</li></ul>
+<h3>const</h3>
+<ul><li>ECMAScript6에 상수 선언 추가됨</li></ul>
+<pre><code class="language-javascript">const MAX_COUNT = 30;</code></pre>
+<h3>null</h3>
+<h5>null을 사용하는 경우</h5>
+<ul><li>나중에 값을 할당할 변수를 초기화할 때</li><li>선언한 변수에 값이 할당되었는지 비교할 때</li><li>인자 값으로 객체를 넘기는 함수를 호출할 때</li><li>함수를 호출한 곳에서 반환값으로 객체를 기대할때</li></ul>
+<h5>null을 사용하면 안되는 경우</h5>
+<ul><li>함수의 인자 값을 확인하기 위해서 null로 비교해서는 안됨</li><li>초기화되지 않은 변수를 null로 비교해서는 안됨</li></ul>
+<h3>undefined</h3>
+<pre><code class="language-javascript">var person;
+
+console.log(typeof person);
+
+&gt;&gt; undefined
+
+undefined
+
+console.log(typeof person2);
+
+&gt;&gt; undefined
+
+// 변수를 선언한 경우나 선언하지 않은 경우 모두 undefined가 반환됨</code></pre>
+<h3>Object &amp;&amp; Array</h3>
+<pre><code class="language-javascript">var book = {
+
+    title : &quot;Javascript Guide Book&quot;,
+
+    author : &quot;KK James&quot;
+
+};
+
+​
+
+var colors = [ &quot;yellow&quot;, &quot;orange&quot;, &quot;white&quot;, &quot;black&quot; ];
+
+var nums = [ 1, 2, 3, 4, 5];</code></pre>
+<h3>Comment</h3>
+<pre><code class="language-javascript">// 좋은 주석 예제
+
+if (condition) {
+
+    
+
+    // 주석 앞에는 빈 줄을 추가하면 가독성을 높일 수 있다.
+
+    isStatus();
+
+}
+
+​
+
+/* 
+
+여러줄 주석 예제-1
+
+여러줄 주석 예제-2
+
+*/
+
+​
+
+// 좋은 주석 예제
+
+if (condition) {
+
+    
+
+    /*
+
+      * '*'를 이용해서 여러 줄의 주석을 추가할 수 있다.
+
+      * '*'를 이용해서 왼쪽 정렬로 주석을 작성하면 주석을 깔끔하게 작성할 수 있다.
+
+      */
+
+    isStatus();
+
+} </code></pre>
+</article>
+<a class="go" href="/#/95fd0c24cc7454bc">서재에서 보기 →</a>
+</main>
+</body>
+</html>

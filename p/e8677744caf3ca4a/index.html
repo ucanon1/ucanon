@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>jQuery · UCANON.COM</title>
+<meta name="description" content="본 내용은 w3schools.com 사이트에서 jQuery를 학습하며 메모한 내용들을 정리합니다. &gt; https://www.w3schools.com/jquery/jqueryselectors.asp Document Ready Event는 Document 로딩이 완료…" />
+<link rel="canonical" href="https://ucanon.com/p/e8677744caf3ca4a/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="UCANON.COM" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="jQuery" />
+<meta property="og:description" content="본 내용은 w3schools.com 사이트에서 jQuery를 학습하며 메모한 내용들을 정리합니다. &gt; https://www.w3schools.com/jquery/jqueryselectors.asp Document Ready Event는 Document 로딩이 완료…" />
+<meta property="og:url" content="https://ucanon.com/p/e8677744caf3ca4a/" />
+<meta property="og:image" content="https://ucanon.com/og-image.png" />
+<meta property="article:modified_time" content="2023-09-06" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="jQuery" />
+<meta name="twitter:description" content="본 내용은 w3schools.com 사이트에서 jQuery를 학습하며 메모한 내용들을 정리합니다. &gt; https://www.w3schools.com/jquery/jqueryselectors.asp Document Ready Event는 Document 로딩이 완료…" />
+<meta name="twitter:image" content="https://ucanon.com/og-image.png" />
+<link rel="icon" href="/favicon.ico" />
+<script>
+/* 사람은 사이트 화면(#/e8677744caf3ca4a)으로 보내고, 검색엔진·미리보기 봇은 이 페이지를 그대로 읽게 한다. */
+(function () {
+  if (!/bot|crawl|spider|slurp|preview|scrap|facebookexternalhit|embedly|whatsapp|telegram|discord|skype|line\/|lighthouse|headless/i.test(navigator.userAgent)) location.replace("/#/e8677744caf3ca4a");
+})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"jQuery","description":"본 내용은 w3schools.com 사이트에서 jQuery를 학습하며 메모한 내용들을 정리합니다. > https://www.w3schools.com/jquery/jqueryselectors.asp Document Ready Event는 Document 로딩이 완료…","image":"https://ucanon.com/og-image.png","dateModified":"2023-09-06","inLanguage":"ko","mainEntityOfPage":"https://ucanon.com/p/e8677744caf3ca4a/","publisher":{"@type":"Organization","name":"UCANON.COM","url":"https://ucanon.com/"}}</script>
+<style>
+body{margin:0;background:#faf8f4;color:#2b2722;font:16px/1.75 -apple-system,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+main{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+a{color:#3f7a5e}nav{font-size:14px;color:#7a7268}h1{font-size:32px;line-height:1.3;margin:12px 0 4px}
+.meta{font-size:13px;color:#7a7268;margin-bottom:32px}img{max-width:100%;height:auto}
+pre{background:#f1ede6;padding:14px;overflow:auto;border-radius:8px}code{font-family:Consolas,monospace;font-size:.92em}
+blockquote{margin:0;padding-left:16px;border-left:3px solid #c9d9cf;color:#5a534a}
+table{border-collapse:collapse}th,td{border:1px solid #ddd6cc;padding:6px 10px}
+.go{display:inline-block;margin-top:40px;padding:10px 16px;border-radius:8px;background:#4f8a6e;color:#fff;text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="/">UCANON.COM</a> › IT › Javascript_CSS_HTML</nav>
+<article>
+<h1>jQuery</h1>
+<p class="meta">수정 <time datetime="2023-09-06">2023-09-06</time></p>
+<h2>jQuery Syntax</h2>
+<ul><li>본 내용은  <a href="https://www.w3schools.com/">w3schools.com</a> 사이트에서  jQuery를 학습하며 메모한 내용들을 정리합니다.</li></ul>
+<h3>Selector Basic Examples</h3>
+<pre><code class="language-javascript">$(this) // 현재 Element를 선택한다.
+$(&quot;p&quot;) // 모든 &lt;p&gt; Element를 선택한다.
+$(&quot;.test&quot;) // &quot;test&quot; class가 적용된 모든 Element를 선택한다.
+$(&quot;#test&quot;) // id가 &quot;test&quot;인 Element를 선택한다.
+$(&quot;*&quot;) // 모든 Element를 선택한다.
+$(&quot;p.intro&quot;)  // &quot;intro&quot; class를 가지는 모든 p Element를 선택한다.
+$(&quot;p.first&quot;)  // 첫번째 p Element를 선택한다.
+$(&quot;ul li:first&quot;) // 첫번째 ul Element에서 첫번째 li를 선택한다.
+$(&quot;ul li:first-child&quot;) // 모든 ul Element에서 첫번째 li를 선택한다.
+$(&quot;[href]&quot;) // href 속성을 가진 모든 요소를 선택한다.
+$(&quot;a[target='_blank']&quot;) // target 속성이 &quot;_blank&quot;인 모든 Element를 반환한다.
+$(&quot;a[target!='_blank']&quot;) // target 속성이 &quot;_blank&quot;이 아닌 모든 Element를 반환한다.
+$(&quot;:button&quot;) // type 속성이 &quot;button&quot;인 모든 input element를 반환한다.
+$(&quot;tr:even&quot;) // tr 중에서 모든 짝수 Element를 반환한다.
+$(&quot;tr:odd&quot;) // tr 중에서 모든 홀수 Element를 반환한다.</code></pre>
+<blockquote><p><a href="https://www.w3schools.com/jquery/jquery_selectors.asp">https://www.w3schools.com/jquery/jquery_selectors.asp</a></p></blockquote>
+<h3>Document Ready Event</h3>
+<pre><code class="language-javascript">$(doucment).ready(function() {
+    // jQuery를 사용하는 Script를 작성한다.
+})</code></pre>
+<ul><li>Document Ready Event는 Document 로딩이 완료 되는 이벤트입니다.</li><li>Document 내에 Element들을 제어해야 하는 코드가 있다면 Document Ready 이벤트 안에 작성하면 됩니다.</li><li>Document Ready Event는 아래와 같이 짧게 작성할 수도 있습니다.</li></ul>
+<pre><code class="language-javascript">$(function() {
+    // jQuery를 사용하는 Script를 작성한다.
+})</code></pre>
+</article>
+<a class="go" href="/#/e8677744caf3ca4a">서재에서 보기 →</a>
+</main>
+</body>
+</html>

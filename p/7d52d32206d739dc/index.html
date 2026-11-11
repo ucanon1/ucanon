@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OutSystems와 Java 아키텍처 비교 분석 · UCANON.COM</title>
+<meta name="description" content="OutSystems의 Screen Actions는 단순히 UI 상의 이벤트를 처리하는 데 사용되며, Java의 @Controller는 HTTP 요청 라우팅 및 데이터 변환 등 더 광범위한 역할을 수행합니다. OutSystems는 UI 이벤트는 Screen…" />
+<link rel="canonical" href="https://ucanon.com/p/7d52d32206d739dc/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="UCANON.COM" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="OutSystems와 Java 아키텍처 비교 분석" />
+<meta property="og:description" content="OutSystems의 Screen Actions는 단순히 UI 상의 이벤트를 처리하는 데 사용되며, Java의 @Controller는 HTTP 요청 라우팅 및 데이터 변환 등 더 광범위한 역할을 수행합니다. OutSystems는 UI 이벤트는 Screen…" />
+<meta property="og:url" content="https://ucanon.com/p/7d52d32206d739dc/" />
+<meta property="og:image" content="https://ucanon.com/og-image.png" />
+<meta property="article:modified_time" content="2025-01-09" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="OutSystems와 Java 아키텍처 비교 분석" />
+<meta name="twitter:description" content="OutSystems의 Screen Actions는 단순히 UI 상의 이벤트를 처리하는 데 사용되며, Java의 @Controller는 HTTP 요청 라우팅 및 데이터 변환 등 더 광범위한 역할을 수행합니다. OutSystems는 UI 이벤트는 Screen…" />
+<meta name="twitter:image" content="https://ucanon.com/og-image.png" />
+<link rel="icon" href="/favicon.ico" />
+<script>
+/* 사람은 사이트 화면(#/7d52d32206d739dc)으로 보내고, 검색엔진·미리보기 봇은 이 페이지를 그대로 읽게 한다. */
+(function () {
+  if (!/bot|crawl|spider|slurp|preview|scrap|facebookexternalhit|embedly|whatsapp|telegram|discord|skype|line\/|lighthouse|headless/i.test(navigator.userAgent)) location.replace("/#/7d52d32206d739dc");
+})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"OutSystems와 Java 아키텍처 비교 분석","description":"OutSystems의 Screen Actions는 단순히 UI 상의 이벤트를 처리하는 데 사용되며, Java의 @Controller는 HTTP 요청 라우팅 및 데이터 변환 등 더 광범위한 역할을 수행합니다. OutSystems는 UI 이벤트는 Screen…","image":"https://ucanon.com/og-image.png","dateModified":"2025-01-09","inLanguage":"ko","mainEntityOfPage":"https://ucanon.com/p/7d52d32206d739dc/","publisher":{"@type":"Organization","name":"UCANON.COM","url":"https://ucanon.com/"}}</script>
+<style>
+body{margin:0;background:#faf8f4;color:#2b2722;font:16px/1.75 -apple-system,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+main{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+a{color:#3f7a5e}nav{font-size:14px;color:#7a7268}h1{font-size:32px;line-height:1.3;margin:12px 0 4px}
+.meta{font-size:13px;color:#7a7268;margin-bottom:32px}img{max-width:100%;height:auto}
+pre{background:#f1ede6;padding:14px;overflow:auto;border-radius:8px}code{font-family:Consolas,monospace;font-size:.92em}
+blockquote{margin:0;padding-left:16px;border-left:3px solid #c9d9cf;color:#5a534a}
+table{border-collapse:collapse}th,td{border:1px solid #ddd6cc;padding:6px 10px}
+.go{display:inline-block;margin-top:40px;padding:10px 16px;border-radius:8px;background:#4f8a6e;color:#fff;text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="/">UCANON.COM</a> › IT › LowCodePlatform</nav>
+<article>
+<h1>OutSystems와 Java 아키텍처 비교 분석</h1>
+<p class="meta">수정 <time datetime="2025-01-09">2025-01-09</time></p>
+<h3>OutSystems의 &quot;Screen&quot;과 &quot;Controller&quot; 역할 비교</h3>
+<p>OutSystems의 Screen Actions는 단순히 UI 상의 이벤트를 처리하는 데 사용되며, Java의 @Controller는 HTTP 요청 라우팅 및 데이터 변환 등 더 광범위한 역할을 수행합니다.</p>
+<p>OutSystems는 UI 이벤트는 Screen Actions로, REST API 요청은 별도의 API 모듈로 처리하여 관심사를 분리합니다. 이러한 구조적 차이로 인해 OutSystems의 Screen Actions와 Java의 Controller는 완전히 동일한 수준의 역할을 수행하지 않습니다.</p>
+<h3>Service와 Process/Server Actions 비교</h3>
+<p>OutSystems의 비즈니스 로직 처리는 다음과 같이 구분됩니다:</p>
+<ul><li>Server Actions: 재사용 가능한 단위 기능을 캡슐화하여 제공</li><li>Processes: 장기 실행 워크플로우 관리에 특화된 기능 제공</li></ul>
+<p>Java의 @Service는 비즈니스 로직 캡슐화에 초점을 맞추는 반면, OutSystems는 목적에 따라 Server Actions와 Processes로 역할을 명확히 구분합니다. Server Actions는 일반적인 비즈니스 로직을, Processes는 장기 실행이 필요한 복잡한 워크플로우를 담당합니다.</p>
+<h3>Repository와 Aggregate/Advanced Query 비교</h3>
+<p>OutSystems의 데이터 접근 계층은 다음과 같은 특징을 가집니다:</p>
+<ul><li>Entity Framework를 통한 자동 CRUD 기능 제공 (Java Repository의 기본 CRUD 메서드와 유사)</li><li>Aggregate를 통한 시각적 SQL 쿼리 디자인</li><li>Advanced Query를 통한 직접적인 SQL 작성 가능</li></ul>
+<p>Java의 @Repository는 JPA/Hibernate와 함께 ORM으로 동작하며, 더 세밀한 데이터 접근 제어를 제공합니다. OutSystems의 Aggregate는 데이터 조회를 간단히 처리할 수 있지만, ORM과 같은 상세한 데이터 매핑 기능은 제공하지 않습니다.</p>
+<h3>수정된 요약 표</h3>
+<table><thead><tr><th><strong>Controller (UI &amp; 요청 처리)</strong></th><th><strong>Java 개발</strong></th><th><strong>OutSystems</strong></th></tr></thead><tbody><tr><td>@Controller 사용</td><td>Screen (UI) 및 Screen Actions 활용</td><td>사용자 요청 처리 및 데이터 반환</td></tr><tr><td>REST API 처리</td><td>@RestController</td><td>별도 API 모듈</td></tr><tr><td>이벤트 처리</td><td>Handler 메서드</td><td>Screen Actions</td></tr></tbody></table>
+<table><thead><tr><th><strong>Service (비즈니스 로직)</strong></th><th><strong>Java 개발</strong></th><th><strong>OutSystems</strong></th></tr></thead><tbody><tr><td>@Service에서 로직 처리</td><td>Server Actions(비즈니스 로직 처리)</td><td>복잡한 로직 캡슐화</td></tr><tr><td>장기 실행 프로세스</td><td>Background Jobs</td><td>Process Flow</td></tr></tbody></table>
+<table><thead><tr><th><strong>Repository (데이터 접근 계층)</strong></th><th><strong>Java 개발</strong></th><th><strong>OutSystems</strong></th></tr></thead><tbody><tr><td>@Repository를 사용하여 DB 접근</td><td>Entity와 Aggregate를 통해 DB 접근</td><td>기본 CRUD 자동 생성</td></tr><tr><td>ORM 사용</td><td>JPA/Hibernate</td><td>Entity Framework</td></tr><tr><td>복잡한 쿼리</td><td>JPQL/SQL</td><td>Aggregate/Advanced Query</td></tr></tbody></table>
+<h3>결론: 주요 차이점과 유사점</h3>
+<h4>✅ 유사점:</h4>
+<ul><li>계층적 아키텍처: Controller → Service → Repository 순으로 데이터 흐름 관리</li><li>비즈니스 로직의 분리 및 재사용 가능</li><li>기본적인 CRUD 작업의 자동화 지원</li></ul>
+<h4>✅ 차이점:</h4>
+<ul><li>OutSystems는 시각적 도구를 통해 간단한 프로세스와 빠른 개발 지원</li><li>Java는 코드 기반으로 더 세밀한 제어와 확장성 제공</li><li>배포 및 버전 관리:</li><li>OutSystems: 자동화된 배포 파이프라인과 버전 관리 시스템 내장</li><li>Java: Jenkins, Git 등 외부 도구를 통한 CI/CD 구성 필요</li></ul>
+<p>이러한 차이를 이해하고 활용하면 각 플랫폼의 장점을 최대한 활용할 수 있습니다.</p>
+</article>
+<a class="go" href="/#/7d52d32206d739dc">서재에서 보기 →</a>
+</main>
+</body>
+</html>

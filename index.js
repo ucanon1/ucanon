@@ -1377,7 +1377,9 @@
 
     if (els.copyLink) {
       els.copyLink.addEventListener("click", async () => {
-        const url = location.origin + "/" + hrefFor(state.current || "");
+        // 문서는 공유용 정적 주소(/p/{key}/)를 복사해 링크 미리보기에 제목·요약이 나오게 한다.
+        const doc = state.byPath.get(state.current || "");
+        const url = doc && doc.key ? location.origin + "/p/" + doc.key + "/" : location.origin + "/" + hrefFor(state.current || "");
         try {
           await navigator.clipboard.writeText(url);
           toast("링크를 복사했습니다");

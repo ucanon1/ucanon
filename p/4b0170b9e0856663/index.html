@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Javascript_Loading_Sequence · UCANON.COM</title>
+<meta name="description" content="웹 페이지를 접속하는 사용자에게 좀 더 빠른 화면을 보여주기 위한 Javascript 로딩 방법을 알아 봅니다. 자바스크립트 로딩 순서는 웹 페이지의 성능과 사용자 경험에 중요한 영향을 미칩니다. 주요 내용은 다음과 같습니다: 1. 일반적인 HTML 구조: - 태그…" />
+<link rel="canonical" href="https://ucanon.com/p/4b0170b9e0856663/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="UCANON.COM" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="Javascript_Loading_Sequence" />
+<meta property="og:description" content="웹 페이지를 접속하는 사용자에게 좀 더 빠른 화면을 보여주기 위한 Javascript 로딩 방법을 알아 봅니다. 자바스크립트 로딩 순서는 웹 페이지의 성능과 사용자 경험에 중요한 영향을 미칩니다. 주요 내용은 다음과 같습니다: 1. 일반적인 HTML 구조: - 태그…" />
+<meta property="og:url" content="https://ucanon.com/p/4b0170b9e0856663/" />
+<meta property="og:image" content="https://ucanon.com/blog/IT/Javascript_CSS_HTML/Javascript_Loading_Sequence.resources/without-defer-async-body.png" />
+<meta property="article:modified_time" content="2024-09-09" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Javascript_Loading_Sequence" />
+<meta name="twitter:description" content="웹 페이지를 접속하는 사용자에게 좀 더 빠른 화면을 보여주기 위한 Javascript 로딩 방법을 알아 봅니다. 자바스크립트 로딩 순서는 웹 페이지의 성능과 사용자 경험에 중요한 영향을 미칩니다. 주요 내용은 다음과 같습니다: 1. 일반적인 HTML 구조: - 태그…" />
+<meta name="twitter:image" content="https://ucanon.com/blog/IT/Javascript_CSS_HTML/Javascript_Loading_Sequence.resources/without-defer-async-body.png" />
+<link rel="icon" href="/favicon.ico" />
+<script>
+/* 사람은 사이트 화면(#/4b0170b9e0856663)으로 보내고, 검색엔진·미리보기 봇은 이 페이지를 그대로 읽게 한다. */
+(function () {
+  if (!/bot|crawl|spider|slurp|preview|scrap|facebookexternalhit|embedly|whatsapp|telegram|discord|skype|line\/|lighthouse|headless/i.test(navigator.userAgent)) location.replace("/#/4b0170b9e0856663");
+})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Javascript_Loading_Sequence","description":"웹 페이지를 접속하는 사용자에게 좀 더 빠른 화면을 보여주기 위한 Javascript 로딩 방법을 알아 봅니다. 자바스크립트 로딩 순서는 웹 페이지의 성능과 사용자 경험에 중요한 영향을 미칩니다. 주요 내용은 다음과 같습니다: 1. 일반적인 HTML 구조: - 태그…","image":"https://ucanon.com/blog/IT/Javascript_CSS_HTML/Javascript_Loading_Sequence.resources/without-defer-async-body.png","dateModified":"2024-09-09","inLanguage":"ko","mainEntityOfPage":"https://ucanon.com/p/4b0170b9e0856663/","publisher":{"@type":"Organization","name":"UCANON.COM","url":"https://ucanon.com/"}}</script>
+<style>
+body{margin:0;background:#faf8f4;color:#2b2722;font:16px/1.75 -apple-system,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+main{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+a{color:#3f7a5e}nav{font-size:14px;color:#7a7268}h1{font-size:32px;line-height:1.3;margin:12px 0 4px}
+.meta{font-size:13px;color:#7a7268;margin-bottom:32px}img{max-width:100%;height:auto}
+pre{background:#f1ede6;padding:14px;overflow:auto;border-radius:8px}code{font-family:Consolas,monospace;font-size:.92em}
+blockquote{margin:0;padding-left:16px;border-left:3px solid #c9d9cf;color:#5a534a}
+table{border-collapse:collapse}th,td{border:1px solid #ddd6cc;padding:6px 10px}
+.go{display:inline-block;margin-top:40px;padding:10px 16px;border-radius:8px;background:#4f8a6e;color:#fff;text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="/">UCANON.COM</a> › IT › Javascript_CSS_HTML</nav>
+<article>
+<h1>Javascript_Loading_Sequence</h1>
+<p class="meta">수정 <time datetime="2024-09-09">2024-09-09</time></p>
+<p>웹 페이지를 접속하는 사용자에게 좀 더 빠른 화면을 보여주기 위한 Javascript 로딩 방법을 알아 봅니다.</p>
+<p>자바스크립트 로딩 순서는 웹 페이지의 성능과 사용자 경험에 중요한 영향을 미칩니다. 주요 내용은 다음과 같습니다:</p>
+<ol><li>일반적인 HTML 구조:</li><li>&lt;head&gt; 태그 내에 CSS와 JavaScript 파일을 포함</li><li>이 방식은 JavaScript 파일이 HTML 파싱 전에 다운로드되고 실행되어 페이지 로딩 시간을 지연시킬 수 있음</li></ol>
+<ol><li>권장되는 Script 위치:</li><li>JavaScript 파일을 &lt;body&gt; 태그의 맨 끝에 배치</li><li>이 방법으로 HTML이 먼저 파싱되어 사용자에게 빠르게 화면을 보여줄 수 있음</li><li>페이지 로딩 속도가 개선되어 사용자 경험이 향상됨</li></ol>
+<ol><li>defer와 async 속성:</li><li>defer:  • 스크립트를 백그라운드에서 다운로드하고 HTML 파싱이 완료된 후 실행 • DOM을 제어하는 스크립트에 적합 • 여러 스크립트 간의 실행 순서가 보장됨</li><li>async:  • 스크립트를 백그라운드에서 다운로드하고 준비되는 대로 실행 (HTML 파싱과 병렬로 진행) • DOM과 독립적인 스크립트에 적합 • 실행 순서가 보장되지 않음</li></ol>
+<ol><li>성능 최적화:</li><li>CSS 파일은 &lt;head&gt; 태그에 유지하여 빠른 스타일 적용</li><li>JavaScript 파일은 페이지 콘텐츠 후에 로드하거나 defer/async 속성 사용</li><li>DOM 조작이 필요한 중요한 스크립트는 defer 사용</li><li>분석 도구나 광고 스크립트와 같은 독립적인 스크립트는 async 사용 고려</li></ol>
+<p>이러한 방식으로 JavaScript를 로딩하면 웹 페이지의 성능을 최적화하고 사용자에게 더 나은 경험을 제공할 수 있습니다. defer는 특히 DOM 구조에 의존하는 스크립트에 유용하며, 문서 로딩이 완료된 후 실행되므로 안전하게 DOM을 조작할 수 있습니다.</p>
+<h3>HTML 파싱 및 렌더링 과정</h3>
+<h3>일반적인 HTML</h3>
+<p>일반적인 CSS와 Javascript 파일이 포함된 HTML 파일입니다.</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+	&lt;meta charset=&quot;UTF-8&quot;&gt;
+	&lt;title&gt;HTML Rendering&lt;/title&gt;
+	&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;default.css&quot;&gt;
+	&lt;script src=&quot;/js/jquery.js&quot;&gt;&lt;/script&gt;
+	&lt;script src=&quot;/js/common.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;ul&gt;
+		&lt;li&gt;HTML를 렌더링합니다.&lt;/li&gt;
+	&lt;/ul&gt;
+	&lt;img src=&quot;/images/intro.png&quot; alt=&quot;&quot;&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>아래는 위의 HTML 파일이 웹 브라우저에 로딩될 때, HTML과 Javascript의 실행 과정을 보여줍니다. hear 태그 아래에서 script 태그를 추가해서 javascript 파일(jquery.js, common.js)을 추가할 경우 body 태그 아래에 HTML 파싱전에 파일을 다운로드 받고, 실행하기 됩니다.</p>
+<h3>권장하는 Script 위치 조정 HTML</h3>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+	&lt;meta charset=&quot;UTF-8&quot;&gt;
+	&lt;title&gt;HTML Rendering&lt;/title&gt;
+	&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;default.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;ul&gt;
+		&lt;li&gt;HTML를 렌더링합니다.&lt;/li&gt;
+	&lt;/ul&gt;
+	&lt;img src=&quot;/images/intro.png&quot; alt=&quot;&quot;&gt;
+	&lt;script src=&quot;/js/jquery.js&quot;&gt;&lt;/script&gt;
+	&lt;script src=&quot;/js/common.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>hear 태그 안에 script 태그를 넣어서 javascript 파일을 실행할 경우 화면 렌더링 시간이 지연될 수 있습니다. 따라서 위와 같이 script 태그를 body 태그 맨 아래에 추가하면 사용자에게 빠르게 화면을 보여줄 수 있습니다.<br /><img src="https://ucanon.com/blog/IT/Javascript_CSS_HTML/Javascript_Loading_Sequence.resources/without-defer-async-body.png" alt="" loading="lazy" /></p>
+<h3>async property</h3>
+<p>script 태그의 async 속성은 javascript 파일을 비동기적으로 로딩(fetch)하고 위한 옵션입니다. async와 defer 모두 javascript 파일의 다운로드(fetch)는 비동기적으로 병렬(Parallel) 실행되지만, javascript 실행(Execute)는 차이점이 있습니다. 아래와 같이 script 태그에 async 속성이 정의되어 있으면, 웹 브라우저는 HTML 파싱이 완료되지 않아도, Javascript 파일이 다운로드가 완료되면, Javascript 파일을 실행합니다.</p>
+<pre><code>&lt;script async src=&quot;script.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p><img src="https://ucanon.com/blog/IT/Javascript_CSS_HTML/Javascript_Loading_Sequence.resources/with-async.png" alt="with-async" loading="lazy" /></p>
+<h4>async 의 문제점</h4>
+<p>Javascript에 async를 정의하면 HTML Parsing과 Javascript 다운로드를 동시에 진행하고 HTML Parsing이 완료 여부와 상관없이 Javascript를 빠르게 실행하는 장점이 있습니다.</p>
+<p>그러나 Javascript에서 실행하는 코드가 HTML DOM을 제어하는 코드가 있다면, DOM 아직 파싱되기 전에 접근할 경우 예상치 못한 에러가 발생할 수 있다는 점을 유의해야 합니다.</p>
+<p>따라서 HTML DOM을 제어하는 코드의 실행은 async 속성이 정의된 javascript 파일에서 실행할 때 주의해야 합니다.</p>
+<h3>defer property</h3>
+<p>아래는 script 태그에 defer 속성을 정의한 예입니다.</p>
+<pre><code class="language-script">&lt;script defer src=&quot;script.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>script 태그의 defer 속성은 javascript 파일을 비동기적으로 서버에 요청에서 다운로드(fetch) 받지만, 다운로드 받은 javascript 파일의 실행은 HTML을 모두 파싱한 이후에 실행합니다.<br /><img src="https://ucanon.com/blog/IT/Javascript_CSS_HTML/Javascript_Loading_Sequence.resources/with-defer.png" alt="with-defer" loading="lazy" /></p>
+<h3>async &amp; defer 지원 브라우저</h3>
+<ul><li>IE는 defer의 경우 예전부터 부분 지원하고 있으나 async 속성은 10 버전 이상부터 지원(defer 완전 지원 포함)</li><li>Firefox는 3.6 버전부터 모두 지원</li><li>chrome은 8 버전부터 모두 지원</li><li>safari는 5 버전부터 모두 지원(단, 5버전에서는 async=false 지원 안함)</li><li>ios safari는 5.1 버전부터 모두 지원</li><li>android는 3 버전부터 모두 지원</li></ul>
+<h3>Reference</h3>
+<blockquote><ul><li><a href="https://flaviocopes.com/javascript-async-defer/">https://flaviocopes.com/javascript-async-defer/</a></li><li><a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/constructing-the-object-model?hl=ko">https://developers.google.com/web/fundamentals/performance/critical-rendering-path/constructing-the-object-model?hl=ko</a></li><li><a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp?hl=ko">https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp?hl=ko</a></li><li><a href="https://boxfoxs.tistory.com/408">https://boxfoxs.tistory.com/408</a></li><li><a href="https://webclub.tistory.com/630">https://webclub.tistory.com/630</a></li><li><a href="https://blog.asamaru.net/2017/05/04/script-async-defer/">https://blog.asamaru.net/2017/05/04/script-async-defer</a></li></ul></blockquote>
+</article>
+<a class="go" href="/#/4b0170b9e0856663">서재에서 보기 →</a>
+</main>
+</body>
+</html>

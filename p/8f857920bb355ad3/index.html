@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GraphQL · UCANON.COM</title>
+<meta name="description" content="GraphQL은 Facebook에서 개발한 데이터 쿼리 언어로, 클라이언트와 서버 간 효율적인 데이터 요청 및 응답을 가능하게 합니다. GraphQL은 REST API의 대안으로 각광받고 있으며, 데이터 요청에 최적화된 방식으로 작동합니다. GraphQL은 쿼리,…" />
+<link rel="canonical" href="https://ucanon.com/p/8f857920bb355ad3/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="UCANON.COM" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="GraphQL" />
+<meta property="og:description" content="GraphQL은 Facebook에서 개발한 데이터 쿼리 언어로, 클라이언트와 서버 간 효율적인 데이터 요청 및 응답을 가능하게 합니다. GraphQL은 REST API의 대안으로 각광받고 있으며, 데이터 요청에 최적화된 방식으로 작동합니다. GraphQL은 쿼리,…" />
+<meta property="og:url" content="https://ucanon.com/p/8f857920bb355ad3/" />
+<meta property="og:image" content="https://ucanon.com/og-image.png" />
+<meta property="article:modified_time" content="2024-12-10" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="GraphQL" />
+<meta name="twitter:description" content="GraphQL은 Facebook에서 개발한 데이터 쿼리 언어로, 클라이언트와 서버 간 효율적인 데이터 요청 및 응답을 가능하게 합니다. GraphQL은 REST API의 대안으로 각광받고 있으며, 데이터 요청에 최적화된 방식으로 작동합니다. GraphQL은 쿼리,…" />
+<meta name="twitter:image" content="https://ucanon.com/og-image.png" />
+<link rel="icon" href="/favicon.ico" />
+<script>
+/* 사람은 사이트 화면(#/8f857920bb355ad3)으로 보내고, 검색엔진·미리보기 봇은 이 페이지를 그대로 읽게 한다. */
+(function () {
+  if (!/bot|crawl|spider|slurp|preview|scrap|facebookexternalhit|embedly|whatsapp|telegram|discord|skype|line\/|lighthouse|headless/i.test(navigator.userAgent)) location.replace("/#/8f857920bb355ad3");
+})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"GraphQL","description":"GraphQL은 Facebook에서 개발한 데이터 쿼리 언어로, 클라이언트와 서버 간 효율적인 데이터 요청 및 응답을 가능하게 합니다. GraphQL은 REST API의 대안으로 각광받고 있으며, 데이터 요청에 최적화된 방식으로 작동합니다. GraphQL은 쿼리,…","image":"https://ucanon.com/og-image.png","dateModified":"2024-12-10","inLanguage":"ko","mainEntityOfPage":"https://ucanon.com/p/8f857920bb355ad3/","publisher":{"@type":"Organization","name":"UCANON.COM","url":"https://ucanon.com/"}}</script>
+<style>
+body{margin:0;background:#faf8f4;color:#2b2722;font:16px/1.75 -apple-system,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+main{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+a{color:#3f7a5e}nav{font-size:14px;color:#7a7268}h1{font-size:32px;line-height:1.3;margin:12px 0 4px}
+.meta{font-size:13px;color:#7a7268;margin-bottom:32px}img{max-width:100%;height:auto}
+pre{background:#f1ede6;padding:14px;overflow:auto;border-radius:8px}code{font-family:Consolas,monospace;font-size:.92em}
+blockquote{margin:0;padding-left:16px;border-left:3px solid #c9d9cf;color:#5a534a}
+table{border-collapse:collapse}th,td{border:1px solid #ddd6cc;padding:6px 10px}
+.go{display:inline-block;margin-top:40px;padding:10px 16px;border-radius:8px;background:#4f8a6e;color:#fff;text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="/">UCANON.COM</a> › IT › Database</nav>
+<article>
+<h1>GraphQL</h1>
+<p class="meta">수정 <time datetime="2024-12-10">2024-12-10</time></p>
+<h3>GraphQL: 클라이언트와 서버 간 데이터 요청의 혁신</h3>
+<h4>GraphQL이란?</h4>
+<p><strong>GraphQL</strong>은 <strong>Facebook</strong>에서 개발한 데이터 쿼리 언어로, 클라이언트와 서버 간 효율적인 데이터 요청 및 응답을 가능하게 합니다. GraphQL은 REST API의 대안으로 각광받고 있으며, 데이터 요청에 최적화된 방식으로 작동합니다.</p>
+<p>GraphQL은 <strong>쿼리</strong>, <strong>변형(Mutation)</strong>, <strong>구독(Subscription)</strong> 등 다양한 기능을 제공하여 서버와 클라이언트 간의 유연한 데이터 교환을 지원합니다. 이 글에서는 GraphQL의 기본 개념과 사용법, 그리고 이를 연동할 수 있는 데이터베이스 관리 시스템(DBMS)들에 대해 알아보겠습니다.</p>
+<hr />
+<h4>GraphQL의 핵심 개념</h4>
+<h5>1. <strong>스키마(Schema)</strong></h5>
+<p>GraphQL 서버는 <strong>스키마</strong>를 통해 제공하는 데이터와 그 구조를 정의합니다. 이 스키마는 클라이언트가 요청할 수 있는 데이터와 그 구조를 명확히 정의하며, 클라이언트는 이를 기반으로 필요한 데이터를 요청합니다.</p>
+<p>예를 들어, 아래와 같은 GraphQL 스키마가 있을 수 있습니다.</p>
+<pre><code class="language-graphql">type Query {
+  book(id: ID!): Book
+  books: [Book]
+}
+
+type Book {
+  id: ID
+  title: String
+  author: String
+}</code></pre>
+<h5>2. <strong>쿼리(Query)</strong></h5>
+<p><strong>쿼리</strong>는 클라이언트가 서버에 데이터를 요청하는 방법입니다. 클라이언트는 필요한 데이터만 선택적으로 요청할 수 있습니다. 예를 들어, <code>book</code> 쿼리를 사용하여 특정 책의 제목과 저자만 요청할 수 있습니다.</p>
+<pre><code class="language-graphql">{
+  book(id: &quot;1&quot;) {
+    title
+    author
+  }
+}</code></pre>
+<p>위의 쿼리에 대한 응답은 다음과 같습니다:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;book&quot;: {
+      &quot;title&quot;: &quot;GraphQL 입문&quot;,
+      &quot;author&quot;: &quot;홍길동&quot;
+    }
+  }
+}</code></pre>
+<h5>3. <strong>변형(Mutation)</strong></h5>
+<p><strong>변형(Mutation)</strong>은 데이터를 수정, 추가, 삭제할 때 사용됩니다. 예를 들어, 새로운 책을 추가하는 변형은 다음과 같습니다.</p>
+<pre><code class="language-graphql">mutation {
+  addBook(title: &quot;새 책&quot;, author: &quot;이순신&quot;) {
+    id
+    title
+  }
+}</code></pre>
+<h5>4. <strong>구독(Subscription)</strong></h5>
+<p><strong>구독(Subscription)</strong>은 서버에서 실시간으로 데이터를 업데이트 받을 때 사용합니다. 예를 들어, 새로 추가된 책의 정보를 실시간으로 받을 수 있습니다.</p>
+<pre><code class="language-graphql">subscription {
+  bookAdded {
+    title
+    author
+  }
+}</code></pre>
+<hr />
+<h4>GraphQL의 장점</h4>
+<ol><li><strong>효율적인 데이터 요청</strong>   GraphQL은 클라이언트가 필요한 데이터만 정확하게 요청할 수 있도록 해줍니다. 이를 통해 <strong>과도한 데이터 전송(Over-fetching)</strong>과 <strong>부족한 데이터 전송(Under-fetching)</strong>을 방지할 수 있습니다.</li></ol>
+<ol><li><strong>단일 엔드포인트</strong>   REST API와 달리, GraphQL은 <strong>하나의 엔드포인트</strong>만을 사용하여 모든 요청을 처리합니다. 이는 API 관리와 유지보수를 간소화합니다.</li></ol>
+<ol><li><strong>타입 시스템</strong>   GraphQL은 강력한 <strong>타입 시스템</strong>을 제공합니다. 스키마에서 정의된 타입을 바탕으로 데이터를 요청하고, 서버는 이를 처리합니다. 이로 인해 <strong>정확한 데이터 구조</strong>와 <strong>에러 감소</strong>가 가능해집니다.</li></ol>
+<ol><li><strong>클라이언트 중심</strong>   클라이언트는 원하는 데이터만 요청하고, 서버는 그에 맞춰 데이터를 반환합니다. 서버는 불필요한 데이터를 보내지 않으므로, 클라이언트는 더욱 효율적으로 작업할 수 있습니다.</li></ol>
+<hr />
+<h4>GraphQL을 연동할 수 있는 DBMS</h4>
+<p>GraphQL은 다양한 <strong>데이터베이스 관리 시스템(DBMS)</strong>과 연동할 수 있습니다. GraphQL 자체는 데이터베이스를 직접 다루지 않으며, 데이터베이스와의 연동은 <strong>리졸버(Resolver)</strong>를 통해 이루어집니다.</p>
+<h5>1. <strong>SQL 기반 데이터베이스</strong></h5>
+<p>GraphQL은 관계형 데이터베이스인 <strong>MySQL</strong>, <strong>PostgreSQL</strong>, <strong>MariaDB</strong>, <strong>SQLite</strong> 등과 쉽게 연동할 수 있습니다. 이 경우 GraphQL 서버에서 SQL 쿼리를 실행하여 필요한 데이터를 가져옵니다.</p>
+<h5>2. <strong>NoSQL 기반 데이터베이스</strong></h5>
+<p>GraphQL은 NoSQL 데이터베이스인 <strong>MongoDB</strong>, <strong>Cassandra</strong>, <strong>Redis</strong>, <strong>DynamoDB</strong> 등과도 연동이 가능합니다. 예를 들어, MongoDB와 GraphQL을 연결하면 JSON 스타일로 데이터를 쿼리할 수 있습니다.</p>
+<h5>3. <strong>그래프 데이터베이스</strong></h5>
+<p><strong>Neo4j</strong>와 같은 그래프 데이터베이스와도 GraphQL을 연동할 수 있습니다. 그래프 데이터베이스는 관계를 기반으로 데이터를 모델링하므로, GraphQL과 잘 맞는 데이터 모델링을 제공합니다.</p>
+<hr />
+<h4>정리하며</h4>
+<p>GraphQL은 클라이언트와 서버 간의 데이터 요청을 최적화하는 강력한 도구입니다. <strong>효율성과 유연성</strong>을 제공하며, 다양한 DBMS와 쉽게 연동할 수 있어 데이터베이스와의 통합도 용이합니다. GraphQL을 사용하면 데이터 요청을 최적화하고, REST API에서 발생할 수 있는 여러 문제를 <strong>효과적으로</strong> 해결할 수 있습니다.</p>
+</article>
+<a class="go" href="/#/8f857920bb355ad3">서재에서 보기 →</a>
+</main>
+</body>
+</html>

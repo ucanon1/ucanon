@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SameSiteCookie · UCANON.COM</title>
+<meta name="description" content="최근 웹 브라우저의 보안 정책 강화로 인해, iframe 내에서 세션과 쿠키가 유지되지 않는 문제가 발생하고 있습니다. 이러한 현상은 주로 쿠키의 SameSite 속성 정책 변경과 관련이 있습니다. 기존에는 웹 브라우저에서 서버에서 쿠키를 생성할 때, 쿠키의…" />
+<link rel="canonical" href="https://ucanon.com/p/def57104aef37c73/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="UCANON.COM" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="SameSiteCookie" />
+<meta property="og:description" content="최근 웹 브라우저의 보안 정책 강화로 인해, iframe 내에서 세션과 쿠키가 유지되지 않는 문제가 발생하고 있습니다. 이러한 현상은 주로 쿠키의 SameSite 속성 정책 변경과 관련이 있습니다. 기존에는 웹 브라우저에서 서버에서 쿠키를 생성할 때, 쿠키의…" />
+<meta property="og:url" content="https://ucanon.com/p/def57104aef37c73/" />
+<meta property="og:image" content="https://ucanon.com/blog/IT/Web/SameSiteCookie.assets/85745326a70c3265cf41353b15e75598.png" />
+<meta property="article:modified_time" content="2025-02-07" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="SameSiteCookie" />
+<meta name="twitter:description" content="최근 웹 브라우저의 보안 정책 강화로 인해, iframe 내에서 세션과 쿠키가 유지되지 않는 문제가 발생하고 있습니다. 이러한 현상은 주로 쿠키의 SameSite 속성 정책 변경과 관련이 있습니다. 기존에는 웹 브라우저에서 서버에서 쿠키를 생성할 때, 쿠키의…" />
+<meta name="twitter:image" content="https://ucanon.com/blog/IT/Web/SameSiteCookie.assets/85745326a70c3265cf41353b15e75598.png" />
+<link rel="icon" href="/favicon.ico" />
+<script>
+/* 사람은 사이트 화면(#/def57104aef37c73)으로 보내고, 검색엔진·미리보기 봇은 이 페이지를 그대로 읽게 한다. */
+(function () {
+  if (!/bot|crawl|spider|slurp|preview|scrap|facebookexternalhit|embedly|whatsapp|telegram|discord|skype|line\/|lighthouse|headless/i.test(navigator.userAgent)) location.replace("/#/def57104aef37c73");
+})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"SameSiteCookie","description":"최근 웹 브라우저의 보안 정책 강화로 인해, iframe 내에서 세션과 쿠키가 유지되지 않는 문제가 발생하고 있습니다. 이러한 현상은 주로 쿠키의 SameSite 속성 정책 변경과 관련이 있습니다. 기존에는 웹 브라우저에서 서버에서 쿠키를 생성할 때, 쿠키의…","image":"https://ucanon.com/blog/IT/Web/SameSiteCookie.assets/85745326a70c3265cf41353b15e75598.png","dateModified":"2025-02-07","inLanguage":"ko","mainEntityOfPage":"https://ucanon.com/p/def57104aef37c73/","publisher":{"@type":"Organization","name":"UCANON.COM","url":"https://ucanon.com/"}}</script>
+<style>
+body{margin:0;background:#faf8f4;color:#2b2722;font:16px/1.75 -apple-system,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+main{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+a{color:#3f7a5e}nav{font-size:14px;color:#7a7268}h1{font-size:32px;line-height:1.3;margin:12px 0 4px}
+.meta{font-size:13px;color:#7a7268;margin-bottom:32px}img{max-width:100%;height:auto}
+pre{background:#f1ede6;padding:14px;overflow:auto;border-radius:8px}code{font-family:Consolas,monospace;font-size:.92em}
+blockquote{margin:0;padding-left:16px;border-left:3px solid #c9d9cf;color:#5a534a}
+table{border-collapse:collapse}th,td{border:1px solid #ddd6cc;padding:6px 10px}
+.go{display:inline-block;margin-top:40px;padding:10px 16px;border-radius:8px;background:#4f8a6e;color:#fff;text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="/">UCANON.COM</a> › IT › Web</nav>
+<article>
+<h1>SameSiteCookie</h1>
+<p class="meta">수정 <time datetime="2025-02-07">2025-02-07</time></p>
+<h2>IFrame 내 세션 및 쿠키 미유지 문제와 해결 방안</h2>
+<p>최근 웹 브라우저의 보안 정책 강화로 인해, iframe 내에서 세션과 쿠키가 유지되지 않는 문제가 발생하고 있습니다. 이러한 현상은 주로 쿠키의 <code>SameSite</code> 속성 정책 변경과 관련이 있습니다.</p>
+<h3>1. 문제 원인</h3>
+<p>기존에는 웹 브라우저에서 서버에서 쿠키를 생성할 때, 쿠키의 <code>SameSite</code> 속성이 명시되지 않은 경우, 웹 브라우저에서 기본 값이 <code>None</code>이었으나, 최근 Chrome과 Edge 등의 최신 웹 브라우저에서는 이를 <code>Lax</code>로 변경하였습니다. 이로 인해, 다른 도메인에서 iframe을 통해 콘텐츠를 불러올 때 쿠키가 전송되지 않아 세션이 유지되지 않는 문제가 발생합니다.</p>
+<p>Chrome 브라우저는 2020년 2월 4일에 출시된 80버전부터 쿠키의 <code>SameSite</code> 속성 기본값을 <code>None</code>에서 <code>Lax</code>로 변경하였습니다. 이로 인해, <code>SameSite</code> 속성을 명시하지 않은 쿠키는 기본적으로 <code>Lax</code>로 처리되어, 일부 크로스 사이트 요청에서 쿠키 전송이 제한될 수 있습니다.</p>
+<p><strong>크로스 사이트 요청</strong>이란, 사용자가 현재 방문 중인 웹사이트와 다른 도메인으로의 요청을 의미합니다. 예를 들어, 아래와 같이 <code>a.com</code>에서 <code>b.com</code>으로의 요청은 크로스 사이트 요청으로 볼 수 있습니다.</p>
+<p><img src="https://ucanon.com/blog/IT/Web/SameSiteCookie.assets/85745326a70c3265cf41353b15e75598.png" alt="85745326a70c3265cf41353b15e75598" loading="lazy" /></p>
+<p><strong>최신 Chrome과 Edge 브라우저의 기본 설정</strong>이 보안 강화를 위해 <code>SameSite</code> 속성을 <code>Lax</code>로 설정합니다. 이로 인해, 크로스 사이트 요청 시 쿠키가 전송되지 않아 <strong>세션이 유지되지 않거나 JWT 토큰이 전달되지 않는 문제</strong>가 발생하면서 로그인 세션이 유지 되지 않는 현상이 발생합니다.</p>
+<h3>2. 웹 브라우저의 SameSite 속성 정책</h3>
+<p><strong><code>SameSite</code> 속성</strong>은 쿠키가 <strong>크로스 사이트 요청</strong>에 포함되는 방식을 제어하여 <strong>CSRF(Cross-Site Request Forgery)</strong> 공격을 방지하는 데 도움을 줍니다. 이 <strong><code>SameSite</code> 속성</strong>은 다음과 같습니다.</p>
+<ul><li><strong><code>Strict</code></strong>: 쿠키는 동일한 사이트에서 발생하는 요청에만 전송됩니다.</li><li><strong><code>Lax</code></strong>: 기본적으로 동일한 사이트에서 발생하는 요청에만 쿠키가 전송되지만, 일부 안전한 메서드(GET)나 탭에서의 링크 클릭 등은 예외로 인정되어 쿠키가 전송될 수 있습니다.</li><li><strong><code>None</code></strong>: 쿠키는 크로스 사이트 요청을 포함한 모든 상황에서 전송됩니다. 이 경우, <strong><code>Secure</code></strong> 속성을 함께 설정하여 쿠키가 HTTPS 연결에서만 전송되도록 해야 합니다.</li></ul>
+<h3>3. 해결 방안</h3>
+<p>서로 다른 도메인을 참조하는 크로스 사이트에서 쿠키를 사용해야 하는 경우에는 쿠키 유지 되지 않는 현상에 대한 해결 방안으로는 다음과 같은 방법을 고려할 수 있습니다.</p>
+<ol><li><strong><code>SameSite</code> 속성을 <code>None</code>으로 설정하고, <code>Secure</code> 속성을 추가</strong></li><li>쿠키를 생성할 때 <code>SameSite=None; Secure</code>로 설정하여 크로스 사이트 요청에서도 쿠키가 전송되도록 합니다.</li><li>이때, 애플리케이션이 HTTPS를 통해 제공되고 있는지 확인해야 합니다.</li><li><strong>프론트엔드와 백엔드를 동일한 사이트로 구성</strong></li><li>프록시 서버를 사용하여 프론트엔드와 백엔드 간의 통신을 동일한 도메인 내에서 처리함으로써, <strong>SameSite</strong> 쿠키 제한으로 인한 세션 및 쿠키 미유지 문제를 해결할 수 있습니다. 이를 위해 웹 서버의 <strong>리버스 프록시(Reverse Proxy)</strong>를 설정합니다.</li><li>프론트엔드와 백엔드를 동일한 최상위 도메인 하의 서브도메인으로 설정하여, 브라우저가 동일한 사이트로 인식하도록 합니다.</li><li>예를 들어, 프론트엔드를 <code>frontend.example.com</code>, 백엔드를 <code>api.example.com</code>으로 설정합니다.</li><li><strong>쿠키 대신 다른 저장소 사용</strong></li><li>JSESSIONID 또는 JWT 토큰을 쿠키 대신 <strong>로컬 스토리지</strong>나 <strong>세션 스토리지</strong>에 저장하여 <code>SameSite</code> 속성의 영향을 받지 않도록 합니다.</li><li><strong>로컬 스토리지</strong>나 <strong>세션 스토리지</strong>에 저장된 JSESSIONID 또는 JWT 토큰을 서버와 주고받기 위해, 쿠키 대신 Request Header 및 Response Header에 설정하여 전송할 수 있습니다.</li><li>WebSquare의 Submission을 통한 통신 시, Response Header에서 JSESSIONID 값을 가져오고 Request Header에 JSESSIONID 값을 설정하는 방법은 아래의 <strong>6. WebSquare Submission Request &amp; Response Header 핸들링</strong>에서 설명하겠습니다.</li><li>서버 측에서 쿠키 대신 Request Header와 Response Header에 JSESSIONID 또는 JWT 토큰을 저장하는 방법은 현재 사용 중인 서버 프레임워크 환경에 맞게 별도로 구현해야 합니다.</li><li>쿠키가 아닌 다른 저장소를 사용할 경우, <strong>XSS(Cross-Site Scripting)</strong> 공격에 대비한 추가적인 보안 조치가 필요합니다.</li></ol>
+<p><strong>각 방법은 보안과 편의성 측면에서 장단점이 있으므로, 애플리케이션의 특성과 요구 사항에 따라 적절한 방안을 선택해야 합니다.</strong></p>
+<h3>4. 코드 작성을 통한 <code>SameSite=None</code>, <code>Secure</code> 속성 추가 예시</h3>
+<p>서버에서 쿠키를 설정할 때 <code>SameSite=None</code>과 <code>Secure</code> 속성을 명시적으로 지정해야 합니다. 이를 통해 크로스 사이트 요청에서도 쿠키가 전송될 수 있습니다. 단, <code>Secure</code> 속성을 설정하려면 사이트가 HTTPS를 통해 제공되어야 합니다.</p>
+<h4>4.1. JAVA 예시 코드</h4>
+<p>Java 서블릿 환경에서는 <code>HttpServletResponse</code>를 사용하여 쿠키를 설정할 수 있습니다. 쿠키를 생성할 때 <code>SameSite=None</code>과 <code>Secure</code> 속성을 명시적으로 지정해야 합니다. 이를 통해 크로스 사이트 요청에서도 쿠키가 전송될 수 있습니다. 단, <code>Secure</code> 속성을 설정하려면 사이트가 HTTPS를 통해 제공되어야 합니다.</p>
+<pre><code class="language-java">response.setHeader(&quot;Set-Cookie&quot;, &quot;key=value; SameSite=None; Secure&quot;);</code></pre>
+<h4>4.2. Spring MVC Project 예시 코드</h4>
+<p>Spring MVC 환경에서는 인터셉터나 필터를 사용하여 응답 헤더에 <code>SameSite</code> 속성을 추가할 수 있습니다. 이를 통해 모든 응답에 대해 일관되게 <code>SameSite</code> 속성을 설정할 수 있습니다.</p>
+<p>아래와 같이 SameSiteCookieFilter 클래스를 생성합니다.</p>
+<pre><code class="language-java">package com.inswave.wrm.interceptor;
+
+import javax.servlet.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Collection;
+
+public class SameSiteCookieFilter implements Filter {
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        chain.doFilter(request, response);
+        addSameSiteAttribute((HttpServletResponse) response);
+    }
+
+    private void addSameSiteAttribute(HttpServletResponse response) {
+        String header = response.getHeader(&quot;Set-Cookie&quot;);
+        if (header != null &amp;&amp; header.contains(&quot;JSESSIONID&quot;)) {
+            String updatedHeader = header + &quot;; SameSite=None; Secure&quot;;
+            response.setHeader(&quot;Set-Cookie&quot;, updatedHeader);
+        }       
+    }
+
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+	}
+}
+</code></pre>
+<p>web.xml 파일에 sameSiteCookieFilter를 추가합니다.</p>
+<pre><code class="language-xml">	&lt;filter&gt;
+		&lt;filter-name&gt;sameSiteCookieFilter&lt;/filter-name&gt;
+		&lt;filter-class&gt;com.inswave.wrm.interceptor.SameSiteCookieFilter&lt;/filter-class&gt;
+	&lt;/filter&gt;
+	&lt;filter-mapping&gt;
+		&lt;filter-name&gt;sameSiteCookieFilter&lt;/filter-name&gt;
+		&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+	&lt;/filter-mapping&gt;</code></pre>
+<h4>4.3. Spring Boot Project 예시 코드</h4>
+<p>Spring Boot 2.6.0 이상 버전에서는 application.properties 설정 파일을 통해 <code>SameSite</code> 속성을 간편하게 설정할 수 있습니다.</p>
+<pre><code class="language-properties">server.servlet.session.cookie.same-site=none</code></pre>
+<h3>5. 웹 서버 및 WAS 설정을 통한 <code>SameSite=None</code>, <code>Secure</code> 속성 추가 예시</h3>
+<p>웹 서버나 Apache Tomcat에서 쿠키의 <code>SameSite=None</code> 및 <code>Secure</code> 속성을 설정하는 방법은 다음과 같습니다.</p>
+<h4>5.1. Tomcat에서 설정하기</h4>
+<p><strong>Tomcat 버전 9.0.30 이상</strong>에서는 다음과 같이 설정할 수 있습니다:</p>
+<ol><li><strong><code>server.xml</code> 파일 수정</strong>:</li></ol>
+<p><code>{TOMCAT_HOME}/conf/server.xml</code> 파일을 열어 <code>&lt;Context&gt;</code> 태그 내에 다음 설정을 추가합니다:</p>
+<pre><code class="language-xml">   &lt;Context docBase=&quot;xxx&quot; path=&quot;/&quot; reloadable=&quot;true&quot; source=&quot;org.eclipse.jst.jee.server:xxx&quot;&gt;
+   	&lt;CookieProcessor sameSiteCookies=&quot;none&quot; secure=&quot;true&quot;/&gt;
+   &lt;/Context&gt;</code></pre>
+<p>이 설정은 쿠키의 <code>SameSite</code> 속성을 <code>None</code>으로 지정합니다.</p>
+<p>&lt;u&gt;<strong>주의</strong>: <code>Secure</code> 속성을 설정하려면 웹 서버가 HTTPS를 통해 서비스를 제공해야 합니다.&lt;/u&gt;</p>
+<ol><li><strong><code>web.xml</code> 파일 수정</strong>:</li></ol>
+<p><code>{TOMCAT_HOME}/conf/web.xml</code> 파일을 열어 <code>&lt;session-config&gt;</code> 태그 내에 다음 설정을 추가합니다:</p>
+<pre><code class="language-xml">   &lt;session-config&gt;
+       &lt;cookie-config&gt;
+           &lt;http-only&gt;true&lt;/http-only&gt;
+           &lt;secure&gt;true&lt;/secure&gt;
+       &lt;/cookie-config&gt;
+   &lt;/session-config&gt;</code></pre>
+<p>이 설정은 쿠키에 <code>HttpOnly</code>와 <code>Secure</code> 속성을 추가하여 보안을 강화합니다.</p>
+<h4>5.2. Apache HTTP Server에서 설정하기</h4>
+<p>Apache HTTP Server를 사용하는 경우, 다음과 같이 설정할 수 있습니다:</p>
+<ol><li><strong><code>httpd.conf</code> 파일 수정</strong>:</li></ol>
+<p><code>httpd.conf</code> 또는 관련 설정 파일에서 다음 지시문을 추가합니다:</p>
+<pre><code>   Header always edit Set-Cookie (.*) &quot;$1; Secure SameSite=None;&quot;</code></pre>
+<p>이 설정은 모든 <code>Set-Cookie</code> 헤더에 <code>Secure</code> 및 <code>SameSite=None</code> 속성을 추가합니다.</p>
+<h4>5.3. Nginx에서 설정하기</h4>
+<p>Nginx를 사용하는 경우, 다음과 같이 설정할 수 있습니다:</p>
+<ol><li><strong><code>nginx.conf</code> 파일 수정</strong>:</li></ol>
+<p><code>nginx.conf</code> 또는 관련 설정 파일에서 서버 블록 내에 다음 지시문을 추가합니다:</p>
+<pre><code>   location / {
+       proxy_cookie_path / &quot;/; secure; SameSite=None&quot;;
+   }</code></pre>
+<p>이 설정은 모든 쿠키 경로에 <code>Secure</code> 및 <code>SameSite=None</code> 속성을 추가합니다.</p>
+<h4>5.4. 주의사항</h4>
+<ul><li><code>SameSite=None</code> 설정 시 반드시 <code>Secure</code> 속성을 함께 지정해야 하며, 이는 HTTPS 프로토콜을 사용해야 함을 의미합니다.</li><li>웹 서버의 설정 변경 후에는 반드시 해당 서버를 재시작하여 변경 사항을 적용해야 합니다.</li></ul>
+<h3>6. WebSquare Submission Request &amp; Response Header 핸들링</h3>
+<p>쿠키를 사용하면 서버와 데이터 통신 시 별도의 작업을 진행하지 않아도 웹 브라우저 쿠키에 저장된 JSESSIONID를 자동으로 서버에 전달하지만, 쿠키를 사용하지 않고 LocalStorage와 SessionStorage에 JSESSIONID를 저장하게 되면, 자동으로 JSESSIONID 값이 서버에 전달되지 않기 때문에, Submission를 이용해서 request를 보내고, response를 받을 때, JSESSIONID 값을 전달하고 받는 코드를 작성하셔야 합니다.</p>
+<p>WebSquare에서 서버와 데이터 통신을 위해서 사용하는 Submission에서 서버와 데이터를 송수신할 때, Request &amp; Response Header를 통해서 JSESSIONID 값을 전달하고, 가져오는 방법을 소개합니다.</p>
+<h4>6.1. Submission Request Header에 값 설정하기</h4>
+<p>Submission Request Header에 값을 설정하기 위해서는 아래와 같이 setRequestHeader API를 사용하시면 됩니다.</p>
+<p>아래는 LocalStorage에 저장된 JSESSIONID 값을 가져와서, Submission Request Header에 &quot;jsessionid&quot;라는 Key로 JSESSIONID를 저장하는 예시 코드입니다.</p>
+<pre><code class="language-javascript">// Local Storage를 사용하시면 웹 브라우저가 종료된 이후에도 jsessionid 값이 유지됩니다.
+const jSessionId = localStorage.getItem(&quot;jsessionid&quot;);
+
+// Session Storage를 사용하시면 웹 브라우저가 종료되기 전까지 jsessionid 값이 유지됩니다.
+// const jSessionId = sessionStorage.getItem(&quot;jsessionid&quot;);
+submission1.setRequestHeader({ &quot;jsessionid&quot; : jSessionId });</code></pre>
+<p>$p.executeSubmission API로 submssion1를 실행하면  Submission Request Header에 &quot;jsessionid&quot;라는 Key로 JSESSIONID를 저장되어 서버에 전송이 됩니다.</p>
+<h4>6.2. 모든 Submission 실행 시 Request Header에 JSESSIONID 전달하기</h4>
+<p>모든 Submission 실행 시 Request Header에 JSESSIONID 전달하기 위해서는 웹스퀘어 클라이언트 설정 파일인 config.xml의 submission &gt; preSubmitFunction 설정을 통해서 할 수 있습니다.</p>
+<pre><code class="language-xml">&lt;submission&gt;
+    &lt;processMsg value=&quot;&quot;/&gt;
+    &lt;showSubmissionTime value=&quot;true&quot;/&gt;
+    &lt;!-- 아래와 같이 preSubmissionFunction을 함수명을 설정합니다. --&gt;
+    &lt;preSubmitFunction value=&quot;com.sbm.__preSubmitFunction&quot;/&gt;		
+&lt;/submission&gt;</code></pre>
+<p>아래의 코드는 com.sbm.__preSubmitFunction 함수의 구현 예시 입니다.</p>
+<pre><code class="language-javascript">/**
+ * submission의 공통 설정에서 사용되며, submission 통신 직전 호출됨.
+ * return true일 경우 통신 수행, return false일 경우 통신 중단
+ * 
+ * @param {Object} sbmObj 서브미션 객체
+ * @returns {Boolean} 통신수행여부
+ */
+com.sbm.__preSubmitFunction = function (sbmObj) {
+    const jSessionId = localStorage.getItem(&quot;jsessionid&quot;);
+    // const jSessionId = sessionStorage.getItem(&quot;jsessionid&quot;);    
+    sbmObj.setRequestHeader({ &quot;jsessionid&quot; : jSessionId }); 
+};</code></pre>
+<h4>6.3. Submission Response Header에서 값 가져오기</h4>
+<p>Submission을 통해 서버에서 전달된 Response Header에서 JSESSIONID 값을 가져오는 방법은 다음과 같습니다.</p>
+<p>아래는 LocalStorage에 저장된 JSESSIONID 값을 가져와서, Submission Request Header에 &quot;jsessionid&quot;라는 Key로 JSESSIONID를 저장하는 예시 코드입니다.</p>
+<pre><code class="language-javascript">/**
+ * Submission 실행이 완료되면 실행되는, submitdone 이벤트의 첫번째 파라미터(e)에 서버에 전달한 Response Header, Response Body 데이터가 저장되어 있습니다.
+ */
+scwin.sbm_Login_submitdone = async function (e) {
+    // Response Header에 저장된 데이터를 JSON 객체로 변환해서 responseHeader에 저장합니다.
+    const responseHeader = JSON.parse(e.responseHeadersJSON);
+    const jSessionId = responseHeader.jsessionid;
+    
+    // localStorage에 Response Header에 저장되서 서버로 부터 전달받은 jsessionid 값을 저장합니다.
+    // Local Storage를 사용하시면 웹 브라우저가 종료된 이후에도 jsessionid 값이 유지됩니다.
+    localStorage.setItem(&quot;jsessionid&quot;, jSessionId);
+    
+    // Session Storage를 사용하시면 웹 브라우저가 종료되기 전까지 jsessionid 값이 유지됩니다.
+    // sessionStorage.setItem(&quot;jsessionid&quot;, jSessionId);
+};</code></pre>
+<h3>7. 참고 사이트</h3>
+<ul><li><a href="https://chgbook.tistory.com/35">https://chgbook.tistory.com/35</a></li><li><a href="https://web.dev/articles/samesite-cookie-recipes?hl=ko">https://web.dev/articles/samesite-cookie-recipes?hl=ko</a></li><li><a href="https://web.dev/articles/samesite-cookies-explained?hl=ko">https://web.dev/articles/samesite-cookies-explained?hl=ko</a></li><li><a href="https://marklee1117.tistory.com/53">https://marklee1117.tistory.com/53</a></li><li><a href="https://chromestatus.com/feature/5088147346030592">https://chromestatus.com/feature/5088147346030592</a></li><li><a href="https://jake-seo-dev.tistory.com/392">https://jake-seo-dev.tistory.com/392</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/Privacy/Third-party_cookies">https://developer.mozilla.org/en-US/docs/Web/Privacy/Third-party_cookies</a></li><li><a href="https://www.certkorea.co.kr/bbs/board.php?bo_table=31&amp;wr_id=42&amp;utm_source=chatgpt.com">https://www.certkorea.co.kr/bbs/board.php?bo_table=31&amp;wr_id=42&amp;utm_source=chatgpt.com</a></li></ul>
+</article>
+<a class="go" href="/#/def57104aef37c73">서재에서 보기 →</a>
+</main>
+</body>
+</html>

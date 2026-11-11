@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>웹 브라우저 기능을 활용한 프런트엔드 오류 수집 전략 · UCANON.COM</title>
+<meta name="description" content="프론트엔드 애플리케이션이 복잡해질수록, 사용자 환경에서 발생하는 오류를 빠르게 탐지하고 수집하는 것은 서비스 품질 유지의 핵심입니다. 서버 로그만으로는 확인하기 어려운 클라이언트 단 오류를 어떻게 안정적으로 모을 수 있을까요? 이번 글에서는 외부 라이브러리 없이…" />
+<link rel="canonical" href="https://ucanon.com/p/cd7428b49d5e5e72/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="UCANON.COM" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:title" content="웹 브라우저 기능을 활용한 프런트엔드 오류 수집 전략" />
+<meta property="og:description" content="프론트엔드 애플리케이션이 복잡해질수록, 사용자 환경에서 발생하는 오류를 빠르게 탐지하고 수집하는 것은 서비스 품질 유지의 핵심입니다. 서버 로그만으로는 확인하기 어려운 클라이언트 단 오류를 어떻게 안정적으로 모을 수 있을까요? 이번 글에서는 외부 라이브러리 없이…" />
+<meta property="og:url" content="https://ucanon.com/p/cd7428b49d5e5e72/" />
+<meta property="og:image" content="https://ucanon.com/og-image.png" />
+<meta property="article:modified_time" content="2025-08-28" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="웹 브라우저 기능을 활용한 프런트엔드 오류 수집 전략" />
+<meta name="twitter:description" content="프론트엔드 애플리케이션이 복잡해질수록, 사용자 환경에서 발생하는 오류를 빠르게 탐지하고 수집하는 것은 서비스 품질 유지의 핵심입니다. 서버 로그만으로는 확인하기 어려운 클라이언트 단 오류를 어떻게 안정적으로 모을 수 있을까요? 이번 글에서는 외부 라이브러리 없이…" />
+<meta name="twitter:image" content="https://ucanon.com/og-image.png" />
+<link rel="icon" href="/favicon.ico" />
+<script>
+/* 사람은 사이트 화면(#/cd7428b49d5e5e72)으로 보내고, 검색엔진·미리보기 봇은 이 페이지를 그대로 읽게 한다. */
+(function () {
+  if (!/bot|crawl|spider|slurp|preview|scrap|facebookexternalhit|embedly|whatsapp|telegram|discord|skype|line\/|lighthouse|headless/i.test(navigator.userAgent)) location.replace("/#/cd7428b49d5e5e72");
+})();
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"웹 브라우저 기능을 활용한 프런트엔드 오류 수집 전략","description":"프론트엔드 애플리케이션이 복잡해질수록, 사용자 환경에서 발생하는 오류를 빠르게 탐지하고 수집하는 것은 서비스 품질 유지의 핵심입니다. 서버 로그만으로는 확인하기 어려운 클라이언트 단 오류를 어떻게 안정적으로 모을 수 있을까요? 이번 글에서는 외부 라이브러리 없이…","image":"https://ucanon.com/og-image.png","dateModified":"2025-08-28","inLanguage":"ko","mainEntityOfPage":"https://ucanon.com/p/cd7428b49d5e5e72/","publisher":{"@type":"Organization","name":"UCANON.COM","url":"https://ucanon.com/"}}</script>
+<style>
+body{margin:0;background:#faf8f4;color:#2b2722;font:16px/1.75 -apple-system,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+main{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+a{color:#3f7a5e}nav{font-size:14px;color:#7a7268}h1{font-size:32px;line-height:1.3;margin:12px 0 4px}
+.meta{font-size:13px;color:#7a7268;margin-bottom:32px}img{max-width:100%;height:auto}
+pre{background:#f1ede6;padding:14px;overflow:auto;border-radius:8px}code{font-family:Consolas,monospace;font-size:.92em}
+blockquote{margin:0;padding-left:16px;border-left:3px solid #c9d9cf;color:#5a534a}
+table{border-collapse:collapse}th,td{border:1px solid #ddd6cc;padding:6px 10px}
+.go{display:inline-block;margin-top:40px;padding:10px 16px;border-radius:8px;background:#4f8a6e;color:#fff;text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="/">UCANON.COM</a> › IT › Javascript_CSS_HTML</nav>
+<article>
+<h1>웹 브라우저 기능을 활용한 프런트엔드 오류 수집 전략</h1>
+<p class="meta">수정 <time datetime="2025-08-28">2025-08-28</time></p>
+<p>프론트엔드 애플리케이션이 복잡해질수록, <strong>사용자 환경에서 발생하는 오류를 빠르게 탐지하고 수집</strong>하는 것은 서비스 품질 유지의 핵심입니다. 서버 로그만으로는 확인하기 어려운 <strong>클라이언트 단 오류</strong>를 어떻게 안정적으로 모을 수 있을까요?</p>
+<p>이번 글에서는 <strong>외부 라이브러리 없이 브라우저 기본 기능만으로 오류 수집 시스템을 구축하는 방법</strong>을 정리해보겠습니다.</p>
+<hr />
+<h3>1. 수집 대상 정의</h3>
+<p>브라우저 환경에서 발생하는 오류는 크게 네 가지로 나눌 수 있습니다.</p>
+<ol><li><strong>실행 오류 (JavaScript Runtime Error)</strong></li><li>예: <code>TypeError: undefined is not a function</code></li><li>수집 방법: <code>window.onerror</code></li><li><strong>리소스 로드 오류 (Resource Error)</strong></li><li>예: 이미지, CSS, JS 파일 로드 실패</li><li>수집 방법: <code>window.addEventListener('error', …, true)</code></li><li>⚠️ 참고: <code>window.onerror</code>로는 <strong>리소스 로드 오류를 잡을 수 없고</strong>, 반드시 <code>capture=true</code> 옵션을 준 이벤트 리스너에서만 감지됩니다.</li><li><strong>비처리 프로미스 오류 (Unhandled Promise Rejection)</strong></li><li>예: <code>fetch()</code> 실패 후 <code>.catch</code> 미처리</li><li>수집 방법: <code>window.onunhandledrejection</code></li><li><strong>성능/네트워크 힌트 (선택 사항)</strong></li><li>예: 느린 요청, 대용량 자원 로드</li><li>수집 방법: <code>PerformanceObserver</code> (resource/longtask 관찰)</li></ol>
+<hr />
+<h3>2. 오류 수집 스니펫 (개선 버전)</h3>
+<p>아래 코드는 오류를 캡처하고, 일정 간격 또는 언로드 시점에 서버로 전송하는 예시입니다.</p>
+<pre><code class="language-html">&lt;script&gt;
+(function () {
+  const ENDPOINT = &quot;/client-error&quot;;
+  const queue = [];
+  const MAX_PAYLOAD_SIZE = 60000; // 보수적으로 60KB 이하
+  const SAMPLE_RATE = 0.1; // 10% 샘플링
+  const sentErrors = new Set();
+
+  function shouldSample() {
+    return Math.random() &lt;= SAMPLE_RATE;
+  }
+
+  function isDuplicate(error) {
+    const key = btoa(unescape(encodeURIComponent(
+      `${error.type}-${error.msg || error.reason}-${error.stack || ''}`
+    ))); // 해시 기반 중복 체크
+    if (sentErrors.has(key)) return true;
+    sentErrors.add(key);
+    setTimeout(() =&gt; sentErrors.delete(key), 300000);
+    return false;
+  }
+
+  function push(error) {
+    if (!shouldSample()) return;
+    if (isDuplicate(error)) return;
+
+    queue.push({
+      ...error,
+      timestamp: Date.now(),
+      userAgent: navigator.userAgent,
+      url: location.href
+    });
+
+    if (queue.length &gt;= 5) flush();
+  }
+
+  function flush() {
+    if (!queue.length) return;
+
+    const payload = JSON.stringify({
+      ts: Date.now(),
+      url: location.href,
+      items: queue.splice(0)
+    });
+
+    if (new Blob([payload]).size &gt; MAX_PAYLOAD_SIZE) {
+      console.warn('Payload too large, splitting...');
+      return;
+    }
+
+    if (navigator.sendBeacon) {
+      const ok = navigator.sendBeacon(ENDPOINT, payload);
+      if (!ok) fallback(payload);
+    } else {
+      fallback(payload);
+    }
+  }
+
+  function fallback(payload) {
+    fetch(ENDPOINT, {
+      method: &quot;POST&quot;,
+      body: payload,
+      headers: { &quot;Content-Type&quot;: &quot;application/json&quot; }
+    }).catch(() =&gt; {
+      try {
+        const img = new Image();
+        const encoded = encodeURIComponent(payload);
+        if (encoded.length &lt; 2000) {
+          img.src = `${ENDPOINT}?data=${encoded}`;
+        }
+      } catch (e) {}
+    });
+  }
+
+  window.addEventListener(&quot;beforeunload&quot;, flush);
+  window.addEventListener(&quot;pagehide&quot;, flush);
+
+  window.onerror = (msg, src, line, col, err) =&gt; {
+    push({
+      type: &quot;js-error&quot;,
+      msg: String(msg).slice(0, 500),
+      src,
+      line,
+      col,
+      stack: err?.stack?.slice(0, 3000)
+    });
+  };
+
+  window.addEventListener(&quot;error&quot;, e =&gt; {
+    if (e.target &amp;&amp; e.target !== window) {
+      push({
+        type: &quot;resource-error&quot;,
+        tag: e.target.tagName,
+        src: e.target.src || e.target.href
+      });
+    }
+  }, true);
+
+  window.onunhandledrejection = e =&gt; {
+    const reason = e.reason instanceof Error ?
+      e.reason.message :
+      String(e.reason).slice(0, 500);
+
+    push({
+      type: &quot;unhandled-rejection&quot;,
+      reason,
+      stack: e.reason?.stack?.slice(0, 3000)
+    });
+  };
+
+  setInterval(flush, 30000);
+})();
+&lt;/script&gt;</code></pre>
+<hr />
+<h3>3. <code>navigator.sendBeacon</code>의 특징과 한계</h3>
+<p>오류 수집에서 가장 중요한 포인트는 <strong>언로드 시점에서도 로그 유실 없이 서버에 도착하는 것</strong>입니다.</p>
+<ul><li><strong>장점</strong></li><li>브라우저 종료/이탈 시에도 안정적으로 전송</li><li>비동기 처리라 페이지 종료 지연 없음</li><li>POST 전송만 지원</li><li><strong>제한</strong></li><li>응답을 받을 수 없음 (fire-and-forget)</li><li>브라우저별 크기 제한 존재 (보통 64KB, 보수적으로 60KB 이하 권장)</li><li><strong>지원 현황</strong>: Chrome 39+, Firefox 31+, Safari 11.1+, Edge 14+</li><li><strong>미지원</strong>: Internet Explorer</li></ul>
+<p>👉 따라서 <code>sendBeacon → 일반 fetch → 이미지 태그</code> 순으로 fallback을 준비하는 것이 최적입니다.</p>
+<hr />
+<h3>4. 운영 시 반드시 고려할 점</h3>
+<ol><li><strong>소스맵 연계</strong></li></ol>
+<ul><li>번들된 스택을 소스맵으로 원본 코드에 매핑</li><li>보안상 소스맵은 프로덕션에 노출하지 않고 별도 서버에 저장</li></ul>
+<ol><li><strong>CORS 정책</strong></li></ol>
+<ul><li>로그 서버가 다른 도메인이라면 <code>Access-Control-Allow-Origin</code> 필수</li><li>Preflight 최소화를 위해 <code>Content-Type: text/plain</code> 고려</li></ul>
+<ol><li><strong>민감정보 마스킹</strong></li></ol>
+<pre><code class="language-js">   url.replace(/([?&amp;])(password|token|key|secret)=[^&amp;]*/gi, '$1$2=***');</code></pre>
+<ol><li><strong>샘플링 &amp; 중복 억제</strong></li></ol>
+<ul><li>동일 오류는 일정 시간(예: 5분)에 1회만 전송</li><li>트래픽 기반 동적 샘플링</li></ul>
+<ol><li><strong>호환성 안내</strong></li></ol>
+<ul><li><code>navigator.userAgent</code>는 차후 Deprecation 예정 → <code>UA Client Hints</code>도 고려</li><li><code>performance.memory</code>는 Chrome 실험적 기능 → 지원 제한 있음</li></ul>
+<hr />
+<h3>5. 서버 수집 예시</h3>
+<pre><code class="language-js">app.post('/client-error', (req, res) =&gt; {
+  const errors = req.body.items;
+  errors.forEach(error =&gt; {
+    if (error.stack) {
+      error.originalStack = mapStackTrace(error.stack);
+    }
+    logger.error({ ...error, ip: req.ip, userAgent: req.get('User-Agent') });
+    if (error.type === 'js-error') {
+      sendAlert(error);
+    }
+  });
+  res.status(200).send('OK');
+});</code></pre>
+<hr />
+<h3>6. 결론</h3>
+<ul><li><strong>브라우저 기본 기능만으로도</strong> 충분히 프로덕션 수준의 오류 수집이 가능합니다.</li><li>핵심은 <code>sendBeacon</code>을 우선 사용하면서, <strong>크기 제한·호환성·민감정보·성능</strong>을 꼼꼼히 관리하는 것입니다.</li><li>샘플링과 중복 억제를 통해 <strong>효율적으로 운영</strong>하면 서비스 품질과 사용자 경험 개선에 큰 도움이 됩니다.</li></ul>
+</article>
+<a class="go" href="/#/cd7428b49d5e5e72">서재에서 보기 →</a>
+</main>
+</body>
+</html>
