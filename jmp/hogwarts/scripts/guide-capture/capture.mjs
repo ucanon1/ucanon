@@ -2,6 +2,8 @@
 import { mkdirSync } from 'node:fs';
 const { chromium } = await import('file:///C:/Github_Personal/ai-knowledge-system/web/node_modules/playwright/index.mjs');
 
+const EN = process.env.CAPTURE_LANG === 'en';
+const SUFFIX = EN ? '-en' : '';
 const OUT = 'C:/Github_Personal/ucanon/jmp/hogwarts/docs/user-guide/images';
 const BASE = 'http://localhost:8765/jmp/hogwarts/';
 mkdirSync(OUT, { recursive: true });
@@ -19,7 +21,7 @@ async function shot(page, name, opts = {}) {
   });
   await page.addStyleTag({ content: '*,*::before,*::after{animation:none!important;transition:none!important}' });
   await wait(250);
-  const path = `${OUT}/${name}.png`;
+  const path = `${OUT}/${name}${SUFFIX}.png`;
   if (opts.selector) await page.locator(opts.selector).first().screenshot({ path });
   else if (opts.full) {
     // 고정 배경·상단바가 어긋나지 않도록 화면 높이를 페이지 전체 높이로 늘려 찍습니다.
@@ -48,6 +50,7 @@ async function submit(page) {
 
 // ---------- 데스크톱 ----------
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1, locale: 'ko-KR', timezoneId: 'Asia/Seoul' });
+if (EN) await ctx.addInitScript(() => localStorage.setItem('hogwarts-lang', 'en'));
 const page = await ctx.newPage();
 page.on('dialog', d => d.accept());
 page.on('pageerror', e => console.log('PAGE ERROR', e.message));
@@ -55,7 +58,7 @@ page.on('pageerror', e => console.log('PAGE ERROR', e.message));
 // 관리자 화면에서 시작(로그인 전)
 await page.goto(BASE + 'admin.html');
 await page.waitForSelector('#signIn');
-await shot(page, '01-admin-login');
+if (!EN) await shot(page, '01-admin-login');
 
 // 상단 '퀴즈 화면' 링크로 사용자 화면 이동
 await page.click('#playLink');
@@ -66,7 +69,7 @@ await shot(page, '02-home-full', { full: true });
 
 await page.click('[data-action="begin"]');
 await page.waitForSelector('#playerName');
-await page.fill('#playerName', '해리');
+await page.fill('#playerName', EN ? 'Harry' : '해리');
 await shot(page, '03-name');
 
 await page.click('[data-form="name"] button[type=submit]');
@@ -103,10 +106,12 @@ await wait(600);
 await shot(page, '09-finish', { full: true });
 
 // 언어 전환
+if (!EN) {
 await page.click('.lang-switch [data-lang="en"]');
 await wait(400);
 await shot(page, '10-english');
 await page.click('.lang-switch [data-lang="ko"]');
+}
 
 // 로고 → 첫 화면(돌아온 참가자)
 await page.click('#brandLink');
@@ -117,12 +122,13 @@ await shot(page, '11-home-returning', { selector: '.hero-actions' });
 
 // ---------- 모바일 ----------
 const mctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, locale: 'ko-KR', timezoneId: 'Asia/Seoul' });
+if (EN) await mctx.addInitScript(() => localStorage.setItem('hogwarts-lang', 'en'));
 const m = await mctx.newPage();
 m.on('pageerror', e => console.log('PAGE ERROR (mobile)', e.message));
 await m.goto(BASE);
 await m.waitForSelector('[data-action="begin"]');
 await m.click('[data-action="begin"]');
-await m.fill('#playerName', '론');
+await m.fill('#playerName', EN ? 'Ron' : '론');
 await m.click('[data-form="name"] button[type=submit]');
 await m.click('[data-pick-house="Gryffindor"]');
 await m.waitForSelector('.question-card');
@@ -133,6 +139,7 @@ await submit(m);
 await m.evaluate(() => window.scrollTo(0, 0));
 await shot(m, '13-mobile-feedback');
 
+if (EN) { await browser.close(); console.log('done', shots.length); process.exit(0); }
 // ---------- 관리자(로그인 후) ----------
 async function signInAs(p, email) {
   await p.evaluate(async email => {

@@ -4,6 +4,8 @@ const { QUESTIONS } = await import(pathToFileURL('C:/Github_Personal/ucanon/jmp/
 const BASE = 'http://127.0.0.1:8080/v1/projects/demo-hogwarts/databases/(default)/documents';
 const H = { Authorization: 'Bearer owner', 'Content-Type': 'application/json' };
 const GAME = 'house-cup-2026';
+const EN = process.env.CAPTURE_LANG === 'en';
+const EN_NAMES = { '헤르미온느': 'Hermione', '세드릭': 'Cedric', '루나': 'Luna', '네빌': 'Neville', '드레이코': 'Draco', '초 챙': 'Cho', '지니': 'Ginny', '블레이즈': 'Blaise', '한나': 'Hannah' };
 
 await fetch('http://127.0.0.1:8080/emulator/v1/projects/demo-hogwarts/databases/(default)/documents', { method: 'DELETE' });
 const put = async (path, fields) => {
@@ -46,7 +48,7 @@ for (const [i, [name, house, answers, conf]] of players.entries()) {
     });
   }
   await put(`games/${GAME}/participants/${pid}`, {
-    uid: v(uid), name: v(name), house: v(house), score: v(score), correctCount: v(correctCount),
+    uid: v(uid), name: v(EN ? EN_NAMES[name] : name), house: v(house), score: v(score), correctCount: v(correctCount),
     answered: v(answers.length), createdAt: ts(created), updatedAt: ts(clock)
   });
   console.log(name, house, score, `${correctCount}/${answers.length}`);
