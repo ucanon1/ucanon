@@ -15,10 +15,10 @@ import {
 } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
 import {
   getFirestore, connectFirestoreEmulator, doc, getDoc, setDoc, collection, getDocs,
-  onSnapshot, writeBatch, serverTimestamp, increment, query, where
+  onSnapshot, writeBatch, serverTimestamp, increment, query, where, collectionGroup
 } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js';
-import { firebaseConfig, DEFAULT_GAME_ID, TOTAL_QUESTIONS } from './firebase-config.js?v=202611111957';
-import { TIERS as DATA_TIERS, HOUSES as DATA_HOUSES } from './data.js?v=202611111957';
+import { firebaseConfig, DEFAULT_GAME_ID, TOTAL_QUESTIONS } from './firebase-config.js?v=202611112201';
+import { TIERS as DATA_TIERS, HOUSES as DATA_HOUSES } from './data.js?v=202611112201';
 
 const params = new URLSearchParams(location.search);
 const requestedGame = params.get('game') || '';
@@ -244,6 +244,56 @@ export async function deleteParticipant(participantId) {
   batch.delete(participantRef(fs, participantId));
   await batch.commit();
   return rSnap.size;
+}
+
+// ---- 전체 데이터(모든 회차) ----
+// 회차 문서(games/{id})는 따로 만들지 않으므로, 모든 회차의 participants·responses를
+// 컬렉션 그룹 조회로 한꺼번에 찾습니다. 관리자 목록(admins)은 건드리지 않습니다.
+async function allDocs() {
+  const { fs } = admin();
+  const [pSnap, rSnap] = await Promise.all([
+    getDocs(collectionGroup(fs, 'participants')),
+    getDocs(collectionGroup(fs, 'responses'))
+  ]);
+  const gameOf = d => d.ref.parent.parent?.id ?? '';
+  return { pDocs: pSnap.docs, rDocs: rSnap.docs, gameOf };
+}
+
+// 회차별 참가자·답안 수와 전체 답안 백업용 행
+export async function allGamesSummary() {
+  const { pDocs, rDocs, gameOf } = await allDocs();
+  const games = {};
+  const bump = (id, key) => { (games[id] ??= { id, participants: 0, responses: 0 })[key]++; };
+  pDocs.forEach(d => bump(gameOf(d), 'participants'));
+  rDocs.forEach(d => bump(gameOf(d), 'responses'));
+  const people = Object.fromEntries(pDocs.map(d => [gameOf(d) + '/' + d.id, d.data()]));
+  const backup = rDocs.map(d => {
+    const r = d.data(), p = people[gameOf(d) + '/' + r.participantId];
+    return {
+      gameId: gameOf(d), submittedAt: r.submittedAt?.toDate?.().toISOString() ?? '',
+      name: p?.name ?? '', house: p?.house ?? '', questionId: r.questionId, answer: r.answer,
+      confidence: r.confidence, correct: r.correct, points: r.points
+    };
+  }).sort((a, b) => a.gameId.localeCompare(b.gameId) || a.submittedAt.localeCompare(b.submittedAt));
+  return {
+    games: Object.values(games).sort((a, b) => a.id.localeCompare(b.id)),
+    participants: pDocs.length, responses: rDocs.length, backup
+  };
+}
+
+// 모든 회차의 참가자와 답안을 삭제합니다. onProgress(지운 수, 전체 수)로 진행 상황을 알립니다.
+export async function resetAllData(onProgress) {
+  const { fs } = admin();
+  const { pDocs, rDocs } = await allDocs();
+  const refs = [...rDocs, ...pDocs].map(d => d.ref); // 답안 먼저, 참가자 나중
+  onProgress?.(0, refs.length);
+  for (let i = 0; i < refs.length; i += 400) {
+    const batch = writeBatch(fs);
+    refs.slice(i, i + 400).forEach(ref => batch.delete(ref));
+    await batch.commit();
+    onProgress?.(Math.min(i + 400, refs.length), refs.length);
+  }
+  return refs.length;
 }
 
 // 현재 게임의 참가자와 답안을 모두 삭제합니다(개인정보 정리용).

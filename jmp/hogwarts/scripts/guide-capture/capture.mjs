@@ -179,6 +179,14 @@ await page.selectOption('#fHouse', '');
 await shot(page, '23-admin-matrix', { selector: '#matrix' });
 await page.evaluate(() => { const panels = document.querySelectorAll('#admin > .panel'); panels[panels.length - 1].id = 'cap-danger'; });
 await shot(page, '24-admin-delete', { selector: '#cap-danger' });
+// 전체 데이터 초기화 대화상자(확인 단계를 채운 상태, 실제 삭제는 하지 않고 취소)
+await page.click('#resetAll');
+await page.waitForFunction(() => /건 영구 삭제/.test(document.querySelector('#resetConfirm')?.textContent || ''));
+await page.check('#resetAck');
+await page.fill('#resetPhrase', '전체 초기화');
+await wait(300);
+await shot(page, '26-admin-reset-dialog', { selector: '#resetDialog' });
+await page.click('#resetCancel');
 await page.evaluate(() => document.querySelector('.admin-bar').id = 'cap-bar');
 await shot(page, '25-admin-bar', { selector: '#cap-bar' });
 

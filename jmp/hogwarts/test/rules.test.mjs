@@ -7,7 +7,7 @@ import {
 } from 'firebase/auth';
 import {
   getFirestore, connectFirestoreEmulator, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc,
-  collection, writeBatch, serverTimestamp, increment, setLogLevel
+  collection, collectionGroup, writeBatch, serverTimestamp, increment, setLogLevel
 } from 'firebase/firestore';
 
 setLogLevel('silent');
@@ -144,6 +144,16 @@ await test('비관리자 Google 계정은 답안 목록 읽기 불가', () => de
 await test('관리자는 답안 목록 읽기 가능', async () => {
   assert.equal((await getDocs(collection(adminC.fs, 'games', GAME, 'responses'))).size, 10);
 });
+console.log('전체 데이터 초기화(모든 회차 조회)');
+await test('관리자는 모든 회차 답안 조회 가능', async () => {
+  assert.ok((await getDocs(collectionGroup(adminC.fs, 'responses'))).size >= 10);
+});
+await test('관리자는 모든 회차 참가자 조회 가능', async () => {
+  assert.ok((await getDocs(collectionGroup(adminC.fs, 'participants'))).size >= 1);
+});
+await test('응답자는 모든 회차 답안 조회 불가', () => denied(getDocs(collectionGroup(alice.fs, 'responses'))));
+await test('비로그인은 모든 회차 참가자 조회 불가', () => denied(getDocs(collectionGroup(guest.fs, 'participants'))));
+await test('비관리자 Google 계정은 모든 회차 답안 조회 불가', () => denied(getDocs(collectionGroup(notAdmin.fs, 'responses'))));
 await test('응답자는 삭제 불가', () => denied(deleteDoc(pRef(alice.fs, PID))));
 await test('관리자는 삭제 가능', async () => {
   await deleteDoc(rRef(adminC.fs, PID, 'Q1'));

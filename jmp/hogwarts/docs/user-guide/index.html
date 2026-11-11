@@ -189,7 +189,8 @@
           <li><a href="#a-participants"><span lang="ko">참가자 순위·삭제</span><span lang="en">Rankings and deleting</span></a></li>
           <li><a href="#a-log"><span lang="ko">모든 답변 기록</span><span lang="en">Full answer log</span></a></li>
           <li><a href="#a-matrix"><span lang="ko">참가자별 전체 답안</span><span lang="en">Answers by participant</span></a></li>
-          <li><a href="#a-cleanup"><span lang="ko">데이터 정리</span><span lang="en">Clearing data</span></a></li>
+          <li><a href="#a-cleanup"><span lang="ko">데이터 관리</span><span lang="en">Data management</span></a></li>
+          <li><a href="#a-reset"><span lang="ko">전체 데이터 초기화</span><span lang="en">Full data reset</span></a></li>
         </ol>
       </li>
       <li><a href="#operate"><span lang="ko">4. 운영 안내</span><span lang="en">4. Running the quiz</span></a></li>
@@ -435,8 +436,8 @@
       </ul>
 
       <h3 id="p-mobile"><span lang="ko">휴대폰에서</span><span lang="en">On a phone</span></h3>
-      <p lang="ko">휴대폰에서도 같은 주소로 들어오면 화면이 폭에 맞게 정리됩니다. 기숙사 점수와 개인 점수는 문제 위에 늘 보입니다.</p>
-      <p lang="en">The same address works on phones, and the layout fits the screen. House and personal scores always sit above the question.</p>
+      <p lang="ko">휴대폰에서도 같은 주소로 들어오면 화면이 폭에 맞게 정리됩니다. 기숙사 점수는 상징(🦁🦅🦡🐍)과 색으로 구분하고, 확신도 다섯 개는 한 줄에 나란히 보입니다. <b>답안 제출</b>과 <b>다음 문제</b> 버튼은 화면 아래에 붙어 있어 스크롤하지 않고 바로 누를 수 있습니다.</p>
+      <p lang="en">The same address works on phones, and the layout fits the screen. House scores are shown by crest (🦁🦅🦡🐍) and color, and all five confidence levels fit on one row. <b>Submit Answer</b> and <b>Next Question</b> stay pinned to the bottom of the screen, so you never need to scroll to reach them.</p>
       <div class="phones" lang="ko">
         <figure class="phone">
           <a href="images/12-mobile-question.jpg" target="_blank" rel="noopener"><img src="images/12-mobile-question.jpg" alt="휴대폰 문제 화면" loading="lazy" width="780" height="1688"></a>
@@ -644,13 +645,49 @@
       <p lang="ko">참가자 한 명이 한 줄이고, 문항마다 답·확신도·정오(○/×)·점수를 보여 줍니다. 표가 넓으므로 옆으로 밀어서 봅니다. <b>CSV 내려받기(구글 설문 형식)</b>는 구글 설문 응답처럼 한 사람 한 줄 형식으로 저장합니다.</p>
       <p lang="en">One row per player, with answer, confidence, result (○/×), and points for each question. The table is wide, so scroll sideways. <b>CSV 내려받기(구글 설문 형식)</b> saves it one row per person, like Google Forms responses.</p>
 
-      <h3 id="a-cleanup"><span lang="ko">데이터 정리</span><span lang="en">Clearing data</span></h3>
-      <figure class="narrow">
-        <a href="images/24-admin-delete.jpg" target="_blank" rel="noopener"><img src="images/24-admin-delete.jpg" alt="이 게임 데이터 모두 삭제 / Delete all data for this game" loading="lazy" width="1040" height="192"></a>
-        <figcaption><span lang="ko"><b>그림 24</b>데이터 정리</span><span lang="en"><b>Figure 24</b>Clearing data</span></figcaption>
+      <h3 id="a-cleanup"><span lang="ko">데이터 관리와 전체 초기화</span><span lang="en">Data management and full reset</span></h3>
+      <p lang="ko">맨 위 메뉴의 <b>데이터 관리</b>를 누르면 이 영역으로 바로 이동합니다. 삭제는 두 가지이며, 어느 쪽이든 지운 데이터는 되돌릴 수 없으므로 필요한 CSV를 먼저 내려받습니다.</p>
+      <p lang="en"><b>데이터 관리</b> (Data management) in the top menu jumps here. There are two kinds of deletion. Neither can be undone, so download any CSV files you need first.</p>
+      <figure>
+        <a href="images/24-admin-delete.jpg" target="_blank" rel="noopener"><img src="images/24-admin-delete.jpg" alt="데이터 관리: 이 게임 데이터 삭제, 전체 데이터 초기화 / Data management: delete this game, full reset" loading="lazy" width="1040" height="302"></a>
+        <figcaption><span lang="ko"><b>그림 24</b>데이터 관리</span><span lang="en"><b>Figure 24</b>Data management</span></figcaption>
       </figure>
-      <p lang="ko">행사가 끝나면 필요한 CSV를 먼저 내려받고, <b>이 게임 데이터 모두 삭제</b>로 참가자 이름과 답안을 지웁니다. 실수로 지우지 않도록 확인 창에 게임 ID를 그대로 입력해야 삭제됩니다. 지운 데이터는 되돌릴 수 없습니다.</p>
-      <p lang="en">After the session, download the CSV files you need, then press <b>이 게임 데이터 모두 삭제</b> (Delete all data for this game) to remove names and answers. To prevent accidents you must type the game ID in the confirmation box. Deleted data cannot be recovered.</p>
+      <table lang="ko">
+        <thead><tr><th>메뉴</th><th>지우는 범위</th><th>확인 방법</th></tr></thead>
+        <tbody>
+          <tr><td><b>이 게임 데이터 삭제</b></td><td>지금 보고 있는 회차의 참가자와 답안</td><td>확인 창에 게임 ID를 그대로 입력</td></tr>
+          <tr><td><b>전체 데이터 초기화</b></td><td>모든 회차의 참가자와 답안. 관리자 목록은 남습니다.</td><td>아래 3단계 확인 창</td></tr>
+        </tbody>
+      </table>
+      <table lang="en">
+        <thead><tr><th>Menu</th><th>What it deletes</th><th>How to confirm</th></tr></thead>
+        <tbody>
+          <tr><td><b>이 게임 데이터 삭제</b> (Delete this game’s data)</td><td>Players and answers of the session you are viewing</td><td>Type the game ID in the confirmation box</td></tr>
+          <tr><td><b>전체 데이터 초기화</b> (Full data reset)</td><td>Players and answers of every session. The admin list is kept.</td><td>The three-step dialog below</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="a-reset"><span lang="ko">전체 데이터 초기화 확인 절차</span><span lang="en">Confirming a full reset</span></h3>
+      <p lang="ko">실수로 모든 기록을 지우지 않도록, <b>전체 데이터 초기화…</b>를 누르면 확인 창이 열리고 세 가지를 모두 마쳐야 삭제 버튼이 켜집니다.</p>
+      <p lang="en">To prevent wiping everything by accident, <b>전체 데이터 초기화…</b> opens a dialog, and the delete button only turns on after all three steps.</p>
+      <figure class="narrow" style="max-width:560px">
+        <a href="images/26-admin-reset-dialog.jpg" target="_blank" rel="noopener"><img src="images/26-admin-reset-dialog.jpg" alt="전체 데이터 초기화 확인 창 / Full reset confirmation dialog" loading="lazy" width="560" height="496"></a>
+        <figcaption><span lang="ko"><b>그림 25</b>전체 데이터 초기화 확인 창(확인 단계를 모두 마친 상태)</span><span lang="en"><b>Figure 25</b>Full reset dialog with every step completed</span></figcaption>
+      </figure>
+      <ol class="steps" lang="ko">
+        <li><b>지울 양 확인</b>: 회차별 참가자·답안 수와 합계가 표로 나옵니다. 지울 데이터가 없으면 삭제할 수 없습니다.</li>
+        <li><b>백업 확인</b>: 필요하면 <b>전체 답변 백업 CSV 내려받기</b>로 모든 회차의 답안을 한 파일로 저장한 뒤, “필요한 기록을 백업했거나…” 상자에 체크합니다.</li>
+        <li><b>문구 입력</b>: 입력칸에 <b>전체 초기화</b>를 띄어쓰기까지 그대로 입력합니다.</li>
+        <li>이제 빨간 <b>○○건 영구 삭제</b> 버튼이 켜집니다. 누르면 진행 상황이 표시되고, 끝나면 “전체 데이터 ○○건을 삭제했습니다”가 나옵니다. 삭제 중에는 창을 닫을 수 없습니다.</li>
+      </ol>
+      <ol class="steps" lang="en">
+        <li><b>Check the amount</b>: a table lists players and answers per session, with totals. If there is nothing to delete, the button stays off.</li>
+        <li><b>Confirm a backup</b>: if needed, use <b>전체 답변 백업 CSV 내려받기</b> (Download full backup CSV) to save every session’s answers in one file, then tick the box “필요한 기록을 백업했거나…” (I have backed up what I need…).</li>
+        <li><b>Type the phrase</b>: enter <b>전체 초기화</b> exactly, including the space.</li>
+        <li>The red <b>○○건 영구 삭제</b> (Permanently delete ○○ items) button turns on. Progress is shown while it runs, then “전체 데이터 ○○건을 삭제했습니다” (○○ items deleted). The dialog cannot be closed during deletion.</li>
+      </ol>
+      <div class="note warn" lang="ko"><strong>관리자 목록은 지워지지 않습니다.</strong> 초기화 후에도 같은 계정으로 계속 관리할 수 있습니다. 참가 중이던 학생 화면에는 “관리자가 이 참가 기록을 삭제했습니다”가 표시되며, 새 참가자로 다시 시작하면 됩니다.</div>
+      <div class="note warn" lang="en"><strong>The admin list is never deleted.</strong> You can keep managing with the same account after a reset. Students who were mid-quiz see “This record was removed by the organizer” and can start again as a new player.</div>
     </section>
 
     <!-- 4. 운영 안내 / Running the quiz -->
@@ -681,7 +718,7 @@
           <h4>행사 후 정리</h4>
           <p>1. 확신도 보정 그래프와 문항별 정답률로 수업을 마무리합니다.</p>
           <p>2. 두 가지 CSV를 내려받아 보관합니다.</p>
-          <p>3. <b>이 게임 데이터 모두 삭제</b>로 이름과 기록을 지웁니다.</p>
+          <p>3. <b>이 게임 데이터 삭제</b>로 이름과 기록을 지웁니다. 학기를 마칠 때는 <b>전체 데이터 초기화</b>로 모두 정리합니다.</p>
         </div>
       </div>
       <div class="cards" lang="en">
@@ -695,7 +732,7 @@
           <h4>After the session</h4>
           <p>1. Wrap up the lesson with the calibration chart and accuracy by question.</p>
           <p>2. Download both CSV files and keep them.</p>
-          <p>3. Remove names and records with <b>이 게임 데이터 모두 삭제</b>.</p>
+          <p>3. Remove names and records with <b>이 게임 데이터 삭제</b>. At the end of a term, clear everything with <b>전체 데이터 초기화</b>.</p>
         </div>
       </div>
 

@@ -1,8 +1,8 @@
 // 사용자 화면: 이름 → 기숙사 선택 → 10문항(정답 + 확신도) → 결과
 // 답안은 제출할 때마다 Firestore에 저장되고, 기숙사 점수와 순위는 실시간으로 갱신됩니다.
-import * as db from './hogwarts-db.js?v=202611111957';
-import { HOUSES, QUESTIONS, TIERS, INTRO } from './data.js?v=202611111957';
-import { $, $$, esc, richText, signed, signClass, houseOf, choiceText, LETTERS, scoreStrip, rankingTable } from './ui.js?v=202611111957';
+import * as db from './hogwarts-db.js?v=202611112201';
+import { HOUSES, QUESTIONS, TIERS, INTRO } from './data.js?v=202611112201';
+import { $, $$, esc, richText, signed, signClass, houseOf, choiceText, LETTERS, scoreStrip, rankingTable } from './ui.js?v=202611112201';
 
 const T = {
   ko: {
@@ -147,7 +147,7 @@ function questionView() {
       <p class="risk-note">${s.risk}</p>
       <p class="eyebrow confidence-title">${s.confidence}</p>
       <div class="tiers" role="radiogroup">${TIERS.map(n => `
-        <button class="tier${choice.tier === n ? ' selected' : ''}" type="button" role="radio" aria-checked="${choice.tier === n}" data-tier="${n}">${n}%<small>${s.right(n)} · ${s.wrong(n)}</small></button>`).join('')}</div>
+        <button class="tier${choice.tier === n ? ' selected' : ''}" type="button" role="radio" aria-checked="${choice.tier === n}" data-tier="${n}">${n}%<small><span class="long">${s.right(n)} · ${s.wrong(n)}</span><span class="short">±${n}</span></small></button>`).join('')}</div>
       <button id="submitAnswer" class="btn btn-block" type="button" ${choice.answer && choice.tier ? '' : 'disabled'}>${s.submit}　→</button>
     </article>`;
 }
@@ -168,7 +168,7 @@ function feedbackView() {
     <p class="section-label">${s.houseScores}</p>
     <div data-live-strip>${scoreStrip(houseTotals(), { mine: state.house, large: true })}</div>
     <section class="rankings"><h3>${s.ranking}</h3><div data-rankings>${board ? rankingTable(board.participants, { you: state.id, limit: 10, lang }) : `<p class="subtle center">${s.loading}</p>`}</div></section>
-    <div class="row center" style="margin-top:24px"><button class="btn" data-action="next" data-autofocus>${last ? s.results : s.nextQ}　→</button></div>
+    <div class="row center next-row" style="margin-top:24px"><button class="btn" data-action="next" data-autofocus>${last ? s.results : s.nextQ}　→</button></div>
   </section>`;
 }
 

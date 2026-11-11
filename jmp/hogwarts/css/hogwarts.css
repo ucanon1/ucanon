@@ -401,27 +401,131 @@ section[id] { scroll-margin-top: 84px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 [hidden] { display: none !important; }
 
+/* 데이터 관리·전체 초기화 대화상자 ------------------------------------ */
+.danger-zone { border-color: #d6815e88; }
+.danger-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 0; border-top: 1px solid var(--line-soft); }
+.danger-row b { display: block; color: var(--ink); }
+.danger-row small { display: block; color: var(--muted); font-size: 13px; }
+.danger-row .btn { flex: none; }
+.btn-danger-solid { background: linear-gradient(180deg, #e2786a, #a8443a); border-color: #f0a090; color: #fff; }
+.btn-danger-solid:disabled { background: #3a2a2a; border-color: #6a4a44; color: #b9a39c; }
+.modal {
+  width: min(560px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid #d6815e;
+  border-radius: 6px;
+  background: linear-gradient(145deg, #2d2022, #1a171d);
+  color: var(--ink);
+  box-shadow: 0 30px 80px #000c;
+}
+.modal::backdrop { background: #000b; backdrop-filter: blur(2px); }
+.modal h3 { margin: 0; color: var(--danger); font-size: 20px; }
+.modal p { margin: 0; color: var(--ink-soft); font-size: 14px; }
+.modal tfoot th { position: static; background: #2a2226; }
+.modal-actions { justify-content: flex-end; padding-top: 6px; }
+.check { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--ink-soft); cursor: pointer; }
+.check input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--danger); flex: none; }
+
+/* 확신도 버튼 설명: 넓은 화면은 긴 문구, 좁은 화면은 짧은 문구 */
+.tier .short { display: none; }
+.score-house .hn { display: inline; }
+
 /* 12. 반응형 ---------------------------------------------------------- */
+@media (hover: none) {
+  .btn:hover:not(:disabled), .house-card:hover { transform: none; }
+}
 @media (max-width: 860px) {
   .kpi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .grid-2 { grid-template-columns: 1fr; }
 }
 @media (max-width: 620px) {
-  main { padding: 28px 14px 56px; }
-  .panel, .question-card { padding: 20px 16px; }
-  .topbar { height: 56px; }
-  .topbar nav { gap: 12px; }
-  .house-grid { grid-template-columns: 1fr; }
-  .house-card { min-height: 0; }
-  .tiers { grid-template-columns: repeat(3, 1fr); }
-  .score-strip { gap: 2px; padding: 7px 3px; }
-  .score-house span { font-size: 8px; letter-spacing: 0; }
-  .score-house b { font-size: 17px; }
-  .personal-strip { padding: 8px 10px; }
-  .risk-note { font-size: 12px; }
-  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  html { -webkit-tap-highlight-color: transparent; }
+  main { padding: 20px 12px calc(48px + env(safe-area-inset-bottom)); }
+  .panel, .question-card { padding: 18px 14px; }
+  .panel + .panel, .grid-2 + .panel, .panel + .grid-2 { margin-top: 14px; }
+  .grid-2 { gap: 14px; }
+
+  /* 상단바: 한 줄에 들어가도록 촘촘하게, 관리자 메뉴는 옆으로 밀어서 */
+  .topbar { height: 52px; gap: 10px; padding: 0 max(12px, env(safe-area-inset-right)) 0 max(12px, env(safe-area-inset-left)); }
+  .brand { font-size: 11px; letter-spacing: .08em; }
+  .topbar nav { gap: 10px; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .topbar nav::-webkit-scrollbar { display: none; }
+  .nav-link { font-size: 11px; letter-spacing: .06em; }
+  .lang-switch button { min-height: 28px; padding: 2px 9px; font-size: 12px; }
+
+  /* 입력칸은 16px 이상이어야 iPhone이 확대하지 않음 */
+  .field input, .field select, .input, .filters .input { font-size: 16px; }
+
+  .hero h1 { margin: 6px 0 12px; }
+  .crest { font-size: 36px; }
+  .intro { margin: 8px 0 20px; }
+  .intro p, .intro li { font-size: 14px; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; }
+  .stage-head { margin-bottom: 18px; }
+  .stage-head h2 { font-size: 24px; }
+
+  .house-grid { grid-template-columns: 1fr; gap: 10px; }
+  .house-card { min-height: 0; padding: 16px; gap: 4px; }
+  .house-icon { font-size: 26px; }
+
+  /* 점수 띠: 기숙사 이름 대신 상징과 색으로 구분 */
+  .score-strip { gap: 0; padding: 6px 2px; margin-bottom: 10px; }
+  .score-house { padding: 2px 0; }
+  .score-house span { font-size: 18px; line-height: 1.2; letter-spacing: 0; }
+  .score-house .hn { display: none; }
+  .score-house b { font-size: 18px; }
+  .score-strip.large .score-house span { font-size: 22px; }
+  .score-strip.large .score-house b { font-size: 26px; }
+
+  .personal-strip { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; padding: 8px 10px; margin-bottom: 12px; }
+  .personal-strip .points { font-size: 15px; text-align: right; }
+  .personal-strip .save-status { justify-self: end; }
+  .progress-meta { font-size: 12px; }
+
+  .question-copy { font-size: 16px; line-height: 1.8; margin: 12px 0 16px; }
+  .choice { padding: 12px; min-height: 48px; font-size: 15px; }
+  .risk-note { margin: 16px 0 6px; padding: 9px 10px; font-size: 12px; }
+  .confidence-title { margin: 16px 0 8px; }
+  .tiers { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; margin-bottom: 14px; }
+  .tier { padding: 8px 0 6px; font-size: 15px; min-height: 52px; }
+  .tier small { font-size: 10px; margin-top: 2px; }
+  .tier .long { display: none; }
+  .tier .short { display: inline; }
+  /* 제출 버튼은 화면 아래에 붙어 있어 스크롤 없이 누를 수 있음 */
+  .question-card > #submitAnswer, .feedback .next-row {
+    position: sticky;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    z-index: 5;
+  }
+  .question-card > #submitAnswer { box-shadow: 0 -6px 24px #000a, 0 5px 22px #0008; }
+  /* 아래에 붙은 버튼은 비활성이어도 뒤 내용이 비치지 않게 불투명하게 */
+  .question-card > #submitAnswer:disabled { opacity: 1; background: #2e282c; border-color: #5a4a44; color: #9c8e86; }
+  .feedback .next-row .btn, .finish .row .btn { width: 100%; }
+  .feedback .next-row .btn { box-shadow: 0 -6px 24px #000a; }
+
+  .feedback, .finish { padding: 24px 12px; }
+  .answer-compare { grid-template-columns: 1fr; gap: 8px; margin: 12px 0; }
+  .personal-total { margin: 10px auto 16px; padding: 12px; }
+  .section-label { margin: 16px 0 8px; }
+  .rankings { margin-top: 16px; }
+  .rankings .hn, .matrix .hn { display: none; }
+  th, td { padding: 8px 7px; }
+
+  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 14px; }
+  .kpi { padding: 10px 8px; }
   .kpi b { font-size: 22px; }
-  .feedback, .finish { padding: 32px 14px; }
+  .admin-bar { margin-bottom: 14px; }
+  .admin-bar .game { width: 100%; }
+  .admin-bar .game .input { flex: 1; width: auto !important; min-width: 0; }
+  .panel-head { margin-bottom: 10px; }
+  .filters .input { flex: 1 1 140px; }
+  .danger-row { flex-direction: column; align-items: stretch; }
+  .danger-row .btn { width: 100%; }
+  .modal { padding: 18px 14px; }
+  .modal-actions .btn { flex: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

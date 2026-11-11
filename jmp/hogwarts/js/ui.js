@@ -1,5 +1,5 @@
 // 사용자·관리자 화면이 함께 쓰는 표시 도우미
-import { HOUSES, QUESTIONS } from './data.js?v=202611111957';
+import { HOUSES, QUESTIONS } from './data.js?v=202611112201';
 
 export const $ = (sel, root = document) => root.querySelector(sel);
 export const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -26,7 +26,7 @@ export function choiceText(q, letter, lang = 'ko') {
 
 export function houseLabel(id) {
   const h = houseOf(id);
-  return h ? `<span class="house-name" data-house="${h.id}">${h.icon} ${esc(h.name)}</span>` : esc(id);
+  return h ? `<span class="house-name" data-house="${h.id}">${h.icon} <span class="hn">${esc(h.name)}</span></span>` : esc(id);
 }
 
 // 네 기숙사 점수 띠. previous를 넘기면 바뀐 기숙사 숫자를 살짝 튀게 합니다.
@@ -34,7 +34,7 @@ export function scoreStrip(totals, { mine = '', large = false, previous = null }
   return `<div class="score-strip${large ? ' large' : ''}" data-score-strip>${HOUSES.map(h => {
     const v = totals?.[h.id] ?? 0;
     const changed = previous && previous[h.id] !== undefined && previous[h.id] !== v;
-    return `<div class="score-house${h.id === mine ? ' is-mine' : ''}${changed ? ' bump' : ''}" data-house="${h.id}"><span>${h.icon} ${h.name}</span><b>${signed(v)}</b></div>`;
+    return `<div class="score-house${h.id === mine ? ' is-mine' : ''}${changed ? ' bump' : ''}" data-house="${h.id}"><span title="${h.name}">${h.icon}<span class="hn"> ${h.name}</span></span><b>${signed(v)}</b></div>`;
   }).join('')}</div>`;
 }
 

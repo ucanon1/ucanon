@@ -1,9 +1,9 @@
 // 관리자 화면: Google 로그인 → admins 허용 목록 확인 → 실시간 집계
 // 참가자나 답안이 바뀌면 그래프와 표가 자동으로 다시 계산됩니다.
-import * as db from './hogwarts-db.js?v=202611111957';
-import { HOUSES, QUESTIONS, TIERS } from './data.js?v=202611111957';
-import { $, esc, signed, signClass, houseOf, houseLabel, questionOf, choiceText, downloadCsv, formatTime, localStamp } from './ui.js?v=202611111957';
-import { calibrationChart, barChart } from './charts.js?v=202611111957';
+import * as db from './hogwarts-db.js?v=202611112201';
+import { HOUSES, QUESTIONS, TIERS } from './data.js?v=202611112201';
+import { $, esc, signed, signClass, houseOf, houseLabel, questionOf, choiceText, downloadCsv, formatTime, localStamp } from './ui.js?v=202611112201';
+import { calibrationChart, barChart } from './charts.js?v=202611112201';
 
 const root = $('#admin');
 const filters = { text: '', house: '', question: '', result: '' };
@@ -115,12 +115,37 @@ function showDashboard(user) {
       <div id="matrixTable"></div>
     </section>
 
-    <section class="panel">
-      <div class="panel-head"><h3>데이터 정리</h3></div>
-      <p class="subtle">행사가 끝나면 이름 같은 개인정보를 지우세요. 이 게임(${esc(db.GAME_ID)})의 참가자와 답안을 모두 삭제하며 되돌릴 수 없습니다.</p>
-      <button class="btn btn-danger" id="deleteAll" type="button">이 게임 데이터 모두 삭제</button>
-      <p id="adminMsg" class="subtle"></p>
-    </section>`;
+    <section class="panel danger-zone" id="cleanup">
+      <div class="panel-head"><h3>데이터 관리</h3></div>
+      <p class="subtle">행사가 끝나면 이름 같은 개인정보를 지우세요. 삭제한 데이터는 되돌릴 수 없으니 필요한 CSV를 먼저 내려받습니다.</p>
+      <div class="danger-row">
+        <div><b>이 게임 데이터 삭제</b><small>지금 보고 있는 회차(${esc(db.GAME_ID)})의 참가자와 답안만 지웁니다.</small></div>
+        <button class="btn btn-danger" id="deleteAll" type="button">이 게임 데이터 삭제</button>
+      </div>
+      <div class="danger-row">
+        <div><b>전체 데이터 초기화</b><small>모든 회차의 참가자와 답안을 지우고 처음 상태로 되돌립니다. 관리자 목록은 유지됩니다.</small></div>
+        <button class="btn btn-danger" id="resetAll" type="button">전체 데이터 초기화…</button>
+      </div>
+      <p id="adminMsg" class="subtle" role="status"></p>
+    </section>
+
+    <dialog class="modal" id="resetDialog" aria-labelledby="resetTitle">
+      <form method="dialog" class="stack" id="resetForm">
+        <h3 id="resetTitle">⚠ 전체 데이터 초기화</h3>
+        <p>모든 회차의 참가자와 답안을 <b>영구 삭제</b>합니다. 삭제 후에는 되돌릴 수 없습니다. 관리자 목록은 지우지 않습니다.</p>
+        <div id="resetSummary"><p class="subtle">삭제할 데이터를 세는 중…</p></div>
+        <button class="btn btn-ghost btn-sm" id="resetBackup" type="button" disabled>전체 답변 백업 CSV 내려받기</button>
+        <label class="check"><input type="checkbox" id="resetAck"> 필요한 기록을 백업했거나, 백업이 필요 없음을 확인했습니다.</label>
+        <label class="field"><span>확인을 위해 <b>전체 초기화</b>를 그대로 입력하세요.</span>
+          <input id="resetPhrase" autocomplete="off" placeholder="전체 초기화" disabled>
+        </label>
+        <p id="resetStatus" class="subtle" role="status"></p>
+        <div class="row modal-actions">
+          <button class="btn btn-ghost" value="cancel" id="resetCancel">취소</button>
+          <button class="btn btn-danger-solid" id="resetConfirm" type="button" disabled>영구 삭제</button>
+        </div>
+      </form>
+    </dialog>`;
 
   $('#signOut').onclick = async () => { await db.adminSignOut(); showSignedOut(); };
   $('#gameForm').onsubmit = e => {
@@ -134,6 +159,7 @@ function showDashboard(user) {
   $('#exportLog').onclick = exportLog;
   $('#exportMatrix').onclick = exportMatrix;
   $('#deleteAll').onclick = deleteAll;
+  $('#resetAll').onclick = openResetDialog;
   $('#participantTable').addEventListener('click', onParticipantClick);
 
   const live = $('#live');
@@ -320,5 +346,96 @@ async function deleteAll() {
   try { msg.textContent = `${await db.deleteGameData()}건을 삭제했습니다.`; }
   catch (e) { console.error(e); msg.textContent = '삭제하지 못했습니다: ' + (e.code || e.message); }
 }
+
+// ---- 전체 데이터 초기화(모든 회차) ----
+// 실수 방지: ① 삭제 대상 개수를 먼저 보여 주고 ② 백업 확인 체크 ③ '전체 초기화' 문구 입력을
+// 모두 마쳐야 [영구 삭제] 버튼이 켜집니다. 삭제 중에는 창을 닫을 수 없습니다.
+const RESET_PHRASE = '전체 초기화';
+let resetSummary = null, resetting = false;
+
+function updateResetButton() {
+  const total = resetSummary ? resetSummary.participants + resetSummary.responses : 0;
+  const ok = !resetting && total > 0 && $('#resetAck').checked && $('#resetPhrase').value.trim() === RESET_PHRASE;
+  $('#resetConfirm').disabled = !ok;
+}
+
+async function openResetDialog() {
+  const dlg = $('#resetDialog');
+  resetSummary = null;
+  $('#resetAck').checked = false;
+  $('#resetPhrase').value = '';
+  $('#resetPhrase').disabled = true;
+  $('#resetBackup').disabled = true;
+  $('#resetStatus').textContent = '';
+  $('#resetConfirm').textContent = '영구 삭제';
+  $('#resetCancel').disabled = false;
+  $('#resetSummary').innerHTML = '<p class="subtle">삭제할 데이터를 세는 중…</p>';
+  updateResetButton();
+  dlg.showModal();
+  try {
+    resetSummary = await db.allGamesSummary();
+    const s = resetSummary, total = s.participants + s.responses;
+    $('#resetSummary').innerHTML = total
+      ? `<div class="table-wrap" style="max-height:200px"><table><thead><tr><th>회차(게임 ID)</th><th class="num">참가자</th><th class="num">답안</th></tr></thead><tbody>${s.games.map(g => `<tr><td>${esc(g.id)}</td><td class="num">${g.participants}</td><td class="num">${g.responses}</td></tr>`).join('')}</tbody>
+         <tfoot><tr><th>합계 ${s.games.length}개 회차</th><th class="num">${s.participants}</th><th class="num">${s.responses}</th></tr></tfoot></table></div>`
+      : '<p class="notice">지울 데이터가 없습니다. 이미 처음 상태입니다.</p>';
+    $('#resetBackup').disabled = !s.responses;
+    $('#resetPhrase').disabled = !total;
+    $('#resetConfirm').textContent = total ? `${total}건 영구 삭제` : '영구 삭제';
+  } catch (e) {
+    console.error(e);
+    $('#resetSummary').innerHTML = notice('데이터를 세지 못했습니다: ' + esc(e.code || e.message), 'error');
+  }
+  updateResetButton();
+}
+
+function exportAllBackup() {
+  if (!resetSummary) return;
+  const rows = resetSummary.backup.map(r => {
+    const q = questionOf(r.questionId);
+    return [r.gameId, localStamp(r.submittedAt), r.name, houseOf(r.house)?.name ?? r.house, r.questionId, q?.title ?? '', r.answer, q?.answer ?? '', r.confidence, r.correct ? '정답' : '오답', r.points];
+  });
+  const stamp = localStamp(new Date().toISOString()).replace(/[-: ]/g, '').slice(0, 12);
+  downloadCsv(`hogwarts-all-games-backup-${stamp}.csv`, ['게임 ID', '제출 시각', '이름', '기숙사', '문항', '문항 제목', '답', '정답', '확신도', '결과', '점수'], rows);
+  $('#resetStatus').textContent = `백업 CSV를 내려받았습니다(답안 ${rows.length}건).`;
+}
+
+async function runReset() {
+  if ($('#resetConfirm').disabled) return;
+  resetting = true;
+  updateResetButton();
+  $('#resetCancel').disabled = true;
+  $('#resetAck').disabled = true;
+  $('#resetPhrase').disabled = true;
+  const status = $('#resetStatus');
+  try {
+    const n = await db.resetAllData((done, total) => { status.textContent = `삭제 중… ${done} / ${total}`; });
+    status.textContent = '';
+    $('#resetSummary').innerHTML = `<p class="notice">전체 데이터 ${n}건을 삭제했습니다. 이제 처음 상태입니다.</p>`;
+    $('#adminMsg').textContent = `전체 데이터 초기화 완료: ${n}건 삭제 (${new Date().toLocaleTimeString('ko-KR')})`;
+    $('#resetConfirm').textContent = '삭제 완료';
+    $('#resetBackup').disabled = true;
+  } catch (e) {
+    console.error(e);
+    status.textContent = '삭제하지 못했습니다: ' + (e.code || e.message) + ' (일부만 지워졌을 수 있습니다. 다시 열어 남은 개수를 확인하세요.)';
+  } finally {
+    resetting = false;
+    resetSummary = null; // 완료·실패 후에는 다시 열어야 새로 셉니다
+    $('#resetCancel').disabled = false;
+    $('#resetCancel').textContent = '닫기';
+    $('#resetAck').disabled = false;
+    updateResetButton();
+  }
+}
+
+document.addEventListener('input', e => { if (e.target.closest?.('#resetDialog')) updateResetButton(); });
+document.addEventListener('change', e => { if (e.target.id === 'resetAck') updateResetButton(); });
+document.addEventListener('click', e => {
+  if (e.target.id === 'resetConfirm') runReset();
+  if (e.target.id === 'resetBackup') exportAllBackup();
+});
+// 삭제 중에는 Esc로 닫히지 않게
+document.addEventListener('cancel', e => { if (e.target.id === 'resetDialog' && resetting) e.preventDefault(); }, true);
+document.addEventListener('close', e => { if (e.target.id === 'resetDialog') $('#resetCancel').textContent = '취소'; }, true);
 
 route().catch(e => { console.error(e); root.innerHTML = notice('관리자 화면을 열지 못했습니다: ' + esc(e.message || e), 'error'); });

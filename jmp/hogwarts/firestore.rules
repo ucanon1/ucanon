@@ -32,6 +32,15 @@ service cloud.firestore {
       allow list, write: if false;
     }
 
+    // 전체 데이터 초기화: 모든 회차의 참가자·답안을 한꺼번에 조회하는 것은 관리자만.
+    // (삭제 권한은 아래 회차별 규칙의 allow delete: if isAdmin() 이 담당)
+    match /{path=**}/participants/{pid} {
+      allow list: if isAdmin();
+    }
+    match /{path=**}/responses/{rid} {
+      allow list: if isAdmin();
+    }
+
     match /games/{gameId} {
       allow read, write: if false;
 

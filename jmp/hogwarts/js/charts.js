@@ -1,5 +1,5 @@
 // 관리자 화면 차트(인라인 SVG). 색은 css/hogwarts.css의 .chart 규칙을 따릅니다.
-import { esc } from './ui.js?v=202611111957';
+import { esc } from './ui.js?v=202611112201';
 
 const empty = (w, h, text) => `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(text)}"><text class="empty" x="${w / 2}" y="${h / 2}" text-anchor="middle">${esc(text)}</text></svg>`;
 
